@@ -23,7 +23,6 @@ repositories {
 
 dependencies {
     //lombok
-    implementation 'org.springframework.boot:spring-boot-starter-lombok'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
