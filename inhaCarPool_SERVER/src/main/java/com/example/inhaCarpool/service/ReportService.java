@@ -25,13 +25,12 @@ import java.util.List;
 public class ReportService {
 
     private final ReportInterface reportInterface;
-
-
+    
 
     public void saveReport(ReportRequstDTO reportRequstDTO) {
         Date currentTime = new Date();
 
-        ReportEntity apply = ReportEntity.builder()
+        ReportEntity report = ReportEntity.builder()
                 .reporter(reportRequstDTO.getReporter())
                 .userName(reportRequstDTO.getUserName())
                 .carPoolId(reportRequstDTO.getCarpoolId())
@@ -40,7 +39,7 @@ public class ReportService {
                 .content(reportRequstDTO.getContent())
                 .build();
 
-        ReportEntity saveReport = reportInterface.save(apply);
+        ReportEntity saveReport = reportInterface.save(report);
     }
 
     public List<ReportRequstDTO> findByMyReport(String myId) {
