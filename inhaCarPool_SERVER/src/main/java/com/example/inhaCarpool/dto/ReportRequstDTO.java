@@ -1,9 +1,12 @@
 package com.example.inhaCarpool.dto;
 
 import com.example.inhaCarpool.enums.ReportType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  *    Report DTO Class
@@ -42,5 +45,11 @@ public class ReportRequstDTO {
         this.reporter = reporter;
         this.reportType = reportType;
         this.reportDate = reportDate;
+    }
+
+    @Builder
+    public static class GetRepostList {
+        @JsonProperty
+        private List<ReportRequstDTO> getReportList;
     }
 }

@@ -1,16 +1,11 @@
 package com.example.inhaCarpool.controller;
 
-import com.example.inhaCarpool.service.ReportService;
+import com.example.inhaCarpool.baseResponse.BaseException;
+import com.example.inhaCarpool.baseResponse.BaseResponse;
 import com.example.inhaCarpool.dto.ReportRequstDTO;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import com.example.inhaCarpool.service.ReportService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 /**
@@ -30,33 +25,26 @@ public class ReportController {
     }
 
 
-    @ApiResponses({
-                @ApiResponse(responseCode = "200", description = "OK",
-                        content = @Content(schema = @Schema(implementation = ReportRequstDTO.class))),
-                @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
-                @ApiResponse(responseCode = "404", description = "NOT FOUND"),
-                @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
-        })
+
+    @ResponseBody
     @PostMapping("/save")
-    public ResponseEntity<ReportRequstDTO> SaveApply(@RequestBody ReportRequstDTO reportRequstDTO) {
-        try {
-            reportService.saveReport(reportRequstDTO);
-            return ResponseEntity.ok(reportRequstDTO);
-        } catch (IllegalArgumentException ex) {
-            return ResponseEntity.badRequest().build();
+    public BaseResponse<String> SaveApply(@RequestBody ReportRequstDTO reportRequstDTO) {
+        try{
+            this.reportService.saveReport(reportRequstDTO);
+            return new BaseResponse<>("신고가 완료되었습니다.");
+        } catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
         }
     }
 
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK",
-                    content = @Content(schema = @Schema(implementation = ReportRequstDTO.class))),
-            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
-            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
-    })
-    @GetMapping("select/{myId}")
-    public List<ReportRequstDTO> findById(@PathVariable String myId) {
-        return reportService.findByMyReport(myId);
-    }
 
+    @GetMapping("select/{myId}")
+    public BaseResponse<ReportRequstDTO.GetRepostList> findById(@PathVariable String myId) {
+      try {
+          ReportRequstDTO.GetRepostList reports = reportService.findByMyReportLIst(myId);
+          return new BaseResponse<>(reports);
+      }catch (BaseException exception){
+          return new BaseResponse<>((exception.getStatus()));
+      }
+    }
 }

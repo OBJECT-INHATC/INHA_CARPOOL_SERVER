@@ -53,15 +53,14 @@ public class ReportEntity {
     private boolean Status; // 신고 처리 상태, 기본값은 false
 
     @Builder
-    public ReportEntity(Long reportIdx, String reporter, String carPoolId,
+    public ReportEntity(String reporter, String carPoolId,
                         String userName, String content, ReportType reportType, Date reportDate) {
-        this.reportIdx = reportIdx;
         this.reporter = reporter;
         this.carPoolId = carPoolId;
         this.userName = userName;
         this.content = content;
         this.reportType = reportType;
-        this.reportDate = reportDate;
+        this.reportDate = new Date();
     }
 
 

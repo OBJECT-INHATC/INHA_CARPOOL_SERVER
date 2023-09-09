@@ -1,6 +1,8 @@
 package com.example.inhaCarpool.service;
 
 
+import com.example.inhaCarpool.baseResponse.BaseException;
+import com.example.inhaCarpool.baseResponse.BaseResponseStatus;
 import com.example.inhaCarpool.dto.ReportRequstDTO;
 import com.example.inhaCarpool.entity.ReportEntity;
 import jakarta.transaction.Transactional;
@@ -12,11 +14,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.example.inhaCarpool.baseResponse.BaseResponseStatus.DATABASE_INSERT_ERROR;
+
 /**
- *    Report 관련 기능을 담당하는 Service
+ * Report 관련 기능을 담당하는 Service
  *
- *   @version          1.00    2023.09.01
- *   @author           이상훈
+ * @author 이상훈
+ * @version 1.00    2023.09.01
  */
 
 @Service
@@ -27,7 +31,7 @@ public class ReportService {
     private final ReportInterface reportInterface;
 
 
-    public void saveReport(ReportRequstDTO reportRequstDTO) {
+    public void saveReport(ReportRequstDTO reportRequstDTO) throws BaseException {
         Date currentTime = new Date();
 
         ReportEntity report = ReportEntity.builder()
@@ -35,24 +39,30 @@ public class ReportService {
                 .userName(reportRequstDTO.getUserName())
                 .carPoolId(reportRequstDTO.getCarpoolId())
                 .reportType(reportRequstDTO.getReportType())
-                .reportDate(currentTime) // 현재 시간으로 설정
                 .content(reportRequstDTO.getContent())
                 .build();
 
-        ReportEntity saveReport = reportInterface.save(report);
-    }
-
-    public List<ReportRequstDTO> findByMyReport(String myId) {
-        List<ReportEntity> reportEntities = reportInterface.findByReporter(myId);
-        List<ReportRequstDTO> reportRequestDTOs = new ArrayList<>();
-
-        // 리스트가 비어있으면 빈 리스트 처리
-        if(reportEntities.isEmpty()) {
-            return reportRequestDTOs;
+        try {
+            reportInterface.save(report);
+        } catch (Exception e) {
+            throw new BaseException(DATABASE_INSERT_ERROR);
         }
 
+
+    }
+
+    public ReportRequstDTO.GetRepostList findByMyReportLIst(String myId) throws BaseException {
+        List<ReportEntity> reportEntities = reportInterface.findByReporter(myId);
+
+        // 리스트가 비어있으면 빈 리스트 처리
+        if (reportEntities.isEmpty()) {
+            throw new BaseException(BaseResponseStatus.REPORT_NOT_FOUND);
+        }
+
+        List<ReportRequstDTO> reportRequestDTOs = new ArrayList<>();
+
         for (ReportEntity reportEntity : reportEntities) {
-            ReportRequstDTO reportRequestDTO =  ReportRequstDTO.builder()
+            ReportRequstDTO reportRequestDTO = ReportRequstDTO.builder()
                     .userName(reportEntity.getUserName())
                     .reporter(reportEntity.getReporter())
                     .carpoolId(reportEntity.getCarPoolId())
@@ -64,7 +74,9 @@ public class ReportService {
             reportRequestDTOs.add(reportRequestDTO);
         }
 
-        return reportRequestDTOs;
+        return ReportRequstDTO.GetRepostList.builder()
+                .getReportList(reportRequestDTOs)
+                .build();
     }
 
 
