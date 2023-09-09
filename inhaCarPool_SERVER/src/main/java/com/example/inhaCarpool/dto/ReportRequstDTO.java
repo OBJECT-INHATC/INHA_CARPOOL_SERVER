@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- *    Report DTO Class
+ * Report DTO Class
  *
- *   @version          1.00    2023.09.01
- *   @author           이상훈
+ * @author 이상훈
+ * @version 1.00    2023.09.01
  */
 
 
@@ -31,14 +31,14 @@ public class ReportRequstDTO {
     private String reporter;
 
     // 신고 종류
-    private ReportType reportType;
+    private String reportType;
 
     private String reportDate;
 
     @Builder
     public ReportRequstDTO(String content, String carpoolId,
                            String userName, String reporter,
-                           ReportType reportType, String reportDate) {
+                           String reportType, String reportDate) {
         this.content = content;
         this.carpoolId = carpoolId;
         this.userName = userName;
@@ -51,5 +51,15 @@ public class ReportRequstDTO {
     public static class GetRepostList {
         @JsonProperty
         private List<ReportRequstDTO> getReportList;
+    }
+
+    // 신고 타입 유효성 검사
+    public static boolean isValidReportType(String reportType) {
+        for (ReportType validType : ReportType.values()) {
+            if (validType.name().equals(reportType)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

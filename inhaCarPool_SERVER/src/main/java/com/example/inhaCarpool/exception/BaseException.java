@@ -1,4 +1,4 @@
-package com.example.inhaCarpool.baseResponse;
+package com.example.inhaCarpool.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

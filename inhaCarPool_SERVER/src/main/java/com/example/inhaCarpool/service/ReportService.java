@@ -1,8 +1,9 @@
 package com.example.inhaCarpool.service;
 
 
-import com.example.inhaCarpool.baseResponse.BaseException;
-import com.example.inhaCarpool.baseResponse.BaseResponseStatus;
+import com.example.inhaCarpool.enums.ReportType;
+import com.example.inhaCarpool.exception.BaseException;
+import com.example.inhaCarpool.exception.BaseResponseStatus;
 import com.example.inhaCarpool.dto.ReportRequstDTO;
 import com.example.inhaCarpool.entity.ReportEntity;
 import jakarta.transaction.Transactional;
@@ -11,10 +12,11 @@ import org.springframework.stereotype.Service;
 import com.example.inhaCarpool.repository.ReportInterface;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import static com.example.inhaCarpool.baseResponse.BaseResponseStatus.DATABASE_INSERT_ERROR;
+import static com.example.inhaCarpool.exception.BaseResponseStatus.DATABASE_INSERT_ERROR;
+import static com.example.inhaCarpool.exception.BaseResponseStatus.INVALID_REPORT_TYPE;
+import static com.example.inhaCarpool.dto.ReportRequstDTO.isValidReportType;
 
 /**
  * Report 관련 기능을 담당하는 Service
@@ -32,13 +34,18 @@ public class ReportService {
 
 
     public void saveReport(ReportRequstDTO reportRequstDTO) throws BaseException {
-        Date currentTime = new Date();
+
+        // 신고 타입이 안 맞는 경우
+        if (!isValidReportType(reportRequstDTO.getReportType())) {
+            System.out.println("신고 타입이 올바르지 않습니다.");
+            throw new BaseException(INVALID_REPORT_TYPE);
+        }
 
         ReportEntity report = ReportEntity.builder()
                 .reporter(reportRequstDTO.getReporter())
                 .userName(reportRequstDTO.getUserName())
                 .carPoolId(reportRequstDTO.getCarpoolId())
-                .reportType(reportRequstDTO.getReportType())
+                .reportType(ReportType.valueOf(reportRequstDTO.getReportType()))
                 .content(reportRequstDTO.getContent())
                 .build();
 
@@ -47,9 +54,9 @@ public class ReportService {
         } catch (Exception e) {
             throw new BaseException(DATABASE_INSERT_ERROR);
         }
-
-
     }
+
+
 
     public ReportRequstDTO.GetRepostList findByMyReportLIst(String myId) throws BaseException {
         List<ReportEntity> reportEntities = reportInterface.findByReporter(myId);
@@ -66,7 +73,7 @@ public class ReportService {
                     .userName(reportEntity.getUserName())
                     .reporter(reportEntity.getReporter())
                     .carpoolId(reportEntity.getCarPoolId())
-                    .reportType(reportEntity.getReportType())
+                    .reportType(String.valueOf(reportEntity.getReportType()))
                     .content(reportEntity.getContent())
                     .reportDate(reportEntity.getReportDate().toString())
                     .build();

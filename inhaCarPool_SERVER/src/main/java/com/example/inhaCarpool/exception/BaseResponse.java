@@ -1,4 +1,4 @@
-package com.example.inhaCarpool.baseResponse;
+package com.example.inhaCarpool.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

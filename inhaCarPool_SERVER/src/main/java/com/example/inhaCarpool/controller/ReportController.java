@@ -1,7 +1,7 @@
 package com.example.inhaCarpool.controller;
 
-import com.example.inhaCarpool.baseResponse.BaseException;
-import com.example.inhaCarpool.baseResponse.BaseResponse;
+import com.example.inhaCarpool.exception.BaseException;
+import com.example.inhaCarpool.exception.BaseResponse;
 import com.example.inhaCarpool.dto.ReportRequstDTO;
 import com.example.inhaCarpool.service.ReportService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,8 +32,8 @@ public class ReportController {
         try{
             this.reportService.saveReport(reportRequstDTO);
             return new BaseResponse<>("신고가 완료되었습니다.");
-        } catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
         }
     }
 
