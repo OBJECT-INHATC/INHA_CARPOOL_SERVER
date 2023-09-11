@@ -13,7 +13,8 @@ public enum BaseResponseStatus {
     // Report 관련 에러
     INVALID_REPORT_TYPE(false, 6000, "신고 타입이 올바르지 않습니다."),
     REPORT_SAVE_FAILURE(false, 6001, "신고 저장에 실패하였습니다."),
-    REPORT_NOT_FOUND(false, 6002, "신고를 찾을 수 없습니다.");
+    REPORT_NOT_FOUND(false, 6002, "신고를 찾을 수 없습니다."),
+    ALREADY_PROCESSED(false, 6003, "이미 처리된 신고입니다.");
 
     private final boolean isSuccess;
     private final int statusCode;

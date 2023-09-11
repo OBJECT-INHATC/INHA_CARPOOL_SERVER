@@ -4,6 +4,7 @@ import com.example.inhaCarpool.enums.ReportType;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +18,7 @@ import java.util.Date;
  */
 
 @Tag(name = "예제 API", description = "Swagger 테스트용 API")
-@Getter
+@Data
 @NoArgsConstructor
 @Table(name = "report")
 @Entity

@@ -47,4 +47,18 @@ public class ReportController {
           return new BaseResponse<>((exception.getStatus()));
       }
     }
+
+
+    // 신고 처리
+    @PutMapping("/status/{reportIdx}")
+    public BaseResponse<String> updateStatus(@PathVariable Long reportIdx) {
+        try {
+            reportService.updateStatus(reportIdx);
+            return new BaseResponse<>("신고 처리가 완료되었습니다.");
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+
 }

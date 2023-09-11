@@ -8,6 +8,7 @@ import com.example.inhaCarpool.dto.ReportRequstDTO;
 import com.example.inhaCarpool.entity.ReportEntity;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.example.inhaCarpool.repository.ReportInterface;
 
@@ -84,6 +85,20 @@ public class ReportService {
         return ReportRequstDTO.GetRepostList.builder()
                 .getReportList(reportRequestDTOs)
                 .build();
+    }
+
+
+    public void updateStatus(Long reportIdx) throws BaseException {
+        ReportEntity reportEntity = reportInterface.findById(reportIdx)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.REPORT_NOT_FOUND)); // 신고가 없는 경우 예외 처리
+
+        // 이미 처리된 신고인 경우 예외 처리
+        if(reportEntity.isStatus()) {
+            throw new BaseException(BaseResponseStatus.ALREADY_PROCESSED); // 이미 처리된 신고인 경우 예외 처리
+        }
+
+        reportEntity.setStatus(true); // 신고 처리 상태를 true로 변경 (update)
+        reportInterface.save(reportEntity);
     }
 
 
