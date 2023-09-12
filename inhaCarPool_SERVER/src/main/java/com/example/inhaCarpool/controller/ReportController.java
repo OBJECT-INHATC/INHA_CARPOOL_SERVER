@@ -28,7 +28,7 @@ public class ReportController {
 
     @ResponseBody
     @PostMapping("/save")
-    public BaseResponse<String> SaveApply(@RequestBody ReportRequstDTO reportRequstDTO) {
+    public BaseResponse<String> saveApply(@RequestBody ReportRequstDTO reportRequstDTO) {
         try{
             this.reportService.saveReport(reportRequstDTO);
             return new BaseResponse<>("신고가 완료되었습니다.");
