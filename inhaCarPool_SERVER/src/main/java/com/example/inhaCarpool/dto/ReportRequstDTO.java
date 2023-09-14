@@ -1,6 +1,5 @@
 package com.example.inhaCarpool.dto;
 
-import com.example.inhaCarpool.enums.ReportType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -53,13 +52,4 @@ public class ReportRequstDTO {
         private List<ReportRequstDTO> getReportList;
     }
 
-    // 신고 타입 유효성 검사
-    public static boolean isValidReportType(String reportType) {
-        for (ReportType validType : ReportType.values()) {
-            if (validType.name().equals(reportType)) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

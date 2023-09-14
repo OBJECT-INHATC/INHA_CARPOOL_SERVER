@@ -1,11 +1,9 @@
 package com.example.inhaCarpool.entity;
 
-import com.example.inhaCarpool.enums.ReportType;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
@@ -42,8 +40,7 @@ public class ReportEntity {
     private String content; // 신고 내용
 
     @Column(name = "type")
-    @Enumerated(EnumType.STRING) // Enum 이름을 저장합니다.
-    private ReportType reportType; // 신고 타입
+    private String reportType; // 신고 타입
 
     //reportEntity.setReportType(ReportType.욕설); // 예시로 "욕설"로 설정
 
@@ -55,7 +52,7 @@ public class ReportEntity {
 
     @Builder
     public ReportEntity(String reporter, String carPoolId,
-                        String userName, String content, ReportType reportType, Date reportDate) {
+                        String userName, String content, String reportType, Date reportDate) {
         this.reporter = reporter;
         this.carPoolId = carPoolId;
         this.userName = userName;
