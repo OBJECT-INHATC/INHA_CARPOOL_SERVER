@@ -16,6 +16,8 @@ public interface ReportInterface extends JpaRepository<ReportEntity, Long> {
 
     List<ReportEntity> findByReporter(String reporter);
 
+    List<ReportEntity> findByReporterContaining(String reporter);
+
 
 
 
