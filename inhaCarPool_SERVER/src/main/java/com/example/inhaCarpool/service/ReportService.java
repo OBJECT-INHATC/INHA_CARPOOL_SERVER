@@ -60,7 +60,7 @@ public class ReportService {
     // 내가 신고한 리스트 확인
     public ReportRequstDTO.GetRepostList findByMyReportLIst(String myId) throws BaseException {
 
-        List<ReportEntity> reportEntities = reportInterface.findByReporter_Uid(myId);
+        List<ReportEntity> reportEntities = reportInterface.findByReporterContaining(myId);
 
         // 리스트가 비어있으면 빈 리스트 처리
         if (reportEntities.isEmpty()) {

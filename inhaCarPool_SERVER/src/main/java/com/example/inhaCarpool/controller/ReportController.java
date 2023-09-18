@@ -37,13 +37,13 @@ public class ReportController {
         }
     }
 
-
+    // 신고자 ID로 신고 리스트 조회
     @GetMapping("select/{myId}")
     public BaseResponse<ReportRequstDTO.GetRepostList> findById(@PathVariable String myId) {
       try {
           ReportRequstDTO.GetRepostList reports = reportService.findByMyReportLIst(myId);
           return new BaseResponse<>(reports);
-      }catch (BaseException exception){
+      } catch (BaseException exception){
           return new BaseResponse<>((exception.getStatus()));
       }
     }
