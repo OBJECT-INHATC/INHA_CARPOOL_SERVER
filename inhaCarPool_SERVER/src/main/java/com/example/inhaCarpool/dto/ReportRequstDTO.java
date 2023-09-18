@@ -24,7 +24,7 @@ public class ReportRequstDTO {
     private String carpoolId;
 
     // 피신고자 ID
-    private String userName;
+    private String reportedUser;
 
     // 신고자 ID
     private String reporter;
@@ -36,11 +36,11 @@ public class ReportRequstDTO {
 
     @Builder
     public ReportRequstDTO(String content, String carpoolId,
-                           String userName, String reporter,
+                           String reportedUser, String reporter,
                            String reportType, String reportDate) {
         this.content = content;
         this.carpoolId = carpoolId;
-        this.userName = userName;
+        this.reportedUser = reportedUser;
         this.reporter = reporter;
         this.reportType = reportType;
         this.reportDate = reportDate;

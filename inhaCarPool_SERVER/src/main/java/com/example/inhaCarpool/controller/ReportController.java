@@ -28,10 +28,10 @@ public class ReportController {
 
     @ResponseBody
     @PostMapping("/save")
-    public BaseResponse<String> saveApply(@RequestBody ReportRequstDTO reportRequstDTO) {
+    public BaseResponse<String> saveReport(@RequestBody ReportRequstDTO reportRequstDTO) {
         try{
             this.reportService.saveReport(reportRequstDTO);
-            return new BaseResponse<>("신고가 완료되었습니다.");
+            return new BaseResponse<>("해당 사용자를 신고 완료하였습니다.");
         } catch (BaseException exception){
             return new BaseResponse<>(exception.getStatus());
         }
@@ -59,6 +59,8 @@ public class ReportController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
+
 
 
 }

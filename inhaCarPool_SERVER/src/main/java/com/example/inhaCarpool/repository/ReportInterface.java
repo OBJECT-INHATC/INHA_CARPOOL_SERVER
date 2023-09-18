@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface ReportInterface extends JpaRepository<ReportEntity, Long> {
 
-    List<ReportEntity> findByReporter(String reporter);
+    List<ReportEntity> findByReporter_Uid(String reporter);
 
 
 

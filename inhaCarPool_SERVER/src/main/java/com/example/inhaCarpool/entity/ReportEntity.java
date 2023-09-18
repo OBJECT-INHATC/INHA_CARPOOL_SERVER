@@ -27,14 +27,8 @@ public class ReportEntity {
     @Column(name = "reportIdx")
     private Long reportIdx; // 신고 인덱스 (고유 식별자)
 
-    @Column(name = "reporter")
-    private String reporter; // 신고한 사용자 ID
-
     @Column(name = "carPoolId")
     private String carPoolId; // 신고된 카풀 ID
-
-    @Column(name = "userName")
-    private String userName; // 신고당한 사용자 ID
 
     @Column(name = "content")
     private String content; // 신고 내용
@@ -42,20 +36,26 @@ public class ReportEntity {
     @Column(name = "type")
     private String reportType; // 신고 타입
 
-    //reportEntity.setReportType(ReportType.욕설); // 예시로 "욕설"로 설정
-
     @Column(name = "reportDate")
     private Date reportDate; // 신고 날짜
 
     @Column(name = "Status", columnDefinition = "BOOLEAN DEFAULT false")
     private boolean Status; // 신고 처리 상태, 기본값은 false
 
+    @ManyToOne
+    @JoinColumn(name = "reportedUser")
+    private UserEntity reportedUser; // 피신고자 ID
+
+    @ManyToOne
+    @JoinColumn(name = "reporter")
+    private UserEntity reporter; // 신고자 ID
+
     @Builder
-    public ReportEntity(String reporter, String carPoolId,
-                        String userName, String content, String reportType, Date reportDate) {
+    public ReportEntity(UserEntity reporter, String carPoolId,
+                        UserEntity reportedUser, String content, String reportType) {
         this.reporter = reporter;
         this.carPoolId = carPoolId;
-        this.userName = userName;
+        this.reportedUser = reportedUser;
         this.content = content;
         this.reportType = reportType;
         this.reportDate = new Date();

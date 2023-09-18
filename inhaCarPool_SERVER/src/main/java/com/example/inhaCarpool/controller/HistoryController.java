@@ -2,11 +2,8 @@ package com.example.inhaCarpool.controller;
 
 
 import com.example.inhaCarpool.dto.HistoryRequestDTO;
+import com.example.inhaCarpool.entity.HistoryEntity;
 import com.example.inhaCarpool.service.HistoryService;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +42,16 @@ public class HistoryController {
 
         return ResponseEntity.ok(histories);
     }
+
+    @DeleteMapping("/delete/carPoolID")
+    public ResponseEntity<HistoryEntity> DeleteCarpool(@RequestParam(value = "carpoolId") String carpoolId){
+        boolean result = historyService.deleteHistory(carpoolId);
+        if(result){
+        return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 
 }
 

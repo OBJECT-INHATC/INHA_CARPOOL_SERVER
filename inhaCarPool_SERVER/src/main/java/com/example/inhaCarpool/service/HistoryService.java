@@ -66,4 +66,15 @@ public class HistoryService {
                 .collect(Collectors.toList());
     }
 
+    public boolean deleteHistory(String carPoolId) {
+        HistoryEntity carPool = historyInterface.findByCarPoolId(carPoolId);
+
+        try {
+            historyInterface.delete(carPool);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 }
