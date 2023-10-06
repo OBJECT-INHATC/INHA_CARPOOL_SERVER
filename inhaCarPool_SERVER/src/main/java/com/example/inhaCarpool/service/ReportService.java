@@ -1,6 +1,8 @@
 package com.example.inhaCarpool.service;
 
 
+import com.example.inhaCarpool.dto.ReportResponseDTO;
+import com.example.inhaCarpool.dto.UserRequstDTO;
 import com.example.inhaCarpool.entity.UserEntity;
 import com.example.inhaCarpool.exception.BaseException;
 import com.example.inhaCarpool.exception.BaseResponseStatus;
@@ -14,6 +16,7 @@ import com.example.inhaCarpool.repository.ReportInterface;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.example.inhaCarpool.exception.BaseResponseStatus.DATABASE_INSERT_ERROR;
 
@@ -58,33 +61,46 @@ public class ReportService {
 
 
     // 내가 신고한 리스트 확인
-    public ReportRequstDTO.GetRepostList findByMyReportLIst(String myId) throws BaseException {
+    public ReportResponseDTO.GetRepostList findReportListByNickName(String nickname) throws BaseException {
 
-        List<ReportEntity> reportEntities = reportInterface.findByReporterContaining(myId);
+        Optional<UserEntity> user = userInterface.findByNicknameContaining(nickname);
+        if(user.isPresent()){
+            List<ReportEntity> reportEntities = reportInterface.findByReporter_Uid(user.get().getUid());
 
-        // 리스트가 비어있으면 빈 리스트 처리
-        if (reportEntities.isEmpty()) {
-            throw new BaseException(BaseResponseStatus.REPORT_NOT_FOUND);
-        }
+            // 리스트가 비어있으면 빈 리스트 처리
+            if (reportEntities.isEmpty()) {
+                throw new BaseException(BaseResponseStatus.REPORT_NOT_FOUND);
+            }
 
-        List<ReportRequstDTO> reportRequestDTOs = new ArrayList<>();
+            List<ReportResponseDTO> reportResponseDTOs = new ArrayList<>();
 
-        for (ReportEntity reportEntity : reportEntities) {
-            ReportRequstDTO reportRequestDTO = ReportRequstDTO.builder()
-                    .reportedUser(reportEntity.getReportedUser().getUid())
-                    .reporter(reportEntity.getReporter().getUid())
-                    .carpoolId(reportEntity.getCarPoolId())
-                    .reportType(reportEntity.getReportType())
-                    .content(reportEntity.getContent())
-                    .reportDate(reportEntity.getReportDate().toString())
+            for (ReportEntity reportEntity : reportEntities) {
+                ReportResponseDTO reportResponseDTO = ReportResponseDTO.builder()
+                        .reportedUser(new UserRequstDTO(
+                                reportEntity.getReportedUser().getUid(),
+                                reportEntity.getReportedUser().getNickname(),
+                                reportEntity.getReportedUser().getEmail()
+                        ))
+                        .reporter(new UserRequstDTO(
+                                reportEntity.getReporter().getUid(),
+                                reportEntity.getReporter().getNickname(),
+                                reportEntity.getReporter().getEmail()
+                        ))
+                        .carpoolId(reportEntity.getCarPoolId())
+                        .reportType(reportEntity.getReportType())
+                        .content(reportEntity.getContent())
+                        .reportDate(reportEntity.getReportDate().toString())
+                        .build();
+                reportResponseDTOs.add(reportResponseDTO);
+            }
+
+            return ReportResponseDTO.GetRepostList.builder()
+                    .getReportList(reportResponseDTOs)
                     .build();
-
-            reportRequestDTOs.add(reportRequestDTO);
+        } else {
+            return null;
         }
 
-        return ReportRequstDTO.GetRepostList.builder()
-                .getReportList(reportRequestDTOs)
-                .build();
     }
 
 

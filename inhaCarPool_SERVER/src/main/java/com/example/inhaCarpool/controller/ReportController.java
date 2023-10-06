@@ -1,5 +1,6 @@
 package com.example.inhaCarpool.controller;
 
+import com.example.inhaCarpool.dto.ReportResponseDTO;
 import com.example.inhaCarpool.exception.BaseException;
 import com.example.inhaCarpool.exception.BaseResponse;
 import com.example.inhaCarpool.dto.ReportRequstDTO;
@@ -37,11 +38,11 @@ public class ReportController {
         }
     }
 
-    // 신고자 ID로 신고 리스트 조회
-    @GetMapping("select/{myId}")
-    public BaseResponse<ReportRequstDTO.GetRepostList> findById(@PathVariable String myId) {
+    // 신고자 닉네임으로 신고 리스트 조회
+    @GetMapping("select/{nickname}")
+    public BaseResponse<ReportResponseDTO.GetRepostList> findById(@PathVariable String nickname) {
       try {
-          ReportRequstDTO.GetRepostList reports = reportService.findByMyReportLIst(myId);
+          ReportResponseDTO.GetRepostList reports = reportService.findReportListByNickName(nickname);
           return new BaseResponse<>(reports);
       } catch (BaseException exception){
           return new BaseResponse<>((exception.getStatus()));
