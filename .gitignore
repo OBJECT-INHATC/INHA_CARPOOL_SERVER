@@ -36,4 +36,9 @@ out/
 ### VS Code ###
 .vscode/
 
+# firebase Admin SDK
+inhaCarPool_SERVER/src/main/resources/serviceAccountKey.json
+
+
 .gitignore에 src/main/resources/application.yml
+
