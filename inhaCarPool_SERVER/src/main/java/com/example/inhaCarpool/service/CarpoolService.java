@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CarpoolService {
 
+    private final FCMService fcmService;
+
     private static final String COLLECTION_NAME = "carpool";
 
     public void scheduleCarpools() {
@@ -36,42 +38,39 @@ public class CarpoolService {
 
                 List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 
-                List<CarpoolResponseDTO> updatedCarpoolResponseDTOS = documents.stream()
+                List<CarpoolResponseDTO> CarpoolResponseDTOS = documents.stream()
                         .map(document -> new CarpoolResponseDTO(
                                 document.getString("carId"),
-                                document.getLong("startTime")
+                                document.getLong("startTime"),
+                                document.getString("admin").split("_")[1]
                         ))
                         .collect(Collectors.toList());
 
                 Long currentTime = System.currentTimeMillis(); // 현재 시간 (epoch 시간)
 
                 // 현재 시간과 carpoolResponseDTOS의 startTime을 비교
-                for (CarpoolResponseDTO carpoolDTO : updatedCarpoolResponseDTOS) {
-                    if (currentTime - carpoolDTO.getStartTime() >= 10 * 24 * 60 * 60 * 1000) { // 10일이 지난 carpool
+                for (CarpoolResponseDTO carpoolDTO : CarpoolResponseDTOS) {
+                    if ((currentTime - carpoolDTO.getStartTime()) / (24 * 60 * 60 * 1000) >= 90) { // 90일 이상이 지난 carpool
+
+//                        System.out.println("현재 시간 : " + currentTime);
+//                        System.out.println("carpool의 startTime : " + carpoolDTO.getStartTime());
+//                        System.out.println("차이 : " + (currentTime - carpoolDTO.getStartTime()) / (24 * 60 * 60 * 1000) + "일");
 
                         // spring에 carpool 저장 (추가 예정)
                         // saveHistory(carpoolDTO);
 
-                        // carpool을 삭제
-                        firestore.collection(COLLECTION_NAME).document(carpoolDTO.getCarId()).delete();
+                        // 삭제할 carpool의 carId 토픽을 구독한 유저에게 푸시 알림 보내기
+                        fcmService.sendFcmMessage("이전 카풀은 어떠셨나요?", "이용 내역에서 확인해보세요!", carpoolDTO.getCarId(), currentTime);
+
+                        // firestore에서 carpool을 삭제 (현재는 주석처리)
+//                        firestore.collection(COLLECTION_NAME).document(carpoolDTO.getCarId()).delete();
                         System.out.println("삭제된 carpool: " + carpoolDTO.getCarId());
-                        System.out.println("삭제된 carpool의 startTime: " + carpoolDTO.getStartTime());
-
-
-                        // 삭제된 carpool의 carId를 이용해 ... 추가예정
-                        // 푸시 알림을 보낸다 ... 추가예정
                     }
                 }
-
-
 
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
-
-
-        }, 5, 5, TimeUnit.SECONDS); // 5초 후에 10초마다 스케줄링
-
+        }, 5, 15, TimeUnit.SECONDS); // 5초 후 부터 15초마다 실행
     }
-
 }

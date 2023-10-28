@@ -1,6 +1,5 @@
 package com.example.inhaCarpool.controller;
 
-import com.example.inhaCarpool.dto.CarpoolResponseDTO;
 import com.example.inhaCarpool.service.CarpoolService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +17,7 @@ public class CarpoolController {
         this.carpoolService = carpoolService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/schedule")
     public void scheduleCarpools() {
         carpoolService.scheduleCarpools();
     }
