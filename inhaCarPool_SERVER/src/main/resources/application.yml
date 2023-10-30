@@ -5,13 +5,13 @@ spring:
         pathmatch:
           matching-strategy: ant_path_matcher
     datasource:
-      url: jdbc:mysql://localhost:3306/carpool?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false
-      username: root
-      password: 1234
-
 #      url: jdbc:mysql://localhost:3306/carpool?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false
-#      username: inha
-#      password: inha1234
+#      username: root
+#      password: 1234
+
+      url: jdbc:mysql://localhost:3306/carpool?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+      username: inha
+      password: inha1234
       driver-class-name: com.mysql.cj.jdbc.Driver
     jpa:
       hibernate:
