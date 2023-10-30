@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -20,6 +21,8 @@ public interface TopicInterface extends JpaRepository<TopicEntity, Long> {
 
     @Query("select t FROM TopicEntity t WHERE t.users.uid = :uid AND t.carId = :carId")
     Optional<TopicEntity> deleteByUidAndCarId(@Param("uid") String uid, @Param("carId") String carId);
+
+    List<TopicEntity> findByUsersUid(String uid);
 
 
 }

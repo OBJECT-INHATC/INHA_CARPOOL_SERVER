@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.example.inhaCarpool.exception.BaseResponseStatus.DATABASE_INSERT_ERROR;
 
 /**
@@ -45,9 +48,7 @@ public class TopicService {
         } catch (Exception e) {
             throw new BaseException(DATABASE_INSERT_ERROR);
         }
-
     }
-
 
     // 토픽 삭제
     public void deleteTopicByUidAndCarId(String uid, String carId) throws BaseException {
@@ -59,5 +60,13 @@ public class TopicService {
         topicInterface.delete(topicEntity);
     }
 
-
+    // uid로 모든 카풀 아이디 조회
+    public List<String> getCarIdByUid(String uid) throws BaseException {
+        List<TopicEntity> topicEntityList = topicInterface.findByUsersUid(uid);
+        List<String> carIdList = new ArrayList<>();
+        for (TopicEntity topicEntity : topicEntityList) {
+            carIdList.add(topicEntity.getCarId());
+        }
+        return carIdList;
+    }
 }

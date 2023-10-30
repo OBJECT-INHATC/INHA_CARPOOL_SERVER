@@ -28,18 +28,14 @@ public class TopicEntity {
     private String carId; // 카풀 Id
 
     @ManyToOne
-    @JoinColumn(name = "users")
+    @JoinColumn(name = "uId")
     private UserEntity users;
-
 
     @Builder
     public TopicEntity(String carId, UserEntity users) {
         this.carId = carId;
         this.users = users;
-
     }
-
-
 
 }
 

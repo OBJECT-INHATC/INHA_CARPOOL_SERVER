@@ -6,6 +6,7 @@ import com.example.inhaCarpool.exception.BaseResponse;
 import com.example.inhaCarpool.dto.ReportRequstDTO;
 import com.example.inhaCarpool.service.ReportService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Tag(name = "report API", description = "INHA Carpool Swagger 테스트용")
 @RestController
+@Slf4j
 @RequestMapping("/report")
 public class ReportController {
 
@@ -30,6 +32,7 @@ public class ReportController {
     @ResponseBody
     @PostMapping("/save")
     public BaseResponse<String> saveReport(@RequestBody ReportRequstDTO reportRequstDTO) {
+        log.info("신고자 : " + reportRequstDTO.getReporter());
         try{
             this.reportService.saveReport(reportRequstDTO);
             return new BaseResponse<>("해당 사용자를 신고 완료하였습니다.");

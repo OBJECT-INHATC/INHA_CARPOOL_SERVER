@@ -5,7 +5,11 @@ import com.example.inhaCarpool.exception.BaseException;
 import com.example.inhaCarpool.exception.BaseResponse;
 import com.example.inhaCarpool.service.TopicService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -16,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Tag(name = "topic API", description = "INHA Carpool Swagger 테스트용")
 @RestController
-@RequestMapping("/topic")
+@Slf4j
 public class TopicController {
     private final TopicService topicService;
     public TopicController(TopicService topicService) {
@@ -26,7 +30,7 @@ public class TopicController {
 
     // 서버에 토픽 저장
     @ResponseBody
-    @PostMapping("/save")
+    @PostMapping("topic/save")
     public BaseResponse<String>saveUser(@RequestBody TopicRequstDTO topicRequstDTO) {
         try{
             this.topicService.saveTopic(topicRequstDTO);
@@ -36,9 +40,8 @@ public class TopicController {
         }
     }
 
-
     // 나의 Uid, 카풀 ID로 토픽 삭제
-    @DeleteMapping("/delete")
+    @DeleteMapping("topic/delete")
     public BaseResponse<String> deleteTopicByUidAndCarId(
             @RequestParam(name = "uid") String uid,
             @RequestParam(name = "carId") String carId) {
@@ -47,6 +50,16 @@ public class TopicController {
             return new BaseResponse<>("토픽이 삭제되었습니다.");
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    @GetMapping("user/selectList/{uid}")
+    public List<String> getCarIdByUid(@PathVariable String uid) {
+        try {
+            return topicService.getCarIdByUid(uid);
+        } catch (BaseException exception) {
+            return new ArrayList<>();
+
         }
     }
 

@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -56,11 +58,16 @@ public class CarpoolService {
 //                        System.out.println("carpool의 startTime : " + carpoolDTO.getStartTime());
 //                        System.out.println("차이 : " + (currentTime - carpoolDTO.getStartTime()) / (24 * 60 * 60 * 1000) + "일");
 
-                        // spring에 carpool 저장 (추가 예정)
-                        // saveHistory(carpoolDTO);
+                        // currentTime에서 hour만 뽑기
+                        Date date = new Date(currentTime);
+                        SimpleDateFormat sdf = new SimpleDateFormat("HH");
+                        String hours = sdf.format(date);
 
                         // 삭제할 carpool의 carId 토픽을 구독한 유저에게 푸시 알림 보내기
-                        fcmService.sendFcmMessage("이전 카풀은 어떠셨나요?", "이용 내역에서 확인해보세요!", carpoolDTO.getCarId(), currentTime);
+                        fcmService.sendFcmMessage( "금일" + hours + "시에 이용했던 카풀은 어떠셨나요?", "이용 내역에서 확인해보세요!", carpoolDTO.getCarId(), currentTime);
+
+                        // spring에 carpool 저장 (추가 예정)
+                        // saveHistory(carpoolDTO);
 
                         // firestore에서 carpool을 삭제 (현재는 주석처리)
 //                        firestore.collection(COLLECTION_NAME).document(carpoolDTO.getCarId()).delete();
@@ -71,6 +78,6 @@ public class CarpoolService {
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
-        }, 5, 15, TimeUnit.SECONDS); // 5초 후 부터 15초마다 실행
+        }, 5, 10, TimeUnit.SECONDS); // 5초 후 부터 10초마다 실행
     }
 }

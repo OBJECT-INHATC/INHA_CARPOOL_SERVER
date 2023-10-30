@@ -38,7 +38,7 @@ public class FCMService {
                     + "},"
                     + "\"ttl\": \"60s\","
                     + "\"content_available\": true,"
-                    + "\"data\": {"
+                    + "\"data\": {" 
                     + "\"click_action\": \"FLUTTER_NOTIFICATION_CLICK\","
                     + "\"id\": \"" + notiStatus + "\","
                     + "\"status\": \"done\","
