@@ -70,7 +70,7 @@ public class CarpoolService {
                         // saveHistory(carpoolDTO);
 
                         // firestore에서 carpool을 삭제 (현재는 주석처리)
-//                        firestore.collection(COLLECTION_NAME).document(carpoolDTO.getCarId()).delete();
+                        firestore.collection(COLLECTION_NAME).document(carpoolDTO.getCarId()).delete();
                         System.out.println("삭제된 carpool: " + carpoolDTO.getCarId());
                     }
                 }
@@ -78,6 +78,6 @@ public class CarpoolService {
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
-        }, 5, 10, TimeUnit.SECONDS); // 5초 후 부터 10초마다 실행
+        }, 5, 3600, TimeUnit.SECONDS); // 5초 후 부터 1시간마다 실행
     }
 }
