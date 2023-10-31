@@ -1,6 +1,7 @@
 package com.example.inhaCarpool.service;
 
 import com.example.inhaCarpool.dto.CarpoolResponseDTO;
+import com.example.inhaCarpool.dto.HistoryRequestDTO;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
@@ -24,6 +25,8 @@ public class CarpoolService {
 
     private final FCMService fcmService;
 
+    private final HistoryService historyService;
+
     private static final String COLLECTION_NAME = "carpool";
 
     public void scheduleCarpools() {
@@ -40,18 +43,36 @@ public class CarpoolService {
 
                 List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 
-                List<CarpoolResponseDTO> CarpoolResponseDTOS = documents.stream()
+                List<CarpoolResponseDTO> carpoolResponseDTOS = documents.stream()
                         .map(document -> new CarpoolResponseDTO(
                                 document.getString("carId"),
+                                document.getString("admin"),
+                                (document.get("member") != null && ((Object[]) document.get("member")).length > 0) // member array에 대한 예외처리
+                                        ? (String) ((Object[]) document.get("member"))[0]
+                                        : "",
+                                (document.get("member") != null && ((Object[]) document.get("member")).length > 1)
+                                        ? (String) ((Object[]) document.get("member"))[1]
+                                        : "",
+                                (document.get("member") != null && ((Object[]) document.get("member")).length > 2)
+                                        ? (String) ((Object[]) document.get("member"))[2]
+                                        : "",
+                                document.getLong("nowMember"),
+                                document.getLong("maxMember"),
+                                document.getString("startDetailPoint"),
+                                document.getString("startPoint"),
+                                document.getString("startPointName"),
                                 document.getLong("startTime"),
-                                document.getString("admin").split("_")[1]
+                                document.getString("endDetailPoint"),
+                                document.getString("endPoint"),
+                                document.getString("endPointName"),
+                                document.getString("gender")
                         ))
                         .collect(Collectors.toList());
 
                 Long currentTime = System.currentTimeMillis(); // 현재 시간 (epoch 시간)
 
                 // 현재 시간(currentTime)과 carpoolResponseDTOS의 startTime을 비교
-                for (CarpoolResponseDTO carpoolDTO : CarpoolResponseDTOS) {
+                for (CarpoolResponseDTO carpoolDTO : carpoolResponseDTOS) {
                     if ((currentTime - carpoolDTO.getStartTime()) / (24 * 60 * 60 * 1000) >= 90) { // 90일 이상이 지난 carpool
 
 //                        시간 계산 테스트
@@ -67,12 +88,14 @@ public class CarpoolService {
                         // 삭제할 carpool의 carId 토픽을 구독한 유저에게 푸시 알림 보내기
                         fcmService.sendFcmMessage( hours + "시에 이용했던 카풀은 어떠셨나요?", "이용 내역에서 확인해보세요!", carpoolDTO.getCarId(), currentTime);
 
-                        // spring에 carpool 저장 (추가 예정)
-                        // saveHistory(carpoolDTO);
+                        // carpool을 history로 옮기기
+                        HistoryRequestDTO history = historyService.carpoolToHistory(carpoolDTO);
+                        // spring에 carpool 저장
+                        historyService.saveHistory(history);
 
-                        // firestore에서 carpool을 삭제 (현재는 주석처리)
+                        // firestore에서 carpool을 삭제
                         firestore.collection(COLLECTION_NAME).document(carpoolDTO.getCarId()).delete();
-                        System.out.println("삭제된 carpool: " + carpoolDTO.getCarId());
+                        System.out.println("삭제된 carpool id: " + carpoolDTO.getCarId());
                     }
                 }
 
