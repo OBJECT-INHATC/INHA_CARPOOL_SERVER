@@ -50,10 +50,11 @@ public class CarpoolService {
 
                 Long currentTime = System.currentTimeMillis(); // 현재 시간 (epoch 시간)
 
-                // 현재 시간과 carpoolResponseDTOS의 startTime을 비교
+                // 현재 시간(currentTime)과 carpoolResponseDTOS의 startTime을 비교
                 for (CarpoolResponseDTO carpoolDTO : CarpoolResponseDTOS) {
                     if ((currentTime - carpoolDTO.getStartTime()) / (24 * 60 * 60 * 1000) >= 90) { // 90일 이상이 지난 carpool
 
+//                        시간 계산 테스트
 //                        System.out.println("현재 시간 : " + currentTime);
 //                        System.out.println("carpool의 startTime : " + carpoolDTO.getStartTime());
 //                        System.out.println("차이 : " + (currentTime - carpoolDTO.getStartTime()) / (24 * 60 * 60 * 1000) + "일");
@@ -64,7 +65,7 @@ public class CarpoolService {
                         String hours = sdf.format(date);
 
                         // 삭제할 carpool의 carId 토픽을 구독한 유저에게 푸시 알림 보내기
-                        fcmService.sendFcmMessage( "금일" + hours + "시에 이용했던 카풀은 어떠셨나요?", "이용 내역에서 확인해보세요!", carpoolDTO.getCarId(), currentTime);
+                        fcmService.sendFcmMessage( hours + "시에 이용했던 카풀은 어떠셨나요?", "이용 내역에서 확인해보세요!", carpoolDTO.getCarId(), currentTime);
 
                         // spring에 carpool 저장 (추가 예정)
                         // saveHistory(carpoolDTO);
