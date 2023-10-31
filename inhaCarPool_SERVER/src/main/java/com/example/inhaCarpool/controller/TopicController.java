@@ -30,7 +30,7 @@ public class TopicController {
 
     // 서버에 토픽 저장
     @ResponseBody
-    @PostMapping("topic/save")
+    @PostMapping("/topic/save")
     public BaseResponse<String>saveUser(@RequestBody TopicRequstDTO topicRequstDTO) {
         try{
             this.topicService.saveTopic(topicRequstDTO);
@@ -41,7 +41,7 @@ public class TopicController {
     }
 
     // 나의 Uid, 카풀 ID로 토픽 삭제
-    @DeleteMapping("topic/delete")
+    @DeleteMapping("/topic/delete")
     public BaseResponse<String> deleteTopicByUidAndCarId(
             @RequestParam(name = "uid") String uid,
             @RequestParam(name = "carId") String carId) {
@@ -53,7 +53,7 @@ public class TopicController {
         }
     }
 
-    @GetMapping("user/selectList/{uid}")
+    @GetMapping("/user/selectList/{uid}")
     public List<String> getCarIdByUid(@PathVariable String uid) {
         try {
             return topicService.getCarIdByUid(uid);

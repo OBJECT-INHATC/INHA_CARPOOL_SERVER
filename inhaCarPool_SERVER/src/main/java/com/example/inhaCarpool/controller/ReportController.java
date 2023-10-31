@@ -42,7 +42,7 @@ public class ReportController {
     }
 
     // 신고자 닉네임으로 신고 리스트 조회
-    @GetMapping("select/{nickname}")
+    @GetMapping("/select/{nickname}")
     public BaseResponse<ReportResponseDTO.GetRepostList> findById(@PathVariable String nickname) {
       try {
           ReportResponseDTO.GetRepostList reports = reportService.findReportListByNickName(nickname);
