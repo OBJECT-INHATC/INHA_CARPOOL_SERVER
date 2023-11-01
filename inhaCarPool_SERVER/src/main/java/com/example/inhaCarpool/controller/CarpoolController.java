@@ -17,6 +17,7 @@ public class CarpoolController {
         this.carpoolService = carpoolService;
     }
 
+    // 스케줄러 실행 메소드
     @GetMapping("/schedule")
     public void scheduleCarpools() {
 

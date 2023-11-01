@@ -1,6 +1,7 @@
 package com.example.inhaCarpool.dto;
 
 
+import com.google.cloud.firestore.GeoPoint;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;

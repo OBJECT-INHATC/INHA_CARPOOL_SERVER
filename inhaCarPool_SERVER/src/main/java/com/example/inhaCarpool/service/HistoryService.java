@@ -1,6 +1,7 @@
 package com.example.inhaCarpool.service;
 
 
+import com.example.inhaCarpool.dto.CarpoolResponseDTO;
 import com.example.inhaCarpool.dto.HistoryRequestDTO;
 import com.example.inhaCarpool.entity.HistoryEntity;
 import com.example.inhaCarpool.repository.HistoryInterface;
@@ -76,5 +77,27 @@ public class HistoryService {
             return false;
         }
     }
+
+    // carpool을 history로 옮기는 메소드
+    public HistoryRequestDTO carpoolToHistory(CarpoolResponseDTO carpoolResponseDTO) {
+        return HistoryRequestDTO.builder()
+                .carPoolId(carpoolResponseDTO.getCarId())
+                .admin(carpoolResponseDTO.getAdmin())
+                .member1(carpoolResponseDTO.getMember1())
+                .member2(carpoolResponseDTO.getMember2())
+                .member3(carpoolResponseDTO.getMember3())
+                .nowMember(carpoolResponseDTO.getNowMember())
+                .maxMember(carpoolResponseDTO.getMaxMember())
+                .startDetailPoint(carpoolResponseDTO.getStartDetailPoint())
+                .startPoint(carpoolResponseDTO.getStartPoint())
+                .startPointName(carpoolResponseDTO.getStartPointName())
+                .startTime(carpoolResponseDTO.getStartTime())
+                .endDetailPoint(carpoolResponseDTO.getEndDetailPoint())
+                .endPoint(carpoolResponseDTO.getEndPoint())
+                .endPointName(carpoolResponseDTO.getEndPointName())
+                .gender(carpoolResponseDTO.getGender())
+                .build();
+    }
+
 
 }
