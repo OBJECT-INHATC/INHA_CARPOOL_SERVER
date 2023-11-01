@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -44,29 +43,56 @@ public class CarpoolService {
                 List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 
                 List<CarpoolResponseDTO> carpoolResponseDTOS = documents.stream()
-                        .map(document -> new CarpoolResponseDTO(
-                                document.getString("carId"),
-                                document.getString("admin"),
-                                (document.get("member") != null && ((Object[]) document.get("member")).length > 0) // member array에 대한 예외처리
-                                        ? (String) ((Object[]) document.get("member"))[0]
-                                        : "",
-                                (document.get("member") != null && ((Object[]) document.get("member")).length > 1)
-                                        ? (String) ((Object[]) document.get("member"))[1]
-                                        : "",
-                                (document.get("member") != null && ((Object[]) document.get("member")).length > 2)
-                                        ? (String) ((Object[]) document.get("member"))[2]
-                                        : "",
-                                document.getLong("nowMember"),
-                                document.getLong("maxMember"),
-                                document.getString("startDetailPoint"),
-                                document.getString("startPoint"),
-                                document.getString("startPointName"),
-                                document.getLong("startTime"),
-                                document.getString("endDetailPoint"),
-                                document.getString("endPoint"),
-                                document.getString("endPointName"),
-                                document.getString("gender")
-                        ))
+                        .map(document -> {
+
+                            // member array에 대한 처리
+                            String member1 = "";
+                            String member2 = "";
+                            String member3 = "";
+
+                            Long nowMember = document.getLong("nowMember");
+                            List<String> memberArray = (List<String>) document.get("members");
+
+                            if (nowMember == 1) {
+                                member1 = memberArray.get(0).toString();
+                            } else if(nowMember == 2) {
+                                member1 = memberArray.get(0).toString();
+                                member2 = memberArray.get(1).toString();
+                            } else if(nowMember == 3) {
+                                member1 = memberArray.get(0).toString();
+                                member2 = memberArray.get(1).toString();
+                                member3 = memberArray.get(2).toString();
+                            }
+                            System.out.println("member1 : " + member1);
+                            System.out.println("member2 : " + member2);
+                            System.out.println("member3 : " + member3);
+
+                            // GeoPoint를 String으로 변환 (firebase -> spring)
+                            GeoPoint startPoint = document.getGeoPoint("startPoint");
+                            String startPointString = String.valueOf(startPoint.getLatitude()) + "_" + String.valueOf(startPoint.getLongitude());
+                            GeoPoint endPoint = document.getGeoPoint("endPoint");
+                            String endPointString = String.valueOf(endPoint.getLatitude()) + "_" + String.valueOf(endPoint.getLongitude());
+
+                            // CarpoolResponseDTO 생성
+                            CarpoolResponseDTO carpool = new CarpoolResponseDTO(
+                                    document.getString("carId"),
+                                    document.getString("admin"),
+                                    member1,
+                                    member2,
+                                    member3,
+                                    nowMember,
+                                    document.getLong("maxMember"),
+                                    document.getString("startDetailPoint"),
+                                    startPointString,
+                                    document.getString("startPointName"),
+                                    document.getLong("startTime"),
+                                    document.getString("endDetailPoint"),
+                                    endPointString,
+                                    document.getString("endPointName"),
+                                    document.getString("gender")
+                            );
+                            return carpool;
+                        })
                         .collect(Collectors.toList());
 
                 Long currentTime = System.currentTimeMillis(); // 현재 시간 (epoch 시간)
@@ -96,6 +122,9 @@ public class CarpoolService {
                         // firestore에서 carpool을 삭제
                         firestore.collection(COLLECTION_NAME).document(carpoolDTO.getCarId()).delete();
                         System.out.println("삭제된 carpool id: " + carpoolDTO.getCarId());
+
+                        // spring에서 carId에 대한 모든 topic 삭제
+                        // topicService.deleteTopicByCarId(carpoolDTO.getCarId());
                     }
                 }
 

@@ -28,7 +28,7 @@ public class TopicEntity {
     private String carId; // 카풀 Id
 
     @ManyToOne
-    @JoinColumn(name = "uId")
+    @JoinColumn(name = "users")
     private UserEntity users;
 
     @Builder

@@ -1,5 +1,6 @@
 package com.example.inhaCarpool.entity;
 
+
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
