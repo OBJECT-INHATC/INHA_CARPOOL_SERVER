@@ -19,6 +19,8 @@ public class CarpoolController {
 
     @GetMapping("/schedule")
     public void scheduleCarpools() {
+
+
         carpoolService.scheduleCarpools();
     }
 }
