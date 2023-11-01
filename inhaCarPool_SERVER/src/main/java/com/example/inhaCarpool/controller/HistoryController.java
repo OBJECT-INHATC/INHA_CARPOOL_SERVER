@@ -36,8 +36,8 @@ public class HistoryController {
     // 이용 내역 조회 메소드
     @GetMapping("/select")
     public ResponseEntity<List<HistoryRequestDTO>> getHistoryListByMember(
-            @RequestParam(value = "uid") String uid, @RequestParam(value = "nickName") String nickName) {
-        List<HistoryRequestDTO> histories = historyService.getHistoryListByMember(uid + "_" + nickName);
+            @RequestParam(value = "uid") String uid, @RequestParam(value = "nickName") String nickName, @RequestParam(value = "gender") String gender) {
+        List<HistoryRequestDTO> histories = historyService.getHistoryListByMember(uid + "_" + nickName + "_" + gender);
 
         if (histories.isEmpty()) {
             return ResponseEntity.notFound().build();

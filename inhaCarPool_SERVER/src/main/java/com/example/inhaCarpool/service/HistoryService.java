@@ -47,7 +47,7 @@ public class HistoryService {
                 .filter(history -> member.equals(history.getMember1()) || // member1, member2, member3 중 하나라도 member와 같은 경우
                         member.equals(history.getMember2()) ||
                         member.equals(history.getMember3()))
-                .map(historyEntity -> HistoryRequestDTO.builder() // HistoryEntity를 HistoryRequestDTO로 변환
+                .map(historyEntity -> HistoryRequestDTO.builder() // HistoryEntity를 HistoryRequestDTO로 변환 (response로 수정 예정)
                         .carPoolId(historyEntity.getCarPoolId())
                         .admin(historyEntity.getAdmin())
                         .member1(historyEntity.getMember1())
