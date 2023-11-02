@@ -27,10 +27,7 @@ public class UserEntity {
     private String uid; // 사용자 ID (파이어베이스 uid)
 
     @Column(name = "nickname")
-    private String nickname;
-
-    @Column(name = "email")
-    private String email;
+    private String nickname; //
 
     @OneToMany(mappedBy = "reporter")
     private List<ReportEntity> reporter;
@@ -42,10 +39,9 @@ public class UserEntity {
     private List<TopicEntity> users;
 
     @Builder
-    public UserEntity(String uid, String nickname, String email) {
+    public UserEntity(String uid, String nickname) {
         this.uid = uid;
         this.nickname = nickname;
-        this.email = email;
     }
 
 

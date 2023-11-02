@@ -31,7 +31,6 @@ public class UserService {
         UserEntity userEntity = UserEntity.builder()
                 .uid(userRequstDTO.getUid())
                 .nickname(userRequstDTO.getNickname())
-                .email(userRequstDTO.getEmail())
                 .build();
         try {
             userInterface.save(userEntity);

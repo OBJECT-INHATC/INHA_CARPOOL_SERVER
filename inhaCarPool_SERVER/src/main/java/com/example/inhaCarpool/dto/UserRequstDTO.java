@@ -19,14 +19,12 @@ public class UserRequstDTO {
 
     private String uid;
     private String nickname;
-    private String email;
 
 
     @Builder
-    public UserRequstDTO(String uid, String nickname, String email) {
+    public UserRequstDTO(String uid, String nickname) {
         this.uid = uid;
         this.nickname = nickname;
-        this.email = email;
     }
 
 
