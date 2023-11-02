@@ -1,5 +1,6 @@
 package com.example.inhaCarpool.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -9,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 
 @Service
+@Transactional
 public class FCMService {
 
     // 푸시 알림을 보낼 때 필요한 서버 키

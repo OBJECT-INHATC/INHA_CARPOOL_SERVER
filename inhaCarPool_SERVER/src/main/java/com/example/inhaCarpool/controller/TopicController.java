@@ -19,8 +19,8 @@ import java.util.List;
  *   @author           이상훈
  */
 @Tag(name = "topic API", description = "INHA Carpool Swagger 테스트용")
-@RestController
 @Slf4j
+@RestController
 public class TopicController {
     private final TopicService topicService;
     public TopicController(TopicService topicService) {

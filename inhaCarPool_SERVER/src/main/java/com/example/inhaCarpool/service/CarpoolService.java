@@ -28,6 +28,7 @@ public class CarpoolService {
 
     private static final String COLLECTION_NAME = "carpool";
 
+    @SuppressWarnings("unchecked")
     public void scheduleCarpools() {
 
         Firestore firestore = FirestoreClient.getFirestore(); // Firestore 인스턴스 생성

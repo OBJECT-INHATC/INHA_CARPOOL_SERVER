@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @Slf4j
 @RequestMapping("/history")
+@RestController
 public class HistoryController {
 
     private final HistoryService historyService;

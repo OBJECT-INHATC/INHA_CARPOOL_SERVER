@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
  *   @author           이상훈
  */
 @Tag(name = "report API", description = "INHA Carpool Swagger 테스트용")
-@RestController
 @Slf4j
 @RequestMapping("/report")
+@RestController
 public class ReportController {
 
     private final ReportService reportService;
