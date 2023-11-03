@@ -13,10 +13,6 @@ import lombok.NoArgsConstructor;
 public class HistoryEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "historyIdx")
-    private Long historyIdx;
-
     @Column(name = "carPoolId")
     private String carPoolId; // 완료된 카풀 id
 

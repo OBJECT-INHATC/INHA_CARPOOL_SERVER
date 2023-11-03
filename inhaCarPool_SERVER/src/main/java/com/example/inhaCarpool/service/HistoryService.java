@@ -39,7 +39,13 @@ public class HistoryService {
                 .gender(historyRequestDTO.getGender())
                 .build();
 
-        historyInterface.save(historyEntity); // 이 부분에서 HistoryEntity를 저장하는 메소드를 사용해야합니다.
+        HistoryEntity existingEntity = historyInterface.findByCarPoolId(historyRequestDTO.getCarPoolId()); // 이미 존재하는 carPoolId인지 확인
+
+        if (existingEntity != null) {
+            throw new IllegalArgumentException("이미 존재하는 carPoolId입니다.");
+        }
+
+        historyInterface.save(historyEntity);
     }
 
     public List<HistoryRequestDTO> getHistoryListByMember(String member) {

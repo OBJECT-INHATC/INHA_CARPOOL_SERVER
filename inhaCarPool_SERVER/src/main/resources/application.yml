@@ -5,7 +5,7 @@ spring:
         pathmatch:
           matching-strategy: ant_path_matcher
     datasource:
-#      url: jdbc:mysql://localhost:3306/carpool?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false
+#      url: jdbc:mysql://localhost:3306/carpool?characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true&verifyServerCertificate=false&useSSL=true
 #      username: root
 #      password: 1234
 
