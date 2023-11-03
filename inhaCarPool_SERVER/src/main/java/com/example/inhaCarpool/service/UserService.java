@@ -8,6 +8,7 @@ import com.example.inhaCarpool.exception.BaseResponseStatus;
 import com.example.inhaCarpool.repository.UserInterface;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import static com.example.inhaCarpool.exception.BaseResponseStatus.DATABASE_INSERT_ERROR;
@@ -19,15 +20,17 @@ import static com.example.inhaCarpool.exception.BaseResponseStatus.DATABASE_INSE
  * @version 1.00    2023.09.01
  */
 
-@Service
 @RequiredArgsConstructor // final + not null 생성자 생성 -> 의존성 주입
 @Transactional
+@Slf4j
+@Service
 public class UserService {
 
     private final UserInterface userInterface;
 
     // 유저 등록
     public void saveUser(UserRequstDTO userRequstDTO) throws BaseException{
+        log.info("유저 정보 저장 시작===================> "+ userRequstDTO.getNickname());
         UserEntity userEntity = UserEntity.builder()
                 .uid(userRequstDTO.getUid())
                 .nickname(userRequstDTO.getNickname())
@@ -36,6 +39,7 @@ public class UserService {
         try {
             userInterface.save(userEntity);
         } catch (Exception e) {
+            log.info("유저 정보 저장 실패===================> "+ userRequstDTO.getNickname());
             throw new BaseException(DATABASE_INSERT_ERROR);
         }
 

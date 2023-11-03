@@ -10,6 +10,7 @@ import com.example.inhaCarpool.repository.TopicInterface;
 import com.example.inhaCarpool.repository.UserInterface;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 
@@ -26,6 +27,7 @@ import static com.example.inhaCarpool.exception.BaseResponseStatus.DATABASE_INSE
  */
 
 @Service
+@Slf4j
 @RequiredArgsConstructor // final + not null 생성자 생성 -> 의존성 주입
 @Transactional
 public class TopicService {
@@ -36,6 +38,7 @@ public class TopicService {
 
     // 토픽 등록
     public void saveTopic(TopicRequstDTO topicRequstDTO) throws BaseException {
+        log.info("---------서버에 카풀을 저장하기 시작합니다 ---------");
         UserEntity userEntity = userInterface.findByUid(topicRequstDTO.getUid())
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NOT_FOUND)); // 신고가 없는 경우 예외 처리
 
@@ -46,6 +49,7 @@ public class TopicService {
         try {
             topicInterface.save(topicEntity);
         } catch (Exception e) {
+            log.info("---------서버에 카풀 저장 실패 ---------");
             throw new BaseException(DATABASE_INSERT_ERROR);
         }
     }

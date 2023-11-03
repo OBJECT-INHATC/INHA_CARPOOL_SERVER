@@ -33,9 +33,10 @@ public class ReportController {
     @PostMapping("/save")
     public BaseResponse<String> saveReport(@RequestBody ReportRequstDTO reportRequstDTO) {
         log.info("신고자 : " + reportRequstDTO.getReporter());
+        log.info("신고당한사람 : " + reportRequstDTO.getReportedUser());
         try{
             this.reportService.saveReport(reportRequstDTO);
-            log.info("=====================================신고가 완료되었습니다.=====================================> "+ reportRequstDTO.getReporter());
+            log.info("========신고가 완료되었습니다.===========> "+ reportRequstDTO.getReporter());
             return new BaseResponse<>("해당 사용자를 신고 완료하였습니다.");
         } catch (BaseException exception){
             return new BaseResponse<>(exception.getStatus());
@@ -47,7 +48,7 @@ public class ReportController {
     public BaseResponse<ReportResponseDTO.GetRepostList> findById(@PathVariable String nickname) {
       try {
           ReportResponseDTO.GetRepostList reports = reportService.findReportListByNickName(nickname);
-          log.info("=====================================신고 리스트 조회가 완료되었습니다.=====================================> "+ nickname);
+          log.info("========"+nickname+"=====신고 리스트 조회가 완료되었습니다.===========> ");
           return new BaseResponse<>(reports);
       } catch (BaseException exception){
           return new BaseResponse<>((exception.getStatus()));
@@ -60,7 +61,7 @@ public class ReportController {
     public BaseResponse<String> updateStatus(@PathVariable Long reportIdx) {
         try {
             reportService.updateStatus(reportIdx);
-            log.info("=====================================신고 처리가 완료되었습니다.=====================================> "+ reportIdx);
+            log.info("=======신고 처리가 완료되었습니다.===========> "+ reportIdx);
             return new BaseResponse<>("신고 처리가 완료되었습니다.");
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());

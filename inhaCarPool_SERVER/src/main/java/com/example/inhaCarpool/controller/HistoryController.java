@@ -26,7 +26,7 @@ public class HistoryController {
     public ResponseEntity<HistoryRequestDTO> saveHistory(@RequestBody HistoryRequestDTO historyRequestDTO) {
         try {
             historyService.saveHistory(historyRequestDTO);
-            log.info("=====================================이용 내역 저장이 완료되었습니다.=====================================> "+ historyRequestDTO.getStartDetailPoint()+" "+historyRequestDTO.getEndDetailPoint());
+            log.info("===이용 내역 저장이 완료되었습니다.====> "+ historyRequestDTO.getStartDetailPoint()+" <<<===>>> "+historyRequestDTO.getEndDetailPoint());
             return ResponseEntity.ok(historyRequestDTO); // 컨트롤러에서의 응답
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().build();
@@ -42,7 +42,7 @@ public class HistoryController {
         if (histories.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        log.info("=====================================이용 내역 조회가 완료되었습니다.=====================================> "+ nickName);
+        log.info("==="+nickName+ "님의 [[이용 내역 조회가 완료되었습니다.]]========= ");
         return ResponseEntity.ok(histories);
     }
 
@@ -50,7 +50,7 @@ public class HistoryController {
     public ResponseEntity<HistoryEntity> DeleteCarpool(@RequestParam(value = "carpoolId") String carpoolId){
         boolean result = historyService.deleteHistory(carpoolId);
         if(result){
-            log.info("=====================================이용 내역 삭제가 완료되었습니다.=====================================> "+ carpoolId);
+            log.info("==="+carpoolId+" [[이용 내역 삭제가 완료되었습니다]]=========> ");
         return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();

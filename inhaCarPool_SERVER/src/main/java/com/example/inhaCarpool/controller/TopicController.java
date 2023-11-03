@@ -34,7 +34,7 @@ public class TopicController {
     public BaseResponse<String>saveUser(@RequestBody TopicRequstDTO topicRequstDTO) {
         try{
             this.topicService.saveTopic(topicRequstDTO);
-            log.info("=====================================서버에 토픽 등록이 완료되었습니====================================> "+ topicRequstDTO.getCarId());
+            log.info("======="+ topicRequstDTO.getCarId()+"====서버에 토픽 등록이 완료되었습니======> ");
             return new BaseResponse<>("서버에 토픽 등록이 완료되었습니다.");
         } catch (BaseException exception){
             return new BaseResponse<>(exception.getStatus());
@@ -48,7 +48,7 @@ public class TopicController {
             @RequestParam(name = "carId") String carId) {
         try {
             topicService.deleteTopicByUidAndCarId(uid, carId);
-            log.info("=====================================토픽이 삭제되었습니다.====================================> "+ carId);
+            log.info("======"+carId+"=======토픽 삭제되었습니다==========");
             return new BaseResponse<>("토픽이 삭제되었습니다.");
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
@@ -58,7 +58,7 @@ public class TopicController {
     @GetMapping("/user/selectList/{uid}")
     public List<String> getCarIdByUid(@PathVariable String uid) {
         try {
-            log.info("=====================================토픽 리스트 조회 시작====================================> "+ uid);
+            log.info("======"+uid+"=======토픽 리스트 조회 시작=======");
             return topicService.getCarIdByUid(uid);
         } catch (BaseException exception) {
             return new ArrayList<>();
