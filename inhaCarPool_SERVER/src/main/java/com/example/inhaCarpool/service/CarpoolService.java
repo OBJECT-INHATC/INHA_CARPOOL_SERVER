@@ -7,6 +7,7 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @Transactional
 @RequiredArgsConstructor
 public class CarpoolService {
@@ -32,7 +34,7 @@ public class CarpoolService {
     @SuppressWarnings("unchecked")
     public void scheduleCarpools() {
 
-        System.out.println("스케줄러 실행 중");
+        log.info("<===스케줄러 실행 중====>");
 
         Firestore firestore = FirestoreClient.getFirestore(); // Firestore 인스턴스 생성
 
@@ -95,7 +97,7 @@ public class CarpoolService {
                             );
                             return carpool;
                         })
-                        .collect(Collectors.toList());
+                        .toList();
 
                 Long currentTime = System.currentTimeMillis(); // 현재 시간 (epoch 시간)
 
@@ -147,7 +149,7 @@ public class CarpoolService {
                             );
                             return carpool;
                         })
-                        .collect(Collectors.toList());
+                        .toList();
 
                 Long currentTime = System.currentTimeMillis(); // 현재 시간 (epoch 시간)
 

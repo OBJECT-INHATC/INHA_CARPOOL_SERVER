@@ -1,6 +1,5 @@
 package com.example.inhaCarpool.entity;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +14,6 @@ import java.util.Date;
  *   @author           이상훈
  */
 
-@Tag(name = "예제 API", description = "Swagger 테스트용 API")
 @Data
 @NoArgsConstructor
 @Table(name = "report")
