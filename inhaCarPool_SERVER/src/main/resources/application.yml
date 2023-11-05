@@ -15,6 +15,23 @@ spring:
       username: inha
       password: inha1234
       driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        maximum-pool-size: 20
+        #클라리언트가 커넥션을 기다리는 최대시간(ms)
+        connection-timeout: 10000
+        #커넥션이 유휴상태로 풀에 유지되는 최대시간(ms)
+        idle-timeout: 10000
+        #커넥션이 풀에 의해 폐기되기 전에 유휴상태로 풀에 유지되는 최소시간(ms)
+        max-lifetime: 580000
+        data-source-properties:
+            #캐쉬 사용 여부
+            cachePrepStmts: true
+            #드라이버가 연결당 cache할 statement 수
+            prepStmtCacheSize: 200
+            #캐쉬할 SQL의 최대 길이
+            prepStmtCacheSqlLimit: 2048
+            #최신 버전 지원 받는 설정
+            useServerPrepStmts: true
     jpa:
       hibernate:
         ddl-auto: update
