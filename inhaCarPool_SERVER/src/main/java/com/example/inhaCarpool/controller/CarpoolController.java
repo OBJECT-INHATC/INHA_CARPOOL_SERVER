@@ -1,5 +1,6 @@
 package com.example.inhaCarpool.controller;
 
+import com.example.inhaCarpool.config.FirebaseInitialization;
 import com.example.inhaCarpool.service.CarpoolService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CarpoolController {
 
     private final CarpoolService carpoolService;
+
 
     public CarpoolController(CarpoolService carpoolService) {
         this.carpoolService = carpoolService;
