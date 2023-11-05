@@ -38,19 +38,18 @@ public class HistoryController {
     // 이용 내역 조회 메소드
     @GetMapping("/select")
     public ResponseEntity<List<HistoryRequestDTO>> getHistoryListByMember(
-            @RequestParam(value = "uid") String uid,
-            @RequestParam(value = "nickName") String nickName,
-            @RequestParam(value = "gender") String gender) {
+            @RequestParam(value = "uid") String uid
+            ) {
         List<HistoryRequestDTO> histories =
-                historyService.getHistoryListByMember(uid + "_" + nickName + "_" + gender);
+                historyService.getHistoryListByMember(uid);
 
         if (histories.isEmpty()) {
-            log.info("===" + nickName + "님의 [[이용 내역이 존재하지 않습니다.]]========= ");
+            log.info("===" + uid + "님의 [[이용 내역이 존재하지 않습니다.]]========= ");
             //빈 객체를 리턴
             return ResponseEntity.noContent().build();
 
         }
-        log.info("===" + nickName + "님의 [[이용 내역 조회가 완료되었습니다.]]========= ");
+        log.info("===" + uid + "님의 [[이용 내역 조회가 완료되었습니다.]]========= ");
         return ResponseEntity.ok(histories);
     }
 

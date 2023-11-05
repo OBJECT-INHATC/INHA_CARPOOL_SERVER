@@ -48,11 +48,11 @@ public class HistoryService {
         historyInterface.save(historyEntity);
     }
 
-    public List<HistoryRequestDTO> getHistoryListByMember(String member) {
+    public List<HistoryRequestDTO> getHistoryListByMember(String uid) {
         return historyInterface.findAll().stream()
-                .filter(history -> member.equals(history.getMember1()) || // member1, member2, member3 중 하나라도 member와 같은 경우
-                        member.equals(history.getMember2()) ||
-                        member.equals(history.getMember3()))
+                .filter(history -> history.getMember1().contains(uid) || // member1, member2, member3 중에 하나라도 uid가 포함되어 있으면
+                        history.getMember2().contains(uid) ||
+                        history.getMember3().contains(uid))
                 .map(historyEntity -> HistoryRequestDTO.builder() // HistoryEntity를 HistoryRequestDTO로 변환 (response로 수정 예정)
                         .carPoolId(historyEntity.getCarPoolId())
                         .admin(historyEntity.getAdmin())

@@ -1,6 +1,5 @@
 package com.example.inhaCarpool.controller;
 
-import com.example.inhaCarpool.config.FirebaseInitialization;
 import com.example.inhaCarpool.service.CarpoolService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
