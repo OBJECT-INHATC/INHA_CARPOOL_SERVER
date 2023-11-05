@@ -159,8 +159,7 @@ public class CarpoolService {
 
                         // firestore에서 carpool을 삭제
                         firestore.collection(COLLECTION_NAME).document(carpoolDTO.getCarId()).delete();
-                        System.out.println("삭제된 carpool id: " + carpoolDTO.getCarId());
-
+                        log.info("삭제된 carpool id: " + carpoolDTO.getCarId());
                         // spring에서 carId에 대한 모든 topic 삭제
                         // topicService.deleteTopicByCarId(carpoolDTO.getCarId());
                     }

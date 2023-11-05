@@ -1,6 +1,7 @@
 package com.example.inhaCarpool.service;
 
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -10,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 
 @Service
+@Slf4j
 @Transactional
 public class FCMService {
 
@@ -52,16 +54,14 @@ public class FCMService {
                     + "\"to\": \"" + notiTopic + "\""
                     + "}";
 
-            System.out.println("알람 내용 : " + payload);
+
 
             HttpEntity<String> request = new HttpEntity<>(payload, headers); // 푸시 알림 요청 객체
-
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<String> response = restTemplate.postForEntity(_fcmUrl, request, String.class);
-
-            System.out.println("Successfully sent message: " + response);
+            log.info("알람 Successfully sent message: " + response.getBody());
         } catch (Exception e) {
-            System.out.println("Error sending message: " + e.getMessage());
+            log.info("알람 Error sending message: " + e.getMessage());
         }
     }
 
