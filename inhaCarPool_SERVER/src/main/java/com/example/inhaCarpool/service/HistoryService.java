@@ -24,7 +24,7 @@ public class HistoryService {
         HistoryEntity historyEntity = HistoryEntity.builder()
                 .carPoolId(historyRequestDTO.getCarPoolId())
                 .admin(historyRequestDTO.getAdmin())
-                .member1(historyRequestDTO.getMember1())
+                .member1(historyRequestDTO.getMember1().substring())
                 .member2(historyRequestDTO.getMember2())
                 .member3(historyRequestDTO.getMember3())
                 .nowMember(historyRequestDTO.getNowMember())
