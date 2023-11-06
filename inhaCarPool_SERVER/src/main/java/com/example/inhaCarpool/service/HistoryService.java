@@ -13,18 +13,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class HistoryService {
 
     private final HistoryInterface historyInterface;
 
+    @Transactional
     public void saveHistory(HistoryRequestDTO historyRequestDTO) {
 
         HistoryEntity historyEntity = HistoryEntity.builder()
                 .carPoolId(historyRequestDTO.getCarPoolId())
                 .admin(historyRequestDTO.getAdmin())
-                .member1(historyRequestDTO.getMember1().substring())
+                .member1(historyRequestDTO.getMember1())
                 .member2(historyRequestDTO.getMember2())
                 .member3(historyRequestDTO.getMember3())
                 .nowMember(historyRequestDTO.getNowMember())
@@ -48,11 +48,11 @@ public class HistoryService {
         historyInterface.save(historyEntity);
     }
 
+    @Transactional
     public List<HistoryRequestDTO> getHistoryListByMember(String uid) {
-        return historyInterface.findAll().stream()
-                .filter(history -> history.getMember1().contains(uid) || // member1, member2, member3 중에 하나라도 uid가 포함되어 있으면
-                        history.getMember2().contains(uid) ||
-                        history.getMember3().contains(uid))
+        return historyInterface.findByMember1ContainingOrMember2ContainingOrMember3Containing(
+                uid,uid,uid
+                ).stream()
                 .map(historyEntity -> HistoryRequestDTO.builder() // HistoryEntity를 HistoryRequestDTO로 변환 (response로 수정 예정)
                         .carPoolId(historyEntity.getCarPoolId())
                         .admin(historyEntity.getAdmin())
@@ -73,6 +73,7 @@ public class HistoryService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public boolean deleteHistory(String carPoolId) {
         HistoryEntity carPool = historyInterface.findByCarPoolId(carPoolId);
 

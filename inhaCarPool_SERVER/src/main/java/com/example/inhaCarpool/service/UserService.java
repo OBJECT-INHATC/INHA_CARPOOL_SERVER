@@ -21,7 +21,6 @@ import static com.example.inhaCarpool.exception.BaseResponseStatus.DATABASE_INSE
  */
 
 @RequiredArgsConstructor // final + not null 생성자 생성 -> 의존성 주입
-@Transactional
 @Slf4j
 @Service
 public class UserService {
@@ -47,6 +46,7 @@ public class UserService {
 
 
     // 닉네임 업데이트
+    @Transactional
     public void updateNickname(String uid, String newNickname) throws BaseException {
         UserEntity userEntity = userInterface.findByUid(uid)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NOT_FOUND)); // 신고가 없는 경우 예외 처리

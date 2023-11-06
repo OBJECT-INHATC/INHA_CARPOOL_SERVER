@@ -29,7 +29,6 @@ import static com.example.inhaCarpool.exception.BaseResponseStatus.DATABASE_INSE
 
 @Service
 @RequiredArgsConstructor // final + not null 생성자 생성 -> 의존성 주입
-@Transactional
 public class ReportService {
 
     private final ReportInterface reportInterface;
@@ -38,6 +37,7 @@ public class ReportService {
 
 
     // 신고자, 피신고자의 닉네임을 받아서 uid를 찾아서 저장
+    @Transactional
     public void saveReport(ReportRequstDTO reportRequstDTO) throws BaseException {
         UserEntity reported = userInterface.findByNickname(reportRequstDTO.getReportedUser())
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.REPORTED_USER_NOT_FOUND)); // 피신고자가 없는 경우 예외 처리
@@ -61,6 +61,7 @@ public class ReportService {
 
 
     // 내가 신고한 리스트 확인
+    @Transactional
     public ReportResponseDTO.GetRepostList findReportListByNickName(String nickname) throws BaseException {
 
         Optional<UserEntity> user = userInterface.findByNicknameContaining(nickname);
@@ -104,6 +105,7 @@ public class ReportService {
     }
 
 
+    @Transactional
     public void updateStatus(Long reportIdx) throws BaseException {
         ReportEntity reportEntity = reportInterface.findById(reportIdx)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.REPORT_NOT_FOUND)); // 신고가 없는 경우 예외 처리

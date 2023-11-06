@@ -29,7 +29,6 @@ import static com.example.inhaCarpool.exception.BaseResponseStatus.DATABASE_INSE
 @Service
 @Slf4j
 @RequiredArgsConstructor // final + not null 생성자 생성 -> 의존성 주입
-@Transactional
 public class TopicService {
 
     private final TopicInterface topicInterface;
@@ -37,6 +36,7 @@ public class TopicService {
     private final UserInterface userInterface;
 
     // 토픽 등록
+    @Transactional
     public void saveTopic(TopicRequstDTO topicRequstDTO) throws BaseException {
         log.info("---------서버에 카풀을 저장하기 시작합니다 ---------");
         UserEntity userEntity = userInterface.findByUid(topicRequstDTO.getUid())
@@ -65,6 +65,7 @@ public class TopicService {
     }
 
     // uid로 모든 카풀 아이디 조회
+    @Transactional
     public List<String> getCarIdByUid(String uid) throws BaseException {
         List<TopicEntity> topicEntityList = topicInterface.findByUsersUid(uid);
         List<String> carIdList = new ArrayList<>();

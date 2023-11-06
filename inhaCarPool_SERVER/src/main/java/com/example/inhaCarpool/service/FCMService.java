@@ -12,7 +12,6 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 @Slf4j
-@Transactional
 public class FCMService {
 
     // 푸시 알림을 보낼 때 필요한 서버 키
