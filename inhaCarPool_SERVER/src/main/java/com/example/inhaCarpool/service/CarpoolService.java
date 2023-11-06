@@ -5,6 +5,7 @@ import com.example.inhaCarpool.dto.CarpoolShortDTO;
 import com.example.inhaCarpool.dto.HistoryRequestDTO;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.google.firebase.cloud.FirestoreClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,13 +38,20 @@ public class CarpoolService {
 
         Firestore firestore = FirestoreClient.getFirestore(); // Firestore 인스턴스 생성
 
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2); // 스케줄러 생성
+        // 스케줄러 생성
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
 
 
         // 출발시간으로부터 3시간 이상이 지난 카풀 알람 보내기(topic 구독 해제하므로 1회만 보내짐) -> history 이용내역에 저장
         scheduler.scheduleAtFixedRate(() -> {
             try {
-
+                //java.util.concurrent.ExecutionException: com.google.api.gax.rpc.DeadlineExceededException:
+                // io.grpc.StatusRuntimeException: DEADLINE_EXCEEDED:
+                // deadline exceeded after 46.311428146s. [closed=[],
+                // open=[[buffered_nanos=46672206138, waiting_for_connection]]]
+                //Caused by: com.google.api.gax.rpc.DeadlineExceededException: io.grpc.StatusRuntimeException: DEADLINE_EXCEEDED:
+                // deadline exceeded after 46.311428146s. [closed=[], open=[[buffered_nanos=46672206138,
+                // waiting_for_connection]]]
                 ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION_NAME).get();
 
                 List<QueryDocumentSnapshot> documents = future.get().getDocuments();
@@ -135,7 +143,11 @@ public class CarpoolService {
         scheduler.scheduleAtFixedRate(() -> {
             try {
 
+                // 54번 줄과 같은 에러
                 ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION_NAME).get();
+
+
+
 
                 List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 
