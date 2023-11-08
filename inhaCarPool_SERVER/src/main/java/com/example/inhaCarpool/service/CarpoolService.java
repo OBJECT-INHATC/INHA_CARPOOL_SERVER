@@ -1,7 +1,6 @@
 package com.example.inhaCarpool.service;
 
 import com.example.inhaCarpool.dto.CarpoolResponseDTO;
-import com.example.inhaCarpool.dto.CarpoolShortDTO;
 import com.example.inhaCarpool.dto.HistoryRequestDTO;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
@@ -146,36 +145,21 @@ public class CarpoolService {
                 // 54번 줄과 같은 에러
                 ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION_NAME).get();
 
-
-
-
                 List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 
-                List<CarpoolShortDTO> carpoolShortDTOS = documents.stream()
-                        .map(document -> {
-                            CarpoolShortDTO carpool = new CarpoolShortDTO(
-                                    document.getString("carId"),
-                                    document.getString("endDetailPoint"),
-                                    document.getLong("startTime")
-                            );
-                            return carpool;
-                        })
-                        .toList();
-
-                Long currentTime = System.currentTimeMillis(); // 현재 시간 (epoch 시간)
-
-                // 현재 시간(currentTime)과 carpoolResponseDTOS의 startTime을 비교
-                for (CarpoolShortDTO carpoolDTO : carpoolShortDTOS) {
-                    if ((currentTime - carpoolDTO.getStartTime()) / (24 * 60 * 60 * 1000) >= 7) { // 7일 이상이 지난 carpool
+                for (QueryDocumentSnapshot document : documents) {
+                    Long currentTime = System.currentTimeMillis(); // 현재 시간 (epoch 시간)
+                    Long startTime = document.getLong("startTime"); // 출발 시간 (epoch 시간)
+                    String carId = document.getString("carId"); // carId
+                    if ((currentTime - startTime) / (24 * 60 * 60 * 1000) >= 90) { // 7일 이상이 지난 carpool
 
                         // firestore에서 carpool을 삭제
-                        firestore.collection(COLLECTION_NAME).document(carpoolDTO.getCarId()).delete();
-                        log.info("삭제된 carpool id: " + carpoolDTO.getCarId());
+                        firestore.collection(COLLECTION_NAME).document(carId).delete();
+                        log.info("삭제된 carpool id: " + carId);
                         // spring에서 carId에 대한 모든 topic 삭제
-                        // topicService.deleteTopicByCarId(carpoolDTO.getCarId());
+                        // topicService.deleteTopicByCarId(carId);
                     }
                 }
-
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
