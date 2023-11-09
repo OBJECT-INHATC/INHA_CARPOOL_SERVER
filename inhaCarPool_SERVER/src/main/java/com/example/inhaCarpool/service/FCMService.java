@@ -1,13 +1,14 @@
 package com.example.inhaCarpool.service;
 
+import com.example.inhaCarpool.exception.BaseException;
+import com.example.inhaCarpool.exception.BaseResponseStatus;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import static com.example.inhaCarpool.exception.BaseResponseStatus.FCM_SEND_ERROR;
 
 
 @Service
@@ -22,7 +23,7 @@ public class FCMService {
     // 푸시 알림을 보낼 때 필요한 FCM 주소
     final String _fcmUrl = "https://fcm.googleapis.com/fcm/send";
 
-    public void sendFcmMessage(String title, String body, String carId, Long currentTime) {
+    public void sendFcmMessage(String title, String body, String carId, Long currentTime) throws BaseException {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
@@ -61,6 +62,7 @@ public class FCMService {
             log.info("알람 Successfully sent message: " + response.getBody());
         } catch (Exception e) {
             log.info("알람 Error sending message: " + e.getMessage());
+            throw new BaseException(FCM_SEND_ERROR);
         }
     }
 

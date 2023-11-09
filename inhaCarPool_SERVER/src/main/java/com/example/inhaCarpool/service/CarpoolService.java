@@ -1,15 +1,19 @@
 package com.example.inhaCarpool.service;
 
+
 import com.example.inhaCarpool.dto.CarpoolResponseDTO;
 import com.example.inhaCarpool.dto.HistoryRequestDTO;
+import com.example.inhaCarpool.exception.BaseException;
+import com.example.inhaCarpool.exception.BaseResponseStatus;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
-import com.google.common.util.concurrent.MoreExecutors;
 import com.google.firebase.cloud.FirestoreClient;
+import jakarta.validation.constraints.Null;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -17,7 +21,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
+
 
 @Service
 @Slf4j
@@ -27,6 +31,8 @@ public class CarpoolService {
     private final FCMService fcmService;
 
     private final HistoryService historyService;
+
+    private final TopicService topicService;
 
     private static final String COLLECTION_NAME = "carpool";
 
@@ -41,128 +47,168 @@ public class CarpoolService {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
 
 
-        // 출발시간으로부터 3시간 이상이 지난 카풀 알람 보내기(topic 구독 해제하므로 1회만 보내짐) -> history 이용내역에 저장
+        // 출발시간으로부터 1시간 이상이 지난 카풀 알람 보내기(topic 구독 해제하므로 1회만 보내짐) -> history 이용내역에 저장
         scheduler.scheduleAtFixedRate(() -> {
             try {
-                //java.util.concurrent.ExecutionException: com.google.api.gax.rpc.DeadlineExceededException:
-                // io.grpc.StatusRuntimeException: DEADLINE_EXCEEDED:
-                // deadline exceeded after 46.311428146s. [closed=[],
-                // open=[[buffered_nanos=46672206138, waiting_for_connection]]]
-                //Caused by: com.google.api.gax.rpc.DeadlineExceededException: io.grpc.StatusRuntimeException: DEADLINE_EXCEEDED:
-                // deadline exceeded after 46.311428146s. [closed=[], open=[[buffered_nanos=46672206138,
-                // waiting_for_connection]]]
-                ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION_NAME).get();
 
+                ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION_NAME).get();
                 List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 
-                List<CarpoolResponseDTO> carpoolResponseDTOS = documents.stream()
-                        .map(document -> {
+                for(QueryDocumentSnapshot document : documents){
+                    try {
+                        Long currentTime = System.currentTimeMillis(); // 현재 시간 (epoch 시간)
+                        Long startTime = document.getLong("startTime"); // 출발 시간 (epoch 시간)
+                        String carId = document.getString("carId"); // carId
+                        String endDetailPoint = document.getString("endDetailPoint"); // 도착지 상세주소
+                        Boolean status = document.getBoolean("status"); // 알람 전송 여부
 
-                            // member array에 대한 처리
-                            String member1 = "";
-                            String member2 = "";
-                            String member3 = "";
+                        if((currentTime - startTime) / (60 * 60 * 1000) >= 1) { // 1시간 이상이 지난 카풀에 대하여
 
-                            Long nowMember = document.getLong("nowMember");
-                            List<String> memberArray = (List<String>) document.get("members");
+                            // status가 false인 경우에만 알람 전송 후 이용내역 저장
+                            if(!Boolean.TRUE.equals(status)) {
+                                try {
+                                    // startTime에서 hour만 뽑기
+                                    Date date = new Date(startTime);
+                                    SimpleDateFormat sdf = new SimpleDateFormat("HH");
+                                    String hours = sdf.format(date);
 
-                            if (nowMember == 1) {
-                                member1 = memberArray.get(0).toString();
-                            } else if(nowMember == 2) {
-                                member1 = memberArray.get(0).toString();
-                                member2 = memberArray.get(1).toString();
-                            } else if(nowMember == 3) {
-                                member1 = memberArray.get(0).toString();
-                                member2 = memberArray.get(1).toString();
-                                member3 = memberArray.get(2).toString();
+                                    // 삭제할 카풀의 carId 토픽을 구독한 유저에게 푸시 알림 보내기
+                                    fcmService.sendFcmMessage( hours + "시 " + endDetailPoint + "까지의 카풀은 어떠셨나요?",
+                                            "이용 내역에서 확인해보세요!", carId, currentTime);
+
+                                    // 알람전송이 성공한 경우 status를 true로 변경
+                                    try {
+                                        DocumentReference docRef = document.getReference();
+                                        ApiFuture<WriteResult> futureDoc = docRef.update("status", true);
+
+                                        WriteResult writeResult = futureDoc.get();
+
+                                        log.info("------------status를 true로 변경완료(알람,이용내역스케줄러) ------------");
+                                    } catch (InterruptedException | ExecutionException e) {
+                                        log.info("------------status를 true로 변경실패(알람,이용내역스케줄러) ------------");
+                                    }
+
+                                    // carpool을 history로 옮기기
+                                    try {
+                                        String member1 = "";
+                                        String member2 = "";
+                                        String member3 = "";
+
+                                        Long nowMember = document.getLong("nowMember");
+                                        List<String> memberArray = (List<String>) document.get("members");
+
+                                        if (nowMember == 1) {
+                                            member1 = memberArray.get(0);
+                                        } else if(nowMember == 2) {
+                                            member1 = memberArray.get(0);
+                                            member2 = memberArray.get(1);
+                                        } else if(nowMember == 3) {
+                                            member1 = memberArray.get(0);
+                                            member2 = memberArray.get(1);
+                                            member3 = memberArray.get(2);
+                                        }
+
+                                        // GeoPoint를 String으로 변환 (firebase -> spring)
+                                        GeoPoint startPoint = document.getGeoPoint("startPoint");
+                                        String startPointString = String.valueOf(startPoint.getLatitude()) + "_" + String.valueOf(startPoint.getLongitude());
+                                        GeoPoint endPoint = document.getGeoPoint("endPoint");
+                                        String endPointString = String.valueOf(endPoint.getLatitude()) + "_" + String.valueOf(endPoint.getLongitude());
+
+                                        // CarpoolResponseDTO 생성
+                                        CarpoolResponseDTO carpool = new CarpoolResponseDTO(
+                                            carId,
+                                            document.getString("admin"),
+                                            member1,
+                                            member2,
+                                            member3,
+                                            nowMember,
+                                            document.getLong("maxMember"),
+                                            document.getString("startDetailPoint"),
+                                            startPointString,
+                                            document.getString("startPointName"),
+                                            startTime,
+                                            endDetailPoint,
+                                            endPointString,
+                                            document.getString("endPointName"),
+                                            document.getString("gender")
+                                        );
+
+                                        HistoryRequestDTO history = historyService.carpoolToHistory(carpool);
+                                        // carpool을 history에 저장
+                                        try {
+                                            historyService.saveHistory(history);
+                                            log.info("------------이용내역에 저장완료(알람,이용내역스케줄러) ------------");
+                                        } catch (IllegalArgumentException e) {
+                                            log.info("------------"+e.getMessage()+" ------------");
+                                        }
+
+                                    } catch (NullPointerException e){
+                                        log.info("------------carpool의 필드가 없습니다(알람,이용내역스케줄러) ------------");
+                                        e.printStackTrace();
+                                    }
+                                } catch (BaseException e) {
+                                    log.info("------------알람 전송에 실패하였습니다(알람,이용내역스케줄러) ------------");
+                                }
                             }
-
-                            // GeoPoint를 String으로 변환 (firebase -> spring)
-                            GeoPoint startPoint = document.getGeoPoint("startPoint");
-                            String startPointString = String.valueOf(startPoint.getLatitude()) + "_" + String.valueOf(startPoint.getLongitude());
-                            GeoPoint endPoint = document.getGeoPoint("endPoint");
-                            String endPointString = String.valueOf(endPoint.getLatitude()) + "_" + String.valueOf(endPoint.getLongitude());
-
-                            // CarpoolResponseDTO 생성
-                            CarpoolResponseDTO carpool = new CarpoolResponseDTO(
-                                    document.getString("carId"),
-                                    document.getString("admin"),
-                                    member1,
-                                    member2,
-                                    member3,
-                                    nowMember,
-                                    document.getLong("maxMember"),
-                                    document.getString("startDetailPoint"),
-                                    startPointString,
-                                    document.getString("startPointName"),
-                                    document.getLong("startTime"),
-                                    document.getString("endDetailPoint"),
-                                    endPointString,
-                                    document.getString("endPointName"),
-                                    document.getString("gender")
-                            );
-                            return carpool;
-                        })
-                        .toList();
-
-                Long currentTime = System.currentTimeMillis(); // 현재 시간 (epoch 시간)
-
-                for (CarpoolResponseDTO carpoolDTO : carpoolResponseDTOS) {
-                    if ((currentTime - carpoolDTO.getStartTime()) / (60 * 60 * 1000) >= 3) { // 3시간 이상이 지난 carpool
-
-                        // currentTime에서 hour만 뽑기
-                        Date date = new Date(currentTime);
-                        SimpleDateFormat sdf = new SimpleDateFormat("HH");
-                        String hours = sdf.format(date);
-
-                        // 삭제할 carpool의 carId 토픽을 구독한 유저에게 푸시 알림 보내기
-                        fcmService.sendFcmMessage( hours + "시 " + carpoolDTO.getEndDetailPoint() + "까지의 카풀은 어떠셨나요?",
-                                "이용 내역에서 확인해보세요!",
-                                carpoolDTO.getCarId(), currentTime);
-
-                        // carpool을 history로 옮기기
-                        HistoryRequestDTO history = historyService.carpoolToHistory(carpoolDTO);
-                        // spring에 carpool 저장
-                        try {
-                            historyService.saveHistory(history);
-                        } catch (IllegalArgumentException e) {
-                            // 이미 존재하는 carpoolId(이용내역)이 있을경우
                         }
-
+                    } catch (NullPointerException e){
+                        log.info("------------출발시간,도착지상세주소,carID가 없습니다(알람,이용내역스케줄러) ------------");
+                        e.printStackTrace();
                     }
                 }
             } catch (ExecutionException | InterruptedException e) {
+                log.info("------------파이어스토어에서 카풀 컬렉션 불러오기 실패(알람스케줄러) ------------");
                 e.printStackTrace();
             }
 
-        }, 3, 3600, TimeUnit.SECONDS); // 3초 후 부터 1시간마다 실행
+        }, 2, 3600, TimeUnit.SECONDS); // 1시간마다 실행 (60당 1분, 3600당 1시간)
 
 
         // 출발시간으로부터 7일 이상 지난 firestore 카풀 삭제하는 스케줄링
         scheduler.scheduleAtFixedRate(() -> {
             try {
-
                 // 54번 줄과 같은 에러
                 ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION_NAME).get();
 
                 List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 
                 for (QueryDocumentSnapshot document : documents) {
-                    Long currentTime = System.currentTimeMillis(); // 현재 시간 (epoch 시간)
-                    Long startTime = document.getLong("startTime"); // 출발 시간 (epoch 시간)
-                    String carId = document.getString("carId"); // carId
-                    if ((currentTime - startTime) / (24 * 60 * 60 * 1000) >= 90) { // 7일 이상이 지난 carpool
+                    try {
+                        Long currentTime = System.currentTimeMillis(); // 현재 시간 (epoch 시간)
 
-                        // firestore에서 carpool을 삭제
-                        firestore.collection(COLLECTION_NAME).document(carId).delete();
-                        log.info("삭제된 carpool id: " + carId);
-                        // spring에서 carId에 대한 모든 topic 삭제
-                        // topicService.deleteTopicByCarId(carId);
+                        String carId = document.getString("carId"); // carId
+                        Long startTime = document.getLong("startTime"); // 출발 시간 (epoch 시간)
+
+                        if ((currentTime - startTime) / (24 * 60 * 60 * 1000) >= 7) { // 7일 이상이 지난 carpool
+
+                            try {
+                                // firestore에서 carpool을 삭제
+                                firestore.collection(COLLECTION_NAME).document(carId).delete();
+                                log.info("삭제된 carpool id: " + carId);
+                            } catch (Exception e) {
+                                log.info("------------파이어스토어에서 카풀 삭제 실패(카풀삭제스케줄러) ------------");
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                // spring에서 carId에 대한 모든 topic 삭제
+                                topicService.deleteTopicByCarId(carId);
+                                log.info("------------스프링에서 토픽 삭제 성공(카풀삭제스케줄러) ------------");
+                            } catch (Exception e) {
+                                log.info("------------스프링에서 토픽 삭제 실패(카풀삭제스케줄러) ------------");
+                                e.printStackTrace();
+                            }
+
+                        }
+                    } catch (NullPointerException e) {
+                        log.info("------------출발시간, 카풀아이디가 없습니다(카풀삭제스케줄러) ------------");
+                        e.printStackTrace();
                     }
                 }
             } catch (ExecutionException | InterruptedException e) {
+                log.info("------------파이어스토어에서 카풀 컬렉션 불러오기 실패(카풀삭제스케줄러) ------------");
                 e.printStackTrace();
             }
-        }, 3, 3600, TimeUnit.SECONDS); // 3초 후 부터 1시간마다 실행
+        }, 2, 3600, TimeUnit.SECONDS); // 1시간마다 실행 (60당 1분, 3600당 1시간)
     }
 }

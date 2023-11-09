@@ -74,4 +74,19 @@ public class TopicService {
         }
         return carIdList;
     }
+
+    @Transactional
+    public void deleteTopicByCarId(String carId) throws BaseException {
+        // carId를 사용하여 토픽들을 조회
+        List<TopicEntity> topicEntities = topicInterface.deleteByCarId(carId);
+
+        // 조회된 토픽이 없는 경우 예외 처리
+        if (topicEntities.isEmpty()) {
+            throw new BaseException(BaseResponseStatus.TOPIC_NOT_FOUND);
+        }
+
+        // 조회된 모든 토픽을 삭제
+        topicInterface.deleteAll(topicEntities);
+    }
+
 }

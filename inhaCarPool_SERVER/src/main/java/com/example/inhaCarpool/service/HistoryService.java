@@ -42,7 +42,7 @@ public class HistoryService {
         HistoryEntity existingEntity = historyInterface.findByCarPoolId(historyRequestDTO.getCarPoolId()); // 이미 존재하는 carPoolId인지 확인
 
         if (existingEntity != null) {
-            throw new IllegalArgumentException("이미 존재하는 carPoolId입니다.");
+            throw new IllegalArgumentException("이용내역에 이미 존재하는 carPoolId입니다.");
         }
 
         historyInterface.save(historyEntity);

@@ -12,7 +12,8 @@ public enum BaseResponseStatus {
     SUCCESS(true, 2000, "요청에 성공하였습니다."),
 
 
-
+    // FCM 에러
+    FCM_SEND_ERROR(false, 3000, "FCM 전송에 실패하였습니다."),
 
     // 서버 에러
     DATABASE_INSERT_ERROR(false, 5000, "데이터베이스 저장 오류가 발생했습니다."),
