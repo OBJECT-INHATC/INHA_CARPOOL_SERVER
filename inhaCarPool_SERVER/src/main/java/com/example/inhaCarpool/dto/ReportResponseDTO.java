@@ -12,6 +12,8 @@ import java.util.List;
 @Data
 public class ReportResponseDTO {
 
+    private Long reportIdx;
+
     private String content;
 
     private String carpoolId;
@@ -27,15 +29,19 @@ public class ReportResponseDTO {
 
     private String reportDate;
 
+    private boolean status;
+
 
     @Builder
-    public ReportResponseDTO(String content, String carpoolId, UserResponseDTO reportedUser, UserResponseDTO reporter, String reportType, String reportDate, UserRequstDTO userRequstDTO) {
+    public ReportResponseDTO(Long reportIdx,String content, String carpoolId, UserResponseDTO reportedUser, UserResponseDTO reporter, String reportType, String reportDate, boolean status) {
+        this.reportIdx = reportIdx;
         this.content = content;
         this.carpoolId = carpoolId;
         this.reportedUser = reportedUser;
         this.reporter = reporter;
         this.reportType = reportType;
         this.reportDate = reportDate;
+        this.status = status;
     }
 
     @Builder

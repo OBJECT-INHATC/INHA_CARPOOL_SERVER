@@ -12,6 +12,7 @@ import com.example.inhaCarpool.entity.ReportEntity;
 import com.example.inhaCarpool.repository.UserInterface;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import com.example.inhaCarpool.repository.ReportInterface;
 
@@ -31,6 +32,7 @@ import static com.example.inhaCarpool.exception.BaseResponseStatus.DATABASE_INSE
 
 @Service
 @RequiredArgsConstructor // final + not null 생성자 생성 -> 의존성 주입
+@Slf4j
 public class ReportService {
 
     private final ReportInterface reportInterface;
@@ -61,10 +63,10 @@ public class ReportService {
         }
     }
 
-    // 신고 리스트 전체 조회
+    // 처리안된 신고 리스트 전체 조회
     @Transactional
     public ReportResponseDTO.GetRepostList findAllReportList() throws BaseException {
-        List<ReportEntity> reportEntities = reportInterface.findAll();
+        List<ReportEntity> reportEntities = reportInterface.findByStatus(false); // 신고 처리 상태가 false인 신고들만 조회
 
         // 리스트가 비어있으면 빈 리스트 처리
         if (reportEntities.isEmpty()) {
@@ -91,6 +93,8 @@ public class ReportService {
                         .reportType(reportEntity.getReportType())
                         .content(reportEntity.getContent())
                         .reportDate(reportEntity.getReportDate().toString())
+                        .status(reportEntity.isStatus())
+                        .reportIdx(reportEntity.getReportIdx())
                         .build()
                 )
                 .collect(Collectors.toList());
@@ -158,6 +162,41 @@ public class ReportService {
 
         reportEntity.setStatus(true); // 신고 처리 상태를 true로 변경 (update)
         reportInterface.save(reportEntity);
+    }
+
+    // 경고 처리
+    @Transactional
+    public void updateYellowCard(String uid) throws BaseException {
+        UserEntity userEntity = userInterface.findByUid(uid)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NOT_FOUND)); // 유저가 없는 경우 예외 처리
+
+        // 이미 정지된 유저인 경우 예외 처리
+        if(userEntity.isRedCard()) {
+            log.info("================="+uid+"는 이미 정지된 유저입니다.==================");
+            throw new BaseException(BaseResponseStatus.ALREADY_PROCESSED);
+        }
+
+        userEntity.setYellowCard(userEntity.getYellowCard()+1); // 경고 횟수를 1 증가
+        if(userEntity.getYellowCard() >= 3) {
+            updateRedCard(uid); // 경고 횟수가 3회 이상이면 정지 처리
+        }
+        userInterface.save(userEntity);
+    }
+
+    // 정지 처리
+    @Transactional
+    public void updateRedCard(String uid) throws BaseException {
+        UserEntity userEntity = userInterface.findByUid(uid)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NOT_FOUND)); // 유저가 없는 경우 예외 처리
+
+        // 이미 정지된 유저인 경우 예외 처리
+        if(userEntity.isRedCard()) {
+            log.info("================="+uid+"는 이미 정지된 유저입니다.==================");
+            throw new BaseException(BaseResponseStatus.ALREADY_PROCESSED);
+        }
+
+        userEntity.setRedCard(true); // 정지 상태로 변경
+        userInterface.save(userEntity);
     }
 
 }

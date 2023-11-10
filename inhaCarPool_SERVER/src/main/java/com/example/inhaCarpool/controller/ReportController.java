@@ -78,11 +78,34 @@ public class ReportController {
             log.info("=======신고 처리가 완료되었습니다.===========> "+ reportIdx);
             return new BaseResponse<>("신고 처리가 완료되었습니다.");
         } catch (BaseException exception) {
+            log.info("=======신고 처리가 실패하였습니다.===========> "+ reportIdx);
             return new BaseResponse<>(exception.getStatus());
         }
     }
 
+    // 경고 처리
+    @PutMapping("/yellowCard/{uid}")
+    public BaseResponse<String> updateYellowCard(@PathVariable String uid) {
+        try {
+            reportService.updateYellowCard(uid);
+            log.info("=======경고 처리가 완료되었습니다.===========> "+ uid);
+            return new BaseResponse<>("경고 처리가 완료되었습니다.");
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 
+    // 정지 처리
+    @PutMapping("/redCard/{uid}")
+    public BaseResponse<String> updateRedCard(@PathVariable String uid) {
+        try {
+            reportService.updateRedCard(uid);
+            log.info("=======정지 처리가 완료되었습니다.===========> "+ uid);
+            return new BaseResponse<>("정지 처리가 완료되었습니다.");
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 
 
 }

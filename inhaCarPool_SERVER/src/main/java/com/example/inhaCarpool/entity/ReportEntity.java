@@ -37,8 +37,8 @@ public class ReportEntity {
     @Column(name = "reportDate")
     private Date reportDate; // 신고 날짜
 
-    @Column(name = "Status", columnDefinition = "BOOLEAN DEFAULT false")
-    private boolean Status; // 신고 처리 상태, 기본값은 false
+    @Column(name = "status", columnDefinition = "BOOLEAN DEFAULT false")
+    private boolean status; // 신고 처리 상태, 기본값은 false
 
     @ManyToOne
     @JoinColumn(name = "reportedUser")
