@@ -67,13 +67,9 @@ public class CarpoolService {
                             // status가 false인 경우에만 알람 전송 후 이용내역 저장
                             if(!Boolean.TRUE.equals(status)) {
                                 try {
-                                    // startTime에서 hour만 뽑기
-                                    Date date = new Date(startTime);
-                                    SimpleDateFormat sdf = new SimpleDateFormat("HH");
-                                    String hours = sdf.format(date);
 
                                     // 삭제할 카풀의 carId 토픽을 구독한 유저에게 푸시 알림 보내기
-                                    fcmService.sendFcmMessage( hours + "시 " + endDetailPoint + "까지의 카풀은 어떠셨나요?",
+                                    fcmService.sendFcmMessage(endDetailPoint + "까지의 카풀은 어떠셨나요?",
                                             "이용 내역에서 확인해보세요!", carId, currentTime);
 
                                     // 알람전송이 성공한 경우 status를 true로 변경
