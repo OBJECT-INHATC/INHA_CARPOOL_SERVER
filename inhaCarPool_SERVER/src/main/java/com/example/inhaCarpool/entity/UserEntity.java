@@ -30,6 +30,12 @@ public class UserEntity {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "yellowCard", columnDefinition = "int default 0") // default 0
+    private int yellowCard; // 경고 횟수
+
+    @Column(name = "redCard", columnDefinition = "boolean default false") // default false
+    private boolean redCard; // 정지 여부
+
     @OneToMany(mappedBy = "reporter")
     private List<ReportEntity> reporter;
 

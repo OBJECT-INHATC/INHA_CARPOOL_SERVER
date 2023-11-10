@@ -17,10 +17,10 @@ public class ReportResponseDTO {
     private String carpoolId;
 
     // 피신고자 ID
-    private UserRequstDTO reportedUser;
+    private UserResponseDTO reportedUser;
 
     // 신고자 ID
-    private UserRequstDTO reporter;
+    private UserResponseDTO reporter;
 
     // 신고 종류
     private String reportType;
@@ -29,7 +29,7 @@ public class ReportResponseDTO {
 
 
     @Builder
-    public ReportResponseDTO(String content, String carpoolId, UserRequstDTO reportedUser, UserRequstDTO reporter, String reportType, String reportDate, UserRequstDTO userRequstDTO) {
+    public ReportResponseDTO(String content, String carpoolId, UserResponseDTO reportedUser, UserResponseDTO reporter, String reportType, String reportDate, UserRequstDTO userRequstDTO) {
         this.content = content;
         this.carpoolId = carpoolId;
         this.reportedUser = reportedUser;

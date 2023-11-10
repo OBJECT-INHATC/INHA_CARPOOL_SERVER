@@ -1,13 +1,19 @@
 package com.example.inhaCarpool.controller;
 
+import com.example.inhaCarpool.dto.HistoryRequestDTO;
 import com.example.inhaCarpool.dto.ReportResponseDTO;
+import com.example.inhaCarpool.entity.ReportEntity;
 import com.example.inhaCarpool.exception.BaseException;
 import com.example.inhaCarpool.exception.BaseResponse;
 import com.example.inhaCarpool.dto.ReportRequstDTO;
 import com.example.inhaCarpool.service.ReportService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -20,14 +26,10 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping("/report")
 @RestController
+@RequiredArgsConstructor
 public class ReportController {
 
     private final ReportService reportService;
-    public ReportController(ReportService reportService) {
-        this.reportService = reportService;
-    }
-
-
 
     @ResponseBody
     @PostMapping("/save")
@@ -43,16 +45,28 @@ public class ReportController {
         }
     }
 
-    // 신고자 닉네임으로 신고 리스트 조회
-    @GetMapping("/select/{nickname}")
-    public BaseResponse<ReportResponseDTO.GetRepostList> findById(@PathVariable String nickname) {
-      try {
-          ReportResponseDTO.GetRepostList reports = reportService.findReportListByNickName(nickname);
-          log.info("========"+nickname+"=====신고 리스트 조회가 완료되었습니다.===========> ");
-          return new BaseResponse<>(reports);
-      } catch (BaseException exception){
-          return new BaseResponse<>((exception.getStatus()));
-      }
+//    // 신고자 닉네임으로 신고 리스트 조회
+//    @GetMapping("/select/{nickname}")
+//    public BaseResponse<ReportResponseDTO.GetRepostList> findById(@PathVariable String nickname) {
+//      try {
+//          ReportResponseDTO.GetRepostList reports = reportService.findReportListByNickName(nickname);
+//          log.info("========"+nickname+"=====신고 리스트 조회가 완료되었습니다.===========> ");
+//          return new BaseResponse<>(reports);
+//      } catch (BaseException exception){
+//          return new BaseResponse<>((exception.getStatus()));
+//      }
+//    }
+
+    // 신고 리스트 전체 조회
+    @GetMapping("/select")
+    public BaseResponse<ReportResponseDTO.GetRepostList> findAllReport() {
+        try {
+            ReportResponseDTO.GetRepostList reports = reportService.findAllReportList();
+            log.info("=============신고 리스트 조회가 완료되었습니다.===========> ");
+            return new BaseResponse<>(reports);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
     }
 
 
