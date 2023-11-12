@@ -83,11 +83,11 @@ public class ReportService {
                                 reportEntity.getReportedUser().isRedCard()
                         ))
                         .reporter(new UserResponseDTO(
-                                reportEntity.getReportedUser().getUid(),
-                                reportEntity.getReportedUser().getNickname(),
-                                reportEntity.getReportedUser().getEmail(),
-                                reportEntity.getReportedUser().getYellowCard(),
-                                reportEntity.getReportedUser().isRedCard()
+                                reportEntity.getReporter().getUid(),
+                                reportEntity.getReporter().getNickname(),
+                                reportEntity.getReporter().getEmail(),
+                                reportEntity.getReporter().getYellowCard(),
+                                reportEntity.getReporter().isRedCard()
                         ))
                         .carpoolId(reportEntity.getCarPoolId())
                         .reportType(reportEntity.getReportType())
