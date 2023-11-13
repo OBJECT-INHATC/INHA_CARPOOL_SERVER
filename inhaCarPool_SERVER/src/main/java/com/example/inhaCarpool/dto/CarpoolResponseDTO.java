@@ -13,6 +13,7 @@ public class CarpoolResponseDTO {
     private String member1;
     private String member2;
     private String member3;
+    private String member4;
     private Long nowMember;
     private Long maxMember;
     private String startDetailPoint;

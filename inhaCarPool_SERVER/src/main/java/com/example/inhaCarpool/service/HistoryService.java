@@ -27,6 +27,7 @@ public class HistoryService {
                 .member1(historyRequestDTO.getMember1())
                 .member2(historyRequestDTO.getMember2())
                 .member3(historyRequestDTO.getMember3())
+                .member4(historyRequestDTO.getMember4())
                 .nowMember(historyRequestDTO.getNowMember())
                 .maxMember(historyRequestDTO.getMaxMember())
                 .startDetailPoint(historyRequestDTO.getStartDetailPoint())
@@ -50,8 +51,8 @@ public class HistoryService {
 
     @Transactional
     public List<HistoryRequestDTO> getHistoryListByMember(String uid) {
-        return historyInterface.findByMember1ContainingOrMember2ContainingOrMember3Containing(
-                uid,uid,uid
+        return historyInterface.findByMember1ContainingOrMember2ContainingOrMember3Member4Containing(
+                uid,uid,uid,uid
                 ).stream()
                 .map(historyEntity -> HistoryRequestDTO.builder() // HistoryEntity를 HistoryRequestDTO로 변환 (response로 수정 예정)
                         .carPoolId(historyEntity.getCarPoolId())
@@ -59,6 +60,7 @@ public class HistoryService {
                         .member1(historyEntity.getMember1())
                         .member2(historyEntity.getMember2())
                         .member3(historyEntity.getMember3())
+                        .member4(historyEntity.getMember4())
                         .nowMember(historyEntity.getNowMember())
                         .maxMember(historyEntity.getMaxMember())
                         .startDetailPoint(historyEntity.getStartDetailPoint())
@@ -93,6 +95,7 @@ public class HistoryService {
                 .member1(carpoolResponseDTO.getMember1())
                 .member2(carpoolResponseDTO.getMember2())
                 .member3(carpoolResponseDTO.getMember3())
+                .member4(carpoolResponseDTO.getMember4())
                 .nowMember(carpoolResponseDTO.getNowMember())
                 .maxMember(carpoolResponseDTO.getMaxMember())
                 .startDetailPoint(carpoolResponseDTO.getStartDetailPoint())

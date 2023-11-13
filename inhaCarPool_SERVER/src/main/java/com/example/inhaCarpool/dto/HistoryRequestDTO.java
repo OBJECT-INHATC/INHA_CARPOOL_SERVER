@@ -15,6 +15,7 @@ public class HistoryRequestDTO {
     private String member1;
     private String member2;
     private String member3;
+    private String member4;
     private Long nowMember;
     private Long maxMember;
     private String startDetailPoint;
@@ -27,7 +28,7 @@ public class HistoryRequestDTO {
     private String gender;
 
     @Builder
-    public HistoryRequestDTO(String carPoolId, String admin, String member1, String member2, String member3, Long nowMember, Long maxMember,
+    public HistoryRequestDTO(String carPoolId, String admin, String member1, String member2, String member3, String member4,Long nowMember, Long maxMember,
                              String startDetailPoint, String startPoint, String startPointName, Long startTime,
                              String endDetailPoint, String endPoint, String endPointName, String gender) {
         this.carPoolId = carPoolId;
@@ -35,6 +36,7 @@ public class HistoryRequestDTO {
         this.member1 = member1;
         this.member2 = member2;
         this.member3 = member3;
+        this.member4 = member4;
         this.nowMember = nowMember;
         this.maxMember = maxMember;
         this.startDetailPoint = startDetailPoint;

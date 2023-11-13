@@ -10,7 +10,7 @@ public interface HistoryInterface extends JpaRepository<HistoryEntity, Long>{
 
     HistoryEntity findByCarPoolId(String carPoolId);
 
-    List<HistoryEntity> findByMember1ContainingOrMember2ContainingOrMember3Containing(String member1, String member2, String member3);
+    List<HistoryEntity> findByMember1ContainingOrMember2ContainingOrMember3Member4Containing(String member1, String member2, String member3, String member4);
 
 
 

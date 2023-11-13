@@ -4,18 +4,13 @@ package com.example.inhaCarpool.service;
 import com.example.inhaCarpool.dto.CarpoolResponseDTO;
 import com.example.inhaCarpool.dto.HistoryRequestDTO;
 import com.example.inhaCarpool.exception.BaseException;
-import com.example.inhaCarpool.exception.BaseResponseStatus;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
-import jakarta.validation.constraints.Null;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -89,6 +84,7 @@ public class CarpoolService {
                                         String member1 = "";
                                         String member2 = "";
                                         String member3 = "";
+                                        String member4 = "";
 
                                         Long nowMember = document.getLong("nowMember");
                                         List<String> memberArray = (List<String>) document.get("members");
@@ -102,6 +98,11 @@ public class CarpoolService {
                                             member1 = memberArray.get(0);
                                             member2 = memberArray.get(1);
                                             member3 = memberArray.get(2);
+                                        } else if(nowMember == 4) {
+                                            member1 = memberArray.get(0);
+                                            member2 = memberArray.get(1);
+                                            member3 = memberArray.get(2);
+                                            member4 = memberArray.get(3);
                                         }
 
                                         // GeoPoint를 String으로 변환 (firebase -> spring)
@@ -117,6 +118,7 @@ public class CarpoolService {
                                             member1,
                                             member2,
                                             member3,
+                                            member4,
                                             nowMember,
                                             document.getLong("maxMember"),
                                             document.getString("startDetailPoint"),
