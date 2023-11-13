@@ -51,7 +51,7 @@ public class HistoryService {
 
     @Transactional
     public List<HistoryRequestDTO> getHistoryListByMember(String uid) {
-        return historyInterface.findByMember1ContainingOrMember2ContainingOrMember3Member4Containing(
+        return historyInterface.findByMember1ContainingOrMember2ContainingOrMember3ContainingOrMember4Containing(
                 uid,uid,uid,uid
                 ).stream()
                 .map(historyEntity -> HistoryRequestDTO.builder() // HistoryEntity를 HistoryRequestDTO로 변환 (response로 수정 예정)
