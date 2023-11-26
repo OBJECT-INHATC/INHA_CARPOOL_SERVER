@@ -16,7 +16,6 @@ public interface ReportInterface extends JpaRepository<ReportEntity, Long> {
 
     List<ReportEntity> findByReporter_Uid(String reporter);
 
-
     List<ReportEntity> findByStatus(boolean status);
 
 

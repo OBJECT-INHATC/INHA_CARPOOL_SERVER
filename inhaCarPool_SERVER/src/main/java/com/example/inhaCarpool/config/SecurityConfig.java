@@ -15,8 +15,6 @@ public class SecurityConfig {
         @Bean
         protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             http
-                    .csrf(AbstractHttpConfigurer::disable)
-                    .httpBasic(AbstractHttpConfigurer::disable)
                     .authorizeHttpRequests( request -> request
                             .requestMatchers("/user/**", "/carpool/**",
                                     "/history/**", "/report/**","/topic/**"

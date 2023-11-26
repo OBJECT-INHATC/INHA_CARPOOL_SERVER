@@ -28,7 +28,6 @@ public class CarpoolService {
     private final HistoryService historyService;
 
     private final TopicService topicService;
-
     private static final String COLLECTION_NAME = "carpool";
 
     @SuppressWarnings("unchecked")

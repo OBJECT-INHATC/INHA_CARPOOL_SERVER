@@ -25,7 +25,6 @@ public interface TopicInterface extends JpaRepository<TopicEntity, Long> {
     @Query("select t FROM TopicEntity t WHERE t.carId = :carId")
     List<TopicEntity> deleteByCarId(@Param("carId") String carId);
 
-
     List<TopicEntity> findByUsersUid(String uid);
 
 

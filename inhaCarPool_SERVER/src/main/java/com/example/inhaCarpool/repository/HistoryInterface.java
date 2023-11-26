@@ -14,5 +14,4 @@ public interface HistoryInterface extends JpaRepository<HistoryEntity, Long>{
 
 
 
-
 }

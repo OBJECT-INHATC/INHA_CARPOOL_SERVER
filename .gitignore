@@ -38,7 +38,6 @@ out/
 
 # firebase Admin SDK
 inhaCarPool_SERVER/src/main/resources/serviceAccountKey.json
+inhaCarPool_SERVER/src/main/java/com/example/inha_carpool/service/FCMService.java
 
-
-.gitignore에 src/main/resources/application.yml
 

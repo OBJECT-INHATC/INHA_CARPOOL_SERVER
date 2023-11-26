@@ -50,7 +50,6 @@ public class UserService {
     public void updateNickname(String uid, String newNickname) throws BaseException {
         UserEntity userEntity = userInterface.findByUid(uid)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NOT_FOUND)); // 신고가 없는 경우 예외 처리
-
         // 해당 Uid 컬럼의 nickname 필드를 업데이트
         userEntity.setNickname(newNickname);
 
