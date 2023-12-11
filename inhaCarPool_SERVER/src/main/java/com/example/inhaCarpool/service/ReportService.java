@@ -106,7 +106,7 @@ public class ReportService {
 
 
 
-//    // 내가 신고한 리스트 확인
+//    // 나의 신고 리스트 확인 (현재 안씀)
 //    @Transactional
 //    public ReportResponseDTO.GetRepostList findReportListByNickName(String nickname) throws BaseException {
 //

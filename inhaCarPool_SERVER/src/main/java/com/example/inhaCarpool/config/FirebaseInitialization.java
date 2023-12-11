@@ -22,6 +22,7 @@ public class FirebaseInitialization {
     public void initializeFirebaseApp() {
         try {
             Resource resource = new ClassPathResource("serviceAccountKey.json");
+            // 파이어스토어에 접근하기 위한 인증
             InputStream serviceAccount = resource.getInputStream();
 
             FirebaseOptions options = new FirebaseOptions.Builder()

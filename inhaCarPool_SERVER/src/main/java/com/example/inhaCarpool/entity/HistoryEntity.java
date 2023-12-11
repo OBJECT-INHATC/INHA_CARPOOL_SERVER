@@ -12,15 +12,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class HistoryEntity {
 
+    // 스케줄러가 실행되어 완료된 카풀이 저장하는 엔티티
+
     @Id
     @Column(name = "carPoolId")
     private String carPoolId; // 완료된 카풀 id
 
     @Column(name = "admin")
-    private String admin;
+    private String admin; // uid_nickname_gender 형식으로 저장
 
     @Column(name = "member1")
-    private String member1;
+    private String member1; // uid_nickname_gender 형식으로 저장
 
     @Column(name = "member2")
     private String member2;
@@ -32,35 +34,34 @@ public class HistoryEntity {
     private String member4;
 
     @Column(name = "nowMember")
-    private Long nowMember;
+    private Long nowMember; // 현재 인원
 
     @Column(name = "maxMemeber")
-    private Long maxMember;
+    private Long maxMember; // 최대 인원
 
     @Column(name = "startDetailPoint")
-    private String startDetailPoint;
+    private String startDetailPoint; // 출발지 요약 주소
 
     @Column(name = "startPoint")
-    private String startPoint;
+    private String startPoint; // 출발지 위도 경도
 
     @Column(name = "startPointName")
-    private String startPointName;
+    private String startPointName; // 출발지 주소
 
     @Column(name = "startTime")
-    private Long startTime;
+    private Long startTime; // 출발 시간
 
     @Column(name = "endDetailPoint")
-    private String endDetailPoint;
+    private String endDetailPoint; // 도착지 요약 주소
 
     @Column(name = "endPoint")
-    private String endPoint;
+    private String endPoint; // 도착지 위도 경도
 
     @Column(name = "endPointName")
-    private String endPointName;
+    private String endPointName; // 도착지 주소
 
     @Column(name = "gender")
-    private String gender;
-
+    private String gender; // 성별
 
     @Builder
     public HistoryEntity(String carPoolId, String admin, String member1, String member2, String member3, String member4,

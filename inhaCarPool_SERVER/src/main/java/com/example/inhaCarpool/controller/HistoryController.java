@@ -53,6 +53,7 @@ public class HistoryController {
         return ResponseEntity.ok(histories);
     }
 
+    // 이용 내역 삭제 메소드 (현재 안씀)
     @DeleteMapping("/delete/carPoolID")
     public ResponseEntity<HistoryEntity> DeleteCarpool(@RequestParam(value = "carpoolId") String carpoolId) {
         boolean result = historyService.deleteHistory(carpoolId);

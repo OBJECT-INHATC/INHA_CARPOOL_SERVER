@@ -27,21 +27,20 @@ public class TopicController {
         this.topicService = topicService;
     }
 
-
-    // 서버에 토픽 저장
+    // 유저의 카풀 참가 시 서버에 토픽 저장
     @ResponseBody
     @PostMapping("/topic/save")
     public BaseResponse<String>saveUser(@RequestBody TopicRequstDTO topicRequstDTO) {
         try{
-            this.topicService.saveTopic(topicRequstDTO);
-            log.info("======="+ topicRequstDTO.getCarId()+"====서버에 토픽 등록이 완료되었습니======> ");
+            topicService.saveTopic(topicRequstDTO);
+            log.info("======="+ topicRequstDTO.getCarId()+"====서버에 토픽 등록이 완료되었습니다======> ");
             return new BaseResponse<>("서버에 토픽 등록이 완료되었습니다.");
         } catch (BaseException exception){
             return new BaseResponse<>(exception.getStatus());
         }
     }
 
-    // 나의 Uid, 카풀 ID로 토픽 삭제
+    // 유저 카풀 나가기 시 토픽 삭제
     @DeleteMapping("/topic/delete")
     public BaseResponse<String> deleteTopicByUidAndCarId(
             @RequestParam(name = "uid") String uid,
@@ -55,6 +54,7 @@ public class TopicController {
         }
     }
 
+    // 채팅 알림 on/off 시 서버에서 토픽 리스트 가져와서 구독/해제
     @GetMapping("/user/selectList/{uid}")
     public List<String> getCarIdByUid(@PathVariable String uid) {
         try {
@@ -65,6 +65,4 @@ public class TopicController {
 
         }
     }
-
-
 }

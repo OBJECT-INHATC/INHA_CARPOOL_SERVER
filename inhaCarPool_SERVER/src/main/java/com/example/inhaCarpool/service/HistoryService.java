@@ -18,10 +18,11 @@ public class HistoryService {
 
     private final HistoryInterface historyInterface;
 
+    // 이용 내역 저장
     @Transactional
     public void saveHistory(HistoryRequestDTO historyRequestDTO) {
 
-        HistoryEntity historyEntity = HistoryEntity.builder()
+        HistoryEntity historyEntity = HistoryEntity.builder() // HistoryRequestDTO를 HistoryEntity로 변환 후 저장
                 .carPoolId(historyRequestDTO.getCarPoolId())
                 .admin(historyRequestDTO.getAdmin())
                 .member1(historyRequestDTO.getMember1())
@@ -42,17 +43,18 @@ public class HistoryService {
 
         HistoryEntity existingEntity = historyInterface.findByCarPoolId(historyRequestDTO.getCarPoolId()); // 이미 존재하는 carPoolId인지 확인
 
-        if (existingEntity != null) {
+        if (existingEntity != null) { // 이미 존재하는 carPoolId라면 예외처리
             throw new IllegalArgumentException("이용내역에 이미 존재하는 carPoolId입니다.");
         }
 
         historyInterface.save(historyEntity);
     }
 
+    // 이용 내역 조회
     @Transactional
     public List<HistoryRequestDTO> getHistoryListByMember(String uid) {
         return historyInterface.findByMember1ContainingOrMember2ContainingOrMember3ContainingOrMember4Containing(
-                        uid, uid, uid, uid
+                        uid, uid, uid, uid // uid가 member1, member2, member3, member4 중에 하나라도 포함되어 있는 HistoryEntity를 조회
                 ).stream()
                 .map(historyEntity -> HistoryRequestDTO.builder() // HistoryEntity를 HistoryRequestDTO로 변환 (response로 수정 예정)
                         .carPoolId(historyEntity.getCarPoolId())
@@ -75,6 +77,7 @@ public class HistoryService {
                 .collect(Collectors.toList());
     }
 
+    // 이용 내역 삭제
     @Transactional
     public boolean deleteHistory(String carPoolId) {
         HistoryEntity carPool = historyInterface.findByCarPoolId(carPoolId);
@@ -87,7 +90,7 @@ public class HistoryService {
         }
     }
 
-    // carpool을 history로 옮기는 메소드
+    // carpoolDTO를 historyDTO로 변환하는 메소드
     public HistoryRequestDTO carpoolToHistory(CarpoolResponseDTO carpoolResponseDTO) {
         return HistoryRequestDTO.builder()
                 .carPoolId(carpoolResponseDTO.getCarId())

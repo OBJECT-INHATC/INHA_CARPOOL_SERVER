@@ -1,6 +1,5 @@
 package com.example.inhaCarpool.service;
 
-
 import com.example.inhaCarpool.dto.TopicRequstDTO;
 import com.example.inhaCarpool.entity.TopicEntity;
 import com.example.inhaCarpool.entity.UserEntity;
@@ -35,14 +34,14 @@ public class TopicService {
 
     private final UserInterface userInterface;
 
-    // 토픽 등록
+    // 토픽 저장
     @Transactional
     public void saveTopic(TopicRequstDTO topicRequstDTO) throws BaseException {
         log.info("---------서버에 카풀을 저장하기 시작합니다 ---------");
         UserEntity userEntity = userInterface.findByUid(topicRequstDTO.getUid())
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NOT_FOUND)); // 신고가 없는 경우 예외 처리
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NOT_FOUND)); // 유저가 없는 경우 예외 처리
 
-        TopicEntity topicEntity = TopicEntity.builder()
+        TopicEntity topicEntity = TopicEntity.builder() // 토픽 저장
                 .users(userEntity)
                 .carId(topicRequstDTO.getCarId())
                 .build();
@@ -75,6 +74,7 @@ public class TopicService {
         return carIdList;
     }
 
+    // carId로 토픽 삭제
     @Transactional
     public void deleteTopicByCarId(String carId) throws BaseException {
         // carId를 사용하여 토픽들을 조회

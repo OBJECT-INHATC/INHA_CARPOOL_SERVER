@@ -31,6 +31,7 @@ public class ReportController {
 
     private final ReportService reportService;
 
+    // 신고하기
     @ResponseBody
     @PostMapping("/save")
     public BaseResponse<String> saveReport(@RequestBody ReportRequstDTO reportRequstDTO) {
@@ -57,7 +58,7 @@ public class ReportController {
 //      }
 //    }
 
-    // 신고 리스트 전체 조회
+    // (처리 안된)신고 리스트 전체 조회
     @GetMapping("/select")
     public BaseResponse<ReportResponseDTO.GetRepostList> findAllReport() {
         try {

@@ -44,10 +44,10 @@ public class FCMService {
                     + "\"content_available\": true,"
                     + "\"data\": {" 
                     + "\"click_action\": \"FLUTTER_NOTIFICATION_CLICK\","
-                    + "\"id\": \"" + notiStatus + "\","
+                    + "\"id\": \"" + notiStatus + "\"," // 푸시 알림 type
                     + "\"status\": \"done\","
                     + "\"action\": \"테스트\","
-                    + "\"groupId\": \"" + carId + "\","
+                    + "\"groupId\": \"" + carId + "\"," // 토픽
                     + "\"sender\": \"test\","
                     + "\"time\": \"" + currentTime + "\""
                     + "},"

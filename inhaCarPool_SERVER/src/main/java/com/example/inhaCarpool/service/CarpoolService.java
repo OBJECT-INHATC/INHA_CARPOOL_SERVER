@@ -38,7 +38,7 @@ public class CarpoolService {
         Firestore firestore = FirestoreClient.getFirestore(); // Firestore 인스턴스 생성
 
         // 스케줄러 생성
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2); // 2개의 스케줄러 생성
 
 
         // 출발시간으로부터 1시간 이상이 지난 카풀 알람 보내기(topic 구독 해제하므로 1회만 보내짐) -> history 이용내역에 저장
@@ -78,7 +78,7 @@ public class CarpoolService {
                                         log.info("------------status를 true로 변경실패(알람,이용내역스케줄러) ------------");
                                     }
 
-                                    // carpool을 history로 옮기기
+                                    // firestore의 carpool 데이터를 mysql의 history에 저장하기
                                     try {
                                         String member1 = "";
                                         String member2 = "";
@@ -195,7 +195,6 @@ public class CarpoolService {
                                 log.info("------------스프링에서 토픽 삭제 실패(카풀삭제스케줄러) ------------");
                                 e.printStackTrace();
                             }
-
                         }
                     } catch (NullPointerException e) {
                         log.info("------------출발시간, 카풀아이디가 없습니다(카풀삭제스케줄러) ------------");

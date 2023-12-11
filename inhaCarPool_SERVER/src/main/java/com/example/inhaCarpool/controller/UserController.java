@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  *   @version          1.0    2023.09.01
  *   @author           이상훈
  */
-@Slf4j
+@Slf4j // 로그를 위한 어노테이션
 @RequestMapping("/user")
 @RestController
 public class UserController {
@@ -26,12 +26,12 @@ public class UserController {
     }
 
 
-    // 서버에 유저 데이터 저장
+    // 유저가 회원가입 시 서버에 유저 데이터 저장
     @ResponseBody
     @PostMapping("/save")
     public BaseResponse<String>saveUser(@RequestBody UserRequstDTO userRequstDTO) {
         try{
-            this.userService.saveUser(userRequstDTO);
+            userService.saveUser(userRequstDTO);
             log.info("==========[[서버에 유저"+ userRequstDTO.getNickname()+" 님을 등록을 완료]]=========> ");
             return new BaseResponse<>("서버에 유저 등록이 완료되었습니다.");
         } catch (BaseException exception){
@@ -40,7 +40,7 @@ public class UserController {
     }
 
 
-    // 유저 닉네임 업데이트
+    // 유저 닉네임 업데이트 (현재 사용 X)
     @PutMapping("/update/{uid}/{newNickname}")
     public BaseResponse<String> updateStatus(@PathVariable String uid, @PathVariable String newNickname) {
             log.info("=======서버에 닉네임 "+newNickname+" 으로 변경 진행=========> ");

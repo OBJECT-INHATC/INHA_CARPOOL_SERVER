@@ -20,6 +20,8 @@ import java.util.Date;
 @Entity
 public class ReportEntity {
 
+    // 신고가 생성(저장)되는 엔티티
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reportIdx")
@@ -41,11 +43,11 @@ public class ReportEntity {
     private boolean status; // 신고 처리 상태, 기본값은 false
 
     @ManyToOne
-    @JoinColumn(name = "reportedUser")
+    @JoinColumn(name = "reportedUser") // 외래키 컬럼
     private UserEntity reportedUser; // 피신고자 ID
 
     @ManyToOne
-    @JoinColumn(name = "reporter")
+    @JoinColumn(name = "reporter") // 외래키 컬럼
     private UserEntity reporter; // 신고자 ID
 
     @Builder

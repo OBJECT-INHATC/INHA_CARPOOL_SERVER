@@ -19,17 +19,19 @@ import lombok.NoArgsConstructor;
 @Entity
 public class TopicEntity {
 
+    // 유저가 새로운 방 참가시 생성(저장)되는 엔티티
+
     @Id
     @Column(name = "topicIdx")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long topicIdx;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
+    private Long topicIdx; // 인위적 식별자
 
     @Column(name = "carId")
-    private String carId; // 카풀 Id
+    private String carId; // 카풀 Id (파이어베이스의 carId)
 
     @ManyToOne
-    @JoinColumn(name = "users")
-    private UserEntity users;
+    @JoinColumn(name = "users") // 외래키 컬럼
+    private UserEntity users; // uid (파이어베이스의 uid)
 
     @Builder
     public TopicEntity(String carId, UserEntity users) {
