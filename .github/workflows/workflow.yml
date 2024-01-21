@@ -1,4 +1,4 @@
-name: deploy
+name: build and deploy
 
 on:
   push:
@@ -6,49 +6,49 @@ on:
       - main
 
 jobs:
-  SSH:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: ssh to ec2
-        uses: appleboy/ssh-action@master
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
         with:
-          key : ${{ secrets.SSH_PRIVATE_KEY }}
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          script: |
-            rm -rf INHA_CARPOOL_SERVER
-            git clone git@github.com:OBJECT-INHATC/INHA_CARPOOL_SERVER.git
-            cp secret/serviceAccountKey.json INHA_CARPOOL_SERVER/inhaCarPool_SERVER/src/main/resources
-            cd INHA_CARPOOL_SERVER/inhaCarPool_SERVER
-            ./gradlew build
-            cd build/libs
-            
-            RUNNING_PROCESS=$(ps aux | grep java | grep "inha_carppool_server-0.0.1-SNAPSHOT.jar" | awk '{print $2}')
+          java-version: 17
+          distribution: 'temurin'
 
-            if [ -n "$RUNNING_PROCESS" ]; then
-              echo "Terminating existing Java process with PID $RUNNING_PROCESS"
-              kill -9 "$RUNNING_PROCESS"
-            else
-              echo "No running Java process found."
-            fi
-            
-            java -jar inha_carppool_server-0.0.1-SNAPSHOT.jar
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
-#            rm -rf INHA_CARPOOL_SERVER
-#            git clone git@github.com:OBJECT-INHATC/INHA_CARPOOL_SERVER.git
-#            cp secret/serviceAccountKey.json INHA_CARPOOL_SERVER/inhaCarPool_SERVER/src/main/resources
-#            cd INHA_CARPOOL_SERVER/inhaCarPool_SERVER
-#            ./gradlew build
-#            cd build/libs
-#
-#            RUNNING_PROCESS=$(ps aux | grep java | grep "inha_carppool_server-0.0.1-SNAPSHOT.jar" | awk '{print $2}')
-#
-#            if [ -n "$RUNNING_PROCESS" ]; then
-#              echo "Terminating existing Java process with PID $RUNNING_PROCESS"
-#              kill -9 "$RUNNING_PROCESS"
-#            else
-#              echo "No running Java process found."
-#            fi
-#
-#            nohup java -jar inha_carppool_server-0.0.1-SNAPSHOT.jar &
+      - name: Build with Gradle
+        uses: gradle/wrapper-action@v2.6.0
+        with:
+          arguments: build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: inha_carppool_server
+          path: build/libs/inha_carppool_server-0.0.1-SNAPSHOT.jar
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: inha_carppool_server
+          path: build/libs/
+
+      - name: Deploy to EC2
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+          scp -i private_key.pem -o StrictHostKeyChecking=no -r build/libs/inha_carppool_server-0.0.1-SNAPSHOT.jar ${{ secrets.USER }}@${{ secrets.HOST }}:~/INHA_CARPOOL_SERVER/inhaCarPool_SERVER/build/libs/
+          ssh -i private_key.pem -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.HOST }} "pgrep java | xargs kill -9; nohup java -jar ~/INHA_CARPOOL_SERVER/inhaCarPool_SERVER/build/libs/inha_carppool_server-0.0.1-SNAPSHOT.jar > ~/INHA_CARPOOL_SERVER/inhaCarPool_SERVER/build/libs/nohup.out 2>&1 &"
+          rm -f private_key.pem
+
+
+
