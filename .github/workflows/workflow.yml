@@ -23,6 +23,16 @@ jobs:
             cd INHA_CARPOOL_SERVER/inhaCarPool_SERVER
             ./gradlew build
             cd build/libs
+            
+            RUNNING_PROCESS=$(ps aux | grep java | grep "inha_carppool_server-0.0.1-SNAPSHOT.jar" | awk '{print $2}')
+
+            if [ -n "$RUNNING_PROCESS" ]; then
+              echo "Terminating existing Java process with PID $RUNNING_PROCESS"
+              kill -9 "$RUNNING_PROCESS"
+            else
+              echo "No running Java process found."
+            fi
+            
             java -jar inha_carppool_server-0.0.1-SNAPSHOT.jar
 
 #            rm -rf INHA_CARPOOL_SERVER
