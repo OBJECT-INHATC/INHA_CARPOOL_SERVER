@@ -1,0 +1,27 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  SSH:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: ssh to ec2
+        uses: appleboy/ssh-action@master
+        with:
+          key : ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          script: |
+            rm -rf INHA_CARPOOL_SERVER
+            git clone git@github.com:OBJECT-INHATC/INHA_CARPOOL_SERVER.git
+            cp secret/serviceAccountKey.json INHA_CARPOOL_SERVER/inhaCarPool_SERVER/src/main/resources
+            cd INHA_CARPOOL_SERVER/inhaCarPool_SERVER
+            ./gradlew build
+            cd build/libs
+            fg %1
+            nohup java -jar inha_carppool_server-0.0.1-SNAPSHOT.jar &
