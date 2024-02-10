@@ -112,4 +112,13 @@ public class HistoryService {
                 .build();
     }
 
+    // 이용 내역 횟수 조회
+    @Transactional
+    public Long countHistoryByMember(String uid) {
+        return historyInterface.countByMember1ContainingOrMember2ContainingOrMember3ContainingOrMember4Containing(
+                uid, uid, uid, uid // uid가 member1, member2, member3, member4 중에 하나라도 포함되어 있는 HistoryEntity의 개수를 조회
+        );
+    }
+
+
 }

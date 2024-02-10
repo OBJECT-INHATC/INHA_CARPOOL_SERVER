@@ -53,6 +53,21 @@ public class HistoryController {
         return ResponseEntity.ok(histories);
     }
 
+    // 이용 내역 횟수 조회 메소드
+    @GetMapping("/count")
+    public ResponseEntity<Long> getHistoryCountByMember(
+            @RequestParam(value = "uid") String uid
+    ) {
+        Long count = historyService.countHistoryByMember(uid);
+        if (count == 0) {
+            log.info("===" + uid + "님의 [[이용 내역이 존재하지 않습니다.]]========= ");
+            return ResponseEntity.noContent().build();
+        }
+        log.info("===" + uid + "님의 [[이용 내역 개수 조회가 완료되었습니다.]]========= ");
+        return ResponseEntity.ok(count);
+    }
+
+
     // 이용 내역 삭제 메소드 (현재 안씀)
     @DeleteMapping("/delete/carPoolID")
     public ResponseEntity<HistoryEntity> DeleteCarpool(@RequestParam(value = "carpoolId") String carpoolId) {
