@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 import static com.example.inhaCarpool.exception.BaseResponseStatus.DATABASE_INSERT_ERROR;
 
 /**
@@ -56,6 +58,15 @@ public class UserService {
     }
 
 
+    // 유저의 경고 횟수 조회
+    public int getUserYellowCard(String uid) {
+        Optional<UserEntity> userEntity = userInterface.findByUid(uid);
+        if (userEntity.isPresent()) {
+            return userEntity.get().getYellowCard();
+        } else {
+            throw new IllegalArgumentException("해당 uid를 가진 유저가 존재하지 않습니다.");
+        }
+    }
 
 
 

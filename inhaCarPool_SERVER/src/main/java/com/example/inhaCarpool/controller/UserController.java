@@ -6,6 +6,7 @@ import com.example.inhaCarpool.exception.BaseResponse;
 import com.example.inhaCarpool.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -53,9 +54,11 @@ public class UserController {
         }
     }
 
-
-
-
-
+    @GetMapping("/count/yellow")
+    public ResponseEntity<Integer> getUserYellowCard(@RequestParam(value = "uid") String uid) {
+        int count = userService.getUserYellowCard(uid);
+        log.info("===유저의 경고 횟수 조회 :" + count + "=== ");
+        return ResponseEntity.ok(count);
+    }
 
 }
