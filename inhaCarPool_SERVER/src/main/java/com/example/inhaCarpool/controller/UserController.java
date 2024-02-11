@@ -39,7 +39,6 @@ public class UserController {
         }
     }
 
-
     // 유저 닉네임 업데이트 (현재 사용 X)
     @PutMapping("/update/{uid}/{newNickname}")
     public BaseResponse<String> updateStatus(@PathVariable String uid, @PathVariable String newNickname) {
