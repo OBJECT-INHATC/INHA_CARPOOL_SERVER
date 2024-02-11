@@ -26,7 +26,6 @@ public class UserController {
         this.userService = userService;
     }
 
-
     // 유저가 회원가입 시 서버에 유저 데이터 저장
     @ResponseBody
     @PostMapping("/save")
