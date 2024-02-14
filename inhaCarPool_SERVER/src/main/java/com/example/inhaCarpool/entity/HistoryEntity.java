@@ -30,13 +30,13 @@ public class HistoryEntity {
     @Column(name = "member3")
     private String member3;
 
-    @Column(name = "memeber4")
+    @Column(name = "member4")
     private String member4;
 
     @Column(name = "nowMember")
     private Long nowMember; // 현재 인원
 
-    @Column(name = "maxMemeber")
+    @Column(name = "maxMember")
     private Long maxMember; // 최대 인원
 
     @Column(name = "startDetailPoint")
