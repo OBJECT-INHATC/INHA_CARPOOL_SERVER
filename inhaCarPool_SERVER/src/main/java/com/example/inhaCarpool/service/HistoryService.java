@@ -22,15 +22,24 @@ public class HistoryService {
     @Transactional
     public void saveHistory(HistoryRequestDTO historyRequestDTO) {
 
+        // maxMember가 null이면 기본값으로 4로 설정
+        Long maxMember = historyRequestDTO.getMaxMember() != null ? historyRequestDTO.getMaxMember() : 4;
+
+        // member1, member2, member3, member4가 null이면 빈 문자열로 설정
+        String member1 = historyRequestDTO.getMember1() != null ? historyRequestDTO.getMember1() : "";
+        String member2 = historyRequestDTO.getMember2() != null ? historyRequestDTO.getMember2() : "";
+        String member3 = historyRequestDTO.getMember3() != null ? historyRequestDTO.getMember3() : "";
+        String member4 = historyRequestDTO.getMember4() != null ? historyRequestDTO.getMember4() : "";
+
         HistoryEntity historyEntity = HistoryEntity.builder() // HistoryRequestDTO를 HistoryEntity로 변환 후 저장
                 .carPoolId(historyRequestDTO.getCarPoolId())
                 .admin(historyRequestDTO.getAdmin())
-                .member1(historyRequestDTO.getMember1())
-                .member2(historyRequestDTO.getMember2())
-                .member3(historyRequestDTO.getMember3())
-                .member4(historyRequestDTO.getMember4())
+                .member1(member1)
+                .member2(member2)
+                .member3(member3)
+                .member4(member4)
                 .nowMember(historyRequestDTO.getNowMember())
-                .maxMember(historyRequestDTO.getMaxMember())
+                .maxMember(maxMember)
                 .startDetailPoint(historyRequestDTO.getStartDetailPoint())
                 .startPoint(historyRequestDTO.getStartPoint())
                 .startPointName(historyRequestDTO.getStartPointName())
