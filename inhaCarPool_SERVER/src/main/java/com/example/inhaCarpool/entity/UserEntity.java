@@ -38,11 +38,11 @@ public class UserEntity {
     @Column(name = "redCard", columnDefinition = "boolean default false") // default false
     private boolean redCard; // 정지 여부
 
-    @OneToMany(mappedBy = "reporter")
-    private List<ReportEntity> reporter; // 신고한 리스트에 접근할 때 사용 (보통 사용 안함)
-
-    @OneToMany(mappedBy = "reportedUser")
-    private List<ReportEntity> reportedUser; // 신고 당한 리스트에 접근할 때 사용 (보통 사용 안함)
+//    @OneToMany(mappedBy = "reporter")
+//    private List<ReportEntity> reporter; // 신고한 리스트에 접근할 때 사용 (보통 사용 안함)
+//
+//    @OneToMany(mappedBy = "reportedUser")
+//    private List<ReportEntity> reportedUser; // 신고 당한 리스트에 접근할 때 사용 (보통 사용 안함)
 
     @OneToMany(mappedBy = "users")
     private List<TopicEntity> users; // 유저가 참여한 토픽(채팅방) 리스트에 접근할 때 사용 (보통 사용 안함)
