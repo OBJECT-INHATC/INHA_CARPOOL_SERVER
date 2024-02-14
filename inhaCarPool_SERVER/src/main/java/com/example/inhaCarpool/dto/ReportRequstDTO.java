@@ -23,10 +23,10 @@ public class ReportRequstDTO {
 
     private String carpoolId;
 
-    // 피신고자 ID
+    // 피신고자 닉네임
     private String reportedUser;
 
-    // 신고자 ID
+    // 신고자 닉네임
     private String reporter;
 
     // 신고 종류

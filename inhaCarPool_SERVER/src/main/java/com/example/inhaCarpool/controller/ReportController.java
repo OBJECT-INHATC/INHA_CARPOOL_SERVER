@@ -1,7 +1,6 @@
 package com.example.inhaCarpool.controller;
 
 import com.example.inhaCarpool.dto.HistoryRequestDTO;
-import com.example.inhaCarpool.dto.ReportResponseDTO;
 import com.example.inhaCarpool.entity.ReportEntity;
 import com.example.inhaCarpool.exception.BaseException;
 import com.example.inhaCarpool.exception.BaseResponse;
@@ -58,17 +57,21 @@ public class ReportController {
 //      }
 //    }
 
-    // (처리 안된)신고 리스트 전체 조회
-    @GetMapping("/select")
-    public BaseResponse<ReportResponseDTO.GetRepostList> findAllReport() {
-        try {
-            ReportResponseDTO.GetRepostList reports = reportService.findAllReportList();
-            log.info("=============신고 리스트 조회가 완료되었습니다.===========> ");
-            return new BaseResponse<>(reports);
-        } catch (BaseException exception) {
-            return new BaseResponse<>(exception.getStatus());
-        }
-    }
+
+    /**
+     * report Entity에서 신고자, 피신고자의 닉네임이 아닌 uid를 저장할 때 사용 가능 (user와 연관관계)
+     */
+//    // (처리 안된)신고 리스트 전체 조회
+//    @GetMapping("/select")
+//    public BaseResponse<ReportResponseDTO.GetRepostList> findAllReport() {
+//        try {
+//            ReportResponseDTO.GetRepostList reports = reportService.findAllReportList();
+//            log.info("=============신고 리스트 조회가 완료되었습니다.===========> ");
+//            return new BaseResponse<>(reports);
+//        } catch (BaseException exception) {
+//            return new BaseResponse<>(exception.getStatus());
+//        }
+//    }
 
 
     // 신고 처리

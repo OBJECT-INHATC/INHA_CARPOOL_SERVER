@@ -1,7 +1,7 @@
 package com.example.inhaCarpool.service;
 
 
-import com.example.inhaCarpool.dto.ReportResponseDTO;
+
 import com.example.inhaCarpool.dto.UserRequstDTO;
 import com.example.inhaCarpool.dto.UserResponseDTO;
 import com.example.inhaCarpool.entity.UserEntity;
@@ -43,15 +43,10 @@ public class ReportService {
     // 신고자, 피신고자의 닉네임을 받아서 uid를 찾아서 저장
     @Transactional
     public void saveReport(ReportRequstDTO reportRequstDTO) throws BaseException {
-        UserEntity reported = userInterface.findByNickname(reportRequstDTO.getReportedUser())
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.REPORTED_USER_NOT_FOUND)); // 피신고자가 없는 경우 예외 처리
-
-        UserEntity user = userInterface.findByNickname(reportRequstDTO.getReporter())
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NOT_FOUND)); // 피신고자가 없는 경우 예외 처리
 
         ReportEntity report = ReportEntity.builder()
-                .reporter(user)
-                .reportedUser(reported)
+                .reporter(reportRequstDTO.getReporter())
+                .reportedUser(reportRequstDTO.getReportedUser())
                 .carPoolId(reportRequstDTO.getCarpoolId())
                 .reportType(reportRequstDTO.getReportType())
                 .content(reportRequstDTO.getContent())
@@ -63,46 +58,49 @@ public class ReportService {
         }
     }
 
-    // 처리안된 신고 리스트 전체 조회
-    @Transactional
-    public ReportResponseDTO.GetRepostList findAllReportList() throws BaseException {
-        List<ReportEntity> reportEntities = reportInterface.findByStatus(false); // 신고 처리 상태가 false인 신고들만 조회
-
-        // 리스트가 비어있으면 빈 리스트 처리
-        if (reportEntities.isEmpty()) {
-            throw new BaseException(BaseResponseStatus.REPORT_NOT_FOUND);
-        }
-
-        List<ReportResponseDTO> reportResponseDTOs = reportEntities.stream()
-                .map(reportEntity -> ReportResponseDTO.builder()
-                        .reportedUser(new UserResponseDTO(
-                                reportEntity.getReportedUser().getUid(),
-                                reportEntity.getReportedUser().getNickname(),
-                                reportEntity.getReportedUser().getEmail(),
-                                reportEntity.getReportedUser().getYellowCard(),
-                                reportEntity.getReportedUser().isRedCard()
-                        ))
-                        .reporter(new UserResponseDTO(
-                                reportEntity.getReporter().getUid(),
-                                reportEntity.getReporter().getNickname(),
-                                reportEntity.getReporter().getEmail(),
-                                reportEntity.getReporter().getYellowCard(),
-                                reportEntity.getReporter().isRedCard()
-                        ))
-                        .carpoolId(reportEntity.getCarPoolId())
-                        .reportType(reportEntity.getReportType())
-                        .content(reportEntity.getContent())
-                        .reportDate(reportEntity.getReportDate().toString())
-                        .status(reportEntity.isStatus())
-                        .reportIdx(reportEntity.getReportIdx())
-                        .build()
-                )
-                .collect(Collectors.toList());
-
-        return ReportResponseDTO.GetRepostList.builder()
-                .getReportList(reportResponseDTOs)
-                .build();
-    }
+    /**
+     *report Entity에서 신고자, 피신고자의 닉네임이 아닌 uid를 저장할 때 사용 가능 (user와 연관관계)
+     */
+//    // 처리안된 신고 리스트 전체 조회
+//    @Transactional
+//    public ReportResponseDTO.GetRepostList findAllReportList() throws BaseException {
+//        List<ReportEntity> reportEntities = reportInterface.findByStatus(false); // 신고 처리 상태가 false인 신고들만 조회
+//
+//        // 리스트가 비어있으면 빈 리스트 처리
+//        if (reportEntities.isEmpty()) {
+//            throw new BaseException(BaseResponseStatus.REPORT_NOT_FOUND);
+//        }
+//
+//        List<ReportResponseDTO> reportResponseDTOs = reportEntities.stream()
+//                .map(reportEntity -> ReportResponseDTO.builder()
+//                        .reportedUser(new UserResponseDTO(
+//                                reportEntity.getReportedUser().getUid(),
+//                                reportEntity.getReportedUser().getNickname(),
+//                                reportEntity.getReportedUser().getEmail(),
+//                                reportEntity.getReportedUser().getYellowCard(),
+//                                reportEntity.getReportedUser().isRedCard()
+//                        ))
+//                        .reporter(new UserResponseDTO(
+//                                reportEntity.getReporter().getUid(),
+//                                reportEntity.getReporter().getNickname(),
+//                                reportEntity.getReporter().getEmail(),
+//                                reportEntity.getReporter().getYellowCard(),
+//                                reportEntity.getReporter().isRedCard()
+//                        ))
+//                        .carpoolId(reportEntity.getCarPoolId())
+//                        .reportType(reportEntity.getReportType())
+//                        .content(reportEntity.getContent())
+//                        .reportDate(reportEntity.getReportDate().toString())
+//                        .status(reportEntity.isStatus())
+//                        .reportIdx(reportEntity.getReportIdx())
+//                        .build()
+//                )
+//                .collect(Collectors.toList());
+//
+//        return ReportResponseDTO.GetRepostList.builder()
+//                .getReportList(reportResponseDTOs)
+//                .build();
+//    }
 
 
 

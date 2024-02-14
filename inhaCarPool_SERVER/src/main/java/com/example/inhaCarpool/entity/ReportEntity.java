@@ -42,17 +42,23 @@ public class ReportEntity {
     @Column(name = "status", columnDefinition = "BOOLEAN DEFAULT false")
     private boolean status; // 신고 처리 상태, 기본값은 false
 
-    @ManyToOne
-    @JoinColumn(name = "reportedUser") // 외래키 컬럼
-    private UserEntity reportedUser; // 피신고자 ID
+    @Column(name = "reportedUser")
+    private String reportedUser; // 피신고자 닉네임
 
-    @ManyToOne
-    @JoinColumn(name = "reporter") // 외래키 컬럼
-    private UserEntity reporter; // 신고자 ID
+    @Column(name = "reporter")
+    private String reporter; // 신고자 닉네임
+
+//    @ManyToOne
+//    @JoinColumn(name = "reportedUser") // 외래키 컬럼
+//    private UserEntity reportedUser; // 피신고자 ID
+//
+//    @ManyToOne
+//    @JoinColumn(name = "reporter") // 외래키 컬럼
+//    private UserEntity reporter; // 신고자 ID
 
     @Builder
-    public ReportEntity(UserEntity reporter, String carPoolId,
-                        UserEntity reportedUser, String content, String reportType) {
+    public ReportEntity(String reporter, String carPoolId,
+                        String reportedUser, String content, String reportType) {
         this.reporter = reporter;
         this.carPoolId = carPoolId;
         this.reportedUser = reportedUser;
