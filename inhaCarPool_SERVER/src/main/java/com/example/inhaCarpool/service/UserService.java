@@ -5,6 +5,7 @@ import com.example.inhaCarpool.dto.UserRequstDTO;
 import com.example.inhaCarpool.entity.UserEntity;
 import com.example.inhaCarpool.exception.BaseException;
 import com.example.inhaCarpool.exception.BaseResponseStatus;
+import com.example.inhaCarpool.repository.ReportInterface;
 import com.example.inhaCarpool.repository.UserInterface;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ import static com.example.inhaCarpool.exception.BaseResponseStatus.DATABASE_INSE
 public class UserService {
 
     private final UserInterface userInterface;
+    private final ReportInterface reportInterface;
 
     // 유저 등록
     public void saveUser(UserRequstDTO userRequstDTO) throws BaseException{
@@ -69,6 +71,10 @@ public class UserService {
     }
 
 
+    // 유저의 신고당한 횟수 조회
+    public int getUserReportedCount(String nickname) {
+        return reportInterface.countByReportedUser(nickname);
+    }
 
 
 

@@ -14,6 +14,7 @@ import java.util.List;
 
 public interface ReportInterface extends JpaRepository<ReportEntity, Long> {
 
-
+    // 피신고자 닉네임으로 신고당한 횟수를 조회
+    int countByReportedUser(String reportedUser);
 
 }

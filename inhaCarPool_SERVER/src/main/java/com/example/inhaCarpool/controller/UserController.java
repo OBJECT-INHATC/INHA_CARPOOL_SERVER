@@ -52,10 +52,19 @@ public class UserController {
         }
     }
 
+    // 유저 경고 횟수 조회
     @GetMapping("/count/yellow")
     public ResponseEntity<Integer> getUserYellowCard(@RequestParam(value = "uid") String uid) {
         int count = userService.getUserYellowCard(uid);
         log.info("===유저의 경고 횟수 조회 :" + count + "=== ");
+        return ResponseEntity.ok(count);
+    }
+
+    // 유저 신고당한 횟수 조회
+    @GetMapping("/count/reported")
+    public ResponseEntity<Integer> getUserReportedCount(@RequestParam(value = "nickname") String nickname) {
+        int count = userService.getUserReportedCount(nickname);
+        log.info("===유저의 신고당한 횟수 조회 :" + count + "=== ");
         return ResponseEntity.ok(count);
     }
 
