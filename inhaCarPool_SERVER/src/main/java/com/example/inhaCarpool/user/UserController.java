@@ -28,12 +28,17 @@ public class UserController {
     @ResponseBody
     @PostMapping("/save")
     public BaseResponse<String>saveUser(@RequestBody UserRequestDTO userRequestDTO) {
-        try{
+        long startTime = System.currentTimeMillis();
+        try {
+            log.info("[UserController]가 {}를 실행합니다. ", "saveUser");
             userService.saveUser(userRequestDTO);
-            log.info("==========[[서버에 유저"+ userRequestDTO.getNickname()+" 님을 등록을 완료]]=========> ");
+            log.info("==========[db에 유저 nickname: {}님을 저장 완료]=========> ", userRequestDTO.getNickname());
             return new BaseResponse<>("서버에 유저 등록이 완료되었습니다.");
-        } catch (BaseException exception){
+        } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
+        } finally {
+            log.info("[UserController] {}의 Response :: uid = {}, nickname = {}, email = {}, Response Time = {}ms ",
+                    "saveUser", userRequestDTO.getUid(), userRequestDTO.getNickname(), userRequestDTO.getEmail(), System.currentTimeMillis() - startTime);
         }
     }
 

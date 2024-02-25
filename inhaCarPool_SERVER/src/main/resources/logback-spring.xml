@@ -15,7 +15,7 @@
         </encoder>
     </appender>
 
-    <root level="INFO"> <!-- 루트 로거 설정 -->
+    <root level="INFO"> <!-- 루트 로거 설정 --> <!-- INFO 이상만 출력 -->
         <appender-ref ref="CONSOLE" /> <!-- 콘솔에 출력 -->
     </root>
 </configuration>

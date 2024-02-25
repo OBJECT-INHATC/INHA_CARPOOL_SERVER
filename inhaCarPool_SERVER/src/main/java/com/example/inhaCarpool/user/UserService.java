@@ -32,7 +32,7 @@ public class UserService {
     private final ReportInterface reportInterface;
 
     // 유저 등록
-    public void saveUser(UserRequestDTO userRequestDTO) throws BaseException{
+    public void saveUser(UserRequestDTO userRequestDTO) throws BaseException {
         log.info("유저 정보 저장 시작===================> "+ userRequestDTO.getNickname());
         UserEntity userEntity = UserEntity.builder()
                 .uid(userRequestDTO.getUid())
@@ -45,7 +45,6 @@ public class UserService {
             log.info("유저 정보 저장 실패===================> "+ userRequestDTO.getNickname());
             throw new BaseException(DATABASE_INSERT_ERROR);
         }
-
     }
 
 
