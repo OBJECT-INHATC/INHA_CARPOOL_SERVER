@@ -1,5 +1,7 @@
 package com.example.inhaCarpool.user.data;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,17 +19,14 @@ import lombok.NoArgsConstructor;
 @Data
 public class UserRequestDTO {
 
+    @NotNull
+//    @Size(min = 28, max = 28) // 파이어베이스 uid 길이
     private String uid;
+
+    @NotNull
     private String nickname;
+
+    @NotNull
     private String email;
-
-
-    @Builder
-    public UserRequestDTO(String uid, String nickname, String email) {
-        this.uid = uid;
-        this.nickname = nickname;
-        this.email = email;
-    }
-
 
 }

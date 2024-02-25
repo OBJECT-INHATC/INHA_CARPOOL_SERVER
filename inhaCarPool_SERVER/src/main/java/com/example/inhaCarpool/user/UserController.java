@@ -3,6 +3,7 @@ package com.example.inhaCarpool.user;
 import com.example.inhaCarpool.exception.BaseException;
 import com.example.inhaCarpool.exception.BaseResponse;
 import com.example.inhaCarpool.user.data.UserRequestDTO;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +25,11 @@ public class UserController {
         this.userService = userService;
     }
 
+
     // 유저가 회원가입 시 서버에 유저 데이터 저장
     @ResponseBody
     @PostMapping("/save")
-    public BaseResponse<String>saveUser(@RequestBody UserRequestDTO userRequestDTO) {
+    public BaseResponse<String>saveUser(@Valid @RequestBody UserRequestDTO userRequestDTO) {
         long startTime = System.currentTimeMillis();
         try {
             log.info("[UserController]가 {}를 실행합니다. ", "saveUser");
