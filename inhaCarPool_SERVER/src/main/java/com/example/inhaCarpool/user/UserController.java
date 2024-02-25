@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  *   @version          1.0    2023.09.01
  *   @author           이상훈
  */
-@Slf4j // 로그를 위한 어노테이션
+@Slf4j // Logback 사용을 위한 어노테이션
 @RequestMapping("/user")
 @RestController
 public class UserController {

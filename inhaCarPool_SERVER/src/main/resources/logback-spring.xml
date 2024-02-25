@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- logback-spring.xml : 스프링 부트에서 logback 설정을 위한 파일 -->
+<!-- spring-boot-starter-web에서 지원 -->
+
+<configuration scan="true" scanPeriod="30 seconds"> <!-- scanPeriod : 30초마다 변경사항을 확인 -->
+    <!-- appender -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender"> <!-- 콘솔에 출력 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter"> <!-- 로그 레벨 설정 -->
+            <level>DEBUG</level> <!-- DEBUG 이상만 출력 -->
+        </filter>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%thread] %logger %msg%n</pattern> <!-- 로그 출력 포맷 -->
+            <!-- %d : 날짜, %level : 로그 레벨, %thread : 쓰레드 이름, %logger : 로거 이름, %msg : 로그 메시지 -->
+        </encoder>
+    </appender>
+
+    <root level="INFO"> <!-- 루트 로거 설정 -->
+        <appender-ref ref="CONSOLE" /> <!-- 콘솔에 출력 -->
+    </root>
+</configuration>
