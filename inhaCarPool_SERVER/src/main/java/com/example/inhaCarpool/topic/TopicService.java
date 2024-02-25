@@ -6,7 +6,7 @@ import com.example.inhaCarpool.user.data.UserEntity;
 import com.example.inhaCarpool.exception.BaseException;
 import com.example.inhaCarpool.exception.BaseResponseStatus;
 import com.example.inhaCarpool.topic.repo.TopicInterface;
-import com.example.inhaCarpool.user.repo.UserInterface;
+import com.example.inhaCarpool.user.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,13 +32,13 @@ public class TopicService {
 
     private final TopicInterface topicInterface;
 
-    private final UserInterface userInterface;
+    private final UserRepository userRepository;
 
     // 토픽 저장
     @Transactional
     public void saveTopic(TopicRequestDTO topicRequestDTO) throws BaseException {
         log.info("---------서버에 카풀을 저장하기 시작합니다 ---------");
-        UserEntity userEntity = userInterface.findByUid(topicRequestDTO.getUid())
+        UserEntity userEntity = userRepository.findByUid(topicRequestDTO.getUid())
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NOT_FOUND)); // 유저가 없는 경우 예외 처리
 
         TopicEntity topicEntity = TopicEntity.builder() // 토픽 저장

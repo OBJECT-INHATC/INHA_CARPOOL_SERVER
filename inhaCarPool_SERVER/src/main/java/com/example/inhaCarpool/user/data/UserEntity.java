@@ -21,8 +21,6 @@ import java.util.List;
 @Entity
 public class UserEntity {
 
-    // 유저가 회원가입 시 생성(저장)되는 엔티티
-
     @Id
     @Column(name = "uid")
     private String uid; // 사용자 ID (파이어베이스 uid를 식별자로)
@@ -39,17 +37,11 @@ public class UserEntity {
     @Column(name = "redCard", columnDefinition = "boolean default false") // default false
     private boolean redCard; // 정지 여부
 
-//    @OneToMany(mappedBy = "reporter")
-//    private List<ReportEntity> reporter; // 신고한 리스트에 접근할 때 사용 (보통 사용 안함)
-//
-//    @OneToMany(mappedBy = "reportedUser")
-//    private List<ReportEntity> reportedUser; // 신고 당한 리스트에 접근할 때 사용 (보통 사용 안함)
-
-    @OneToMany(mappedBy = "users")
-    private List<TopicEntity> users; // 유저가 참여한 토픽(채팅방) 리스트에 접근할 때 사용 (보통 사용 안함)
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private List<TopicEntity> users; // 유저가 참여한 토픽(채팅방) 리스트에 접근할 때 사용
 
     @Builder
-    public UserEntity(String uid, String nickname, String email) { // 유저 엔티티의 생성자
+    public UserEntity(String uid, String nickname, String email) {
         this.uid = uid;
         this.nickname = nickname;
         this.email = email;

@@ -2,51 +2,40 @@ package com.example.inhaCarpool.user;
 
 import com.example.inhaCarpool.exception.BaseException;
 import com.example.inhaCarpool.exception.BaseResponse;
-import com.example.inhaCarpool.user.data.UserRequestDTO;
+import com.example.inhaCarpool.user.data.UserSaveDTO;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 /**
- *    User 관련 기능을 담당하는 Controller
+ * User 관련 기능을 담당하는 Controller
  *
- *   @version          1.0    2023.09.01
- *   @author           이상훈
  */
-@Slf4j // 로그를 위한 어노테이션
+@Slf4j
 @RequestMapping("/user")
 @RestController
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
-    // 유저가 회원가입 시 서버에 유저 데이터 저장
-    @ResponseBody
+    /**
+     * 유저를 저장합니다
+     *
+     * @param userSaveDTO - 저장할 유저 정보를 담은 request DTO
+     * @return ResponseEntity<Void> - 저장 성공 시 200 OK, 실패 시 400 Bad Request
+     */
     @PostMapping("/save")
-    public BaseResponse<String>saveUser(@RequestBody UserRequestDTO userRequestDTO) {
-        try{
-            userService.saveUser(userRequestDTO);
-            log.info("==========[[서버에 유저"+ userRequestDTO.getNickname()+" 님을 등록을 완료]]=========> ");
-            return new BaseResponse<>("서버에 유저 등록이 완료되었습니다.");
-        } catch (BaseException exception){
-            return new BaseResponse<>(exception.getStatus());
-        }
-    }
-
-    // 유저 닉네임 업데이트 (현재 사용 X)
-    @PutMapping("/update/{uid}/{newNickname}")
-    public BaseResponse<String> updateStatus(@PathVariable String uid, @PathVariable String newNickname) {
-            log.info("=======서버에 닉네임 "+newNickname+" 으로 변경 진행=========> ");
+    public ResponseEntity<Void> saveUser(@RequestBody UserSaveDTO userSaveDTO) {
         try {
-            userService.updateNickname(uid, newNickname);
-            log.info("======닉네임 업데이트가 완료되었습니다.=======> "+ newNickname);
-            return new BaseResponse<>("유저 닉네임 업데이트가 완료되었습니다.");
-        } catch (BaseException exception) {
-            return new BaseResponse<>(exception.getStatus());
+            userService.saveUser(userSaveDTO);
+            log.info("==========controller: [[서버에 유저"+ userSaveDTO.getNickname()+" 님을 등록을 완료]]=========> ");
+            return ResponseEntity.ok().build();
+        } catch (Exception e){
+            log.info("==========controller: [[서버에 유저"+ userSaveDTO.getNickname()+" 님을 등록을 실패]]=========> ");
+            return ResponseEntity.badRequest().build();
         }
     }
 

@@ -2,19 +2,16 @@ package com.example.inhaCarpool.user;
 
 
 import com.example.inhaCarpool.exception.BaseException;
-import com.example.inhaCarpool.exception.BaseResponseStatus;
 import com.example.inhaCarpool.report.repo.ReportInterface;
 import com.example.inhaCarpool.user.data.UserEntity;
-import com.example.inhaCarpool.user.repo.UserInterface;
-import com.example.inhaCarpool.user.data.UserRequestDTO;
+import com.example.inhaCarpool.user.data.UserSaveDTO;
+import com.example.inhaCarpool.user.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
-import static com.example.inhaCarpool.exception.BaseResponseStatus.DATABASE_INSERT_ERROR;
 
 /**
  * User 관련 기능을 담당하는 Service
@@ -26,43 +23,35 @@ import static com.example.inhaCarpool.exception.BaseResponseStatus.DATABASE_INSE
 @RequiredArgsConstructor // final + not null 생성자 생성 -> 의존성 주입
 @Slf4j
 @Service
+@Transactional
 public class UserService {
 
-    private final UserInterface userInterface;
+    private final UserRepository userRepository;
     private final ReportInterface reportInterface;
 
-    // 유저 등록
-    public void saveUser(UserRequestDTO userRequestDTO) throws BaseException{
-        log.info("유저 정보 저장 시작===================> "+ userRequestDTO.getNickname());
-        UserEntity userEntity = UserEntity.builder()
-                .uid(userRequestDTO.getUid())
-                .nickname(userRequestDTO.getNickname())
-                .email(userRequestDTO.getEmail())
-                .build();
-        try {
-            userInterface.save(userEntity);
-        } catch (Exception e) {
-            log.info("유저 정보 저장 실패===================> "+ userRequestDTO.getNickname());
-            throw new BaseException(DATABASE_INSERT_ERROR);
+    /**
+     * 유저를 저장합니다
+     *
+     * @param userSaveDTO - 저장할 유저 정보를 담은 request DTO
+     */
+    public void saveUser(UserSaveDTO userSaveDTO) throws Exception {
+        log.info("service: 유저 정보 저장 시작===================> ");
+
+        if (userRepository.findByUid(userSaveDTO.getUid()).isPresent()) {
+            throw new Exception("이미 존재하는 uid입니다.");
         }
 
+        UserEntity userEntity = UserEntity.builder() // UserEntity 객체 생성 - 비영속 상태
+                .uid(userSaveDTO.getUid())
+                .nickname(userSaveDTO.getNickname())
+                .email(userSaveDTO.getEmail())
+                .build();
+        userRepository.save(userEntity); // 영속 상태로 변경 + DB에 저장
     }
-
-
-    // 닉네임 업데이트
-    @Transactional
-    public void updateNickname(String uid, String newNickname) throws BaseException {
-        UserEntity userEntity = userInterface.findByUid(uid)
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NOT_FOUND)); // 신고가 없는 경우 예외 처리
-        // 해당 Uid 컬럼의 nickname 필드를 업데이트
-        userEntity.setNickname(newNickname);
-
-    }
-
 
     // 유저의 경고 횟수 조회
     public int getUserYellowCard(String uid) {
-        Optional<UserEntity> userEntity = userInterface.findByUid(uid);
+        Optional<UserEntity> userEntity = userRepository.findByUid(uid);
         if (userEntity.isPresent()) {
             return userEntity.get().getYellowCard();
         } else {

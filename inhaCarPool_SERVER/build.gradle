@@ -37,14 +37,14 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
     //JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    //web
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    //restful api
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
     //firebase
     implementation group: 'com.google.firebase', name: 'firebase-admin', version: '9.1.1'
     //security
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    //
-    implementation 'org.springframework.boot:spring-boot-starter-web'
 
 
 }

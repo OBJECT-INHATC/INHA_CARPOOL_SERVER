@@ -7,7 +7,7 @@ import com.example.inhaCarpool.exception.BaseException;
 import com.example.inhaCarpool.exception.BaseResponseStatus;
 import com.example.inhaCarpool.report.data.ReportRequstDTO;
 import com.example.inhaCarpool.report.data.ReportEntity;
-import com.example.inhaCarpool.user.repo.UserInterface;
+import com.example.inhaCarpool.user.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class ReportService {
 
     private final ReportInterface reportInterface;
 
-    private final UserInterface userInterface;
+    private final UserRepository userRepository;
 
 
     // 신고자, 피신고자의 닉네임을 받아서 uid를 찾아서 저장
@@ -158,7 +158,7 @@ public class ReportService {
     // 경고 처리
     @Transactional
     public void updateYellowCard(String uid) throws BaseException {
-        UserEntity userEntity = userInterface.findByUid(uid)
+        UserEntity userEntity = userRepository.findByUid(uid)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NOT_FOUND)); // 유저가 없는 경우 예외 처리
 
         // 이미 정지된 유저인 경우 예외 처리
@@ -171,13 +171,13 @@ public class ReportService {
         if(userEntity.getYellowCard() >= 3) {
             updateRedCard(uid); // 경고 횟수가 3회 이상이면 정지 처리
         }
-        userInterface.save(userEntity);
+        userRepository.save(userEntity);
     }
 
     // 정지 처리
     @Transactional
     public void updateRedCard(String uid) throws BaseException {
-        UserEntity userEntity = userInterface.findByUid(uid)
+        UserEntity userEntity = userRepository.findByUid(uid)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NOT_FOUND)); // 유저가 없는 경우 예외 처리
 
         // 이미 정지된 유저인 경우 예외 처리
@@ -187,7 +187,7 @@ public class ReportService {
         }
 
         userEntity.setRedCard(true); // 정지 상태로 변경
-        userInterface.save(userEntity);
+        userRepository.save(userEntity);
     }
 
 }
