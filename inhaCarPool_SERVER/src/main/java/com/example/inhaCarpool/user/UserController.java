@@ -5,8 +5,13 @@ import com.example.inhaCarpool.exception.BaseResponse;
 import com.example.inhaCarpool.user.data.UserRequestDTO;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -24,7 +29,6 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
 
     // 유저가 회원가입 시 서버에 유저 데이터 저장
     @ResponseBody
@@ -71,6 +75,29 @@ public class UserController {
         int count = userService.getUserReportedCount(nickname);
         log.info("===유저의 신고당한 횟수 조회 :" + count + "=== ");
         return ResponseEntity.ok(count);
+    }
+
+
+    @PostMapping("/exception")
+    public void exceptionTest() throws Exception {
+        throw new Exception("test exception");
+    }
+
+    @ExceptionHandler(Exception.class) // UserController 내에서 발생하는 모든 예외를 처리
+    public ResponseEntity<Map<String, String>> ExceptionHandler(Exception e) {
+        // ResponseEntity를 반환하기 때문에 header, body, status 채워 넣음
+        HttpHeaders responseHeaders = new HttpHeaders();
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        log.info(e.getMessage());
+        log.info("Controller 내 ExceptionHandler 호출");
+
+        Map<String, String> map = new HashMap<>();
+        map.put("error type", httpStatus.getReasonPhrase());
+        map.put("code", "400");
+        map.put("message", "에러 발생");
+
+        return new ResponseEntity<>(map, responseHeaders, httpStatus);
     }
 
 }
