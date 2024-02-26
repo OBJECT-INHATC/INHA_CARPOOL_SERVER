@@ -183,6 +183,7 @@ public class CarpoolService {
                                 // firestore에서 carpool을 삭제
                                 firestore.collection(COLLECTION_NAME).document(carId).delete();
                                 log.info("삭제된 carpool id: " + carId);
+                                topicService.deleteTopicByCarId(carId);
                             } catch (Exception e) {
                                 log.info("------------파이어스토어에서 카풀 삭제 실패(카풀삭제스케줄러) ------------");
                                 e.printStackTrace();
