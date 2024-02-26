@@ -41,6 +41,11 @@ public class TopicService {
         UserEntity userEntity = userInterface.findByUid(topicRequestDTO.getUid())
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NOT_FOUND)); // 유저가 없는 경우 예외 처리
 
+        // 이미 있는 경우
+        if (topicInterface.findByUsersUidAndCarId(topicRequestDTO.getUid(), topicRequestDTO.getCarId()).isPresent()) {
+            throw new BaseException(BaseResponseStatus.TOPIC_ALREADY_EXIST);
+        }
+
         TopicEntity topicEntity = TopicEntity.builder() // 토픽 저장
                 .users(userEntity)
                 .carId(topicRequestDTO.getCarId())

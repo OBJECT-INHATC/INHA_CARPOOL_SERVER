@@ -25,7 +25,8 @@ public enum BaseResponseStatus {
     ALREADY_PROCESSED(false, 6003, "이미 처리된 신고입니다."),
 
     //토픽 에러
-    TOPIC_NOT_FOUND(false, 7000, "토픽이 없습니다.");
+    TOPIC_NOT_FOUND(false, 7000, "토픽이 없습니다."),
+    TOPIC_ALREADY_EXIST(false, 7001, "이미 토픽이 존재합니다.");
 
     private final boolean isSuccess;
     private final int statusCode;

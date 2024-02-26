@@ -25,5 +25,7 @@ public interface TopicInterface extends JpaRepository<TopicEntity, Long> {
 
     List<TopicEntity> findByUsersUid(String uid);
 
+    Optional<TopicEntity> findByUsersUidAndCarId(String uid, String carId);
+
 
 }
