@@ -1,10 +1,13 @@
 package com.example.inhaCarpool.topic;
 
+import com.example.inhaCarpool.exception.Constants;
+import com.example.inhaCarpool.exception.InhaCarpoolException;
 import com.example.inhaCarpool.topic.data.TopicRequestDTO;
 import com.example.inhaCarpool.exception.BaseException;
 import com.example.inhaCarpool.exception.BaseResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -63,5 +66,10 @@ public class TopicController {
             return new ArrayList<>();
 
         }
+    }
+
+    @PostMapping(value = "/topic/exception")
+    public void exceptionTest() throws InhaCarpoolException {
+        throw new InhaCarpoolException(Constants.ExceptionClass.PRODUCT, HttpStatus.BAD_REQUEST, "의도한 에러 발생");
     }
 }
