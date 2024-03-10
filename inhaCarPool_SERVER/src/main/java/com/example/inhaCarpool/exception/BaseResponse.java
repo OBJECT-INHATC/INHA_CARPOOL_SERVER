@@ -10,12 +10,16 @@ import lombok.Data;
 @AllArgsConstructor
 @JsonPropertyOrder({"isSuccess", "statusCode", "message", "result"})
 public class BaseResponse<T> {
+
     @JsonProperty("isSuccess")
-    private final Boolean isSuccess;
-    private String message;
-    private final int statusCode;
+    private final Boolean isSuccess; // 성공 여부
+
+    private final int statusCode; // 상태 코드
+
+    private String message; // 메시지
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private T result;
+    private T result; // 결과
 
     /**
      * 성공 시
@@ -23,8 +27,8 @@ public class BaseResponse<T> {
      */
     public BaseResponse(T result) {
         this.isSuccess = BaseResponseStatus.SUCCESS.isSuccess();
-        this.message = BaseResponseStatus.SUCCESS.getMessage();
         this.statusCode = BaseResponseStatus.SUCCESS.getStatusCode();
+        this.message = BaseResponseStatus.SUCCESS.getMessage();
         this.result = result;
     }
 
@@ -34,11 +38,10 @@ public class BaseResponse<T> {
      */
     public BaseResponse(BaseResponseStatus status) {
         this.isSuccess = status.isSuccess();
-        this.message = status.getMessage();
         this.statusCode = status.getStatusCode();
+        this.message = status.getMessage();
     }
 
-    //실패 시 param: isSuccess, statusCode, message
     public BaseResponse(Boolean isSuccess, int statusCode, String message) {
         this.isSuccess = isSuccess;
         this.statusCode = statusCode;
