@@ -3,6 +3,7 @@ package com.example.inhaCarpool.user;
 import com.example.inhaCarpool.exception.BaseException;
 import com.example.inhaCarpool.exception.BaseResponse;
 import com.example.inhaCarpool.user.data.UserRequestDTO;
+import com.example.inhaCarpool.user.data.UserSignUpDTO;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -15,10 +16,7 @@ import java.util.Map;
 
 
 /**
- *    User 관련 기능을 담당하는 Controller
- *
- *   @version          1.0    2023.09.01
- *   @author           이상훈
+ *   User 관련 기능을 담당하는 Controller
  */
 @Slf4j // Logback 사용을 위한 어노테이션
 @RequestMapping("/user")
@@ -30,21 +28,32 @@ public class UserController {
         this.userService = userService;
     }
 
-    // 유저가 회원가입 시 서버에 유저 데이터 저장
-    @ResponseBody
+    /**
+     * 유저 등록
+     * @param userSignUpDTO : db에 저장할 유저 정보
+     *                       - uid : 유저 고유번호
+     *                       - nickname : 유저 닉네임
+     *                       - email : 유저 이메일
+     * @return BaseResponse<String> : 서버에 유저 등록이 완료되었는지 여부
+     */
     @PostMapping("/save")
-    public BaseResponse<String>saveUser(@Valid @RequestBody UserRequestDTO userRequestDTO) {
+    public BaseResponse<String> saveUser(
+            @Valid // @RequestBody로 받은 객체에 대한 유효성 검사를 진행
+            @RequestBody UserSignUpDTO userSignUpDTO) {
         long startTime = System.currentTimeMillis();
         try {
-            log.info("[UserController]가 {}를 실행합니다. ", "saveUser");
-            userService.saveUser(userRequestDTO);
-            log.info("==========[db에 유저 nickname: {}님을 저장 완료]=========> ", userRequestDTO.getNickname());
+            log.info("{}를 실행합니다.", "saveUser");
+
+            userService.saveUser(userSignUpDTO);
+
+            log.info("[User Table 유저 등록]:: uid : {}, nickname : {}, email : {}",
+                    userSignUpDTO.getUid(), userSignUpDTO.getNickname(), userSignUpDTO.getEmail());
             return new BaseResponse<>("서버에 유저 등록이 완료되었습니다.");
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
         } finally {
-            log.info("[UserController] {}의 Response :: uid = {}, nickname = {}, email = {}, Response Time = {}ms ",
-                    "saveUser", userRequestDTO.getUid(), userRequestDTO.getNickname(), userRequestDTO.getEmail(), System.currentTimeMillis() - startTime);
+            log.info("[{} 실행 완료]:: time taken = {}ms ",
+                    "saveUser", System.currentTimeMillis() - startTime);
         }
     }
 

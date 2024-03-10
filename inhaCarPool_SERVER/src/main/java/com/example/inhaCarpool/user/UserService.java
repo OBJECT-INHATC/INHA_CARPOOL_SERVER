@@ -5,6 +5,7 @@ import com.example.inhaCarpool.exception.BaseException;
 import com.example.inhaCarpool.exception.BaseResponseStatus;
 import com.example.inhaCarpool.report.repo.ReportInterface;
 import com.example.inhaCarpool.user.data.UserEntity;
+import com.example.inhaCarpool.user.data.UserSignUpDTO;
 import com.example.inhaCarpool.user.repo.UserInterface;
 import com.example.inhaCarpool.user.data.UserRequestDTO;
 import jakarta.transaction.Transactional;
@@ -32,19 +33,15 @@ public class UserService {
     private final ReportInterface reportInterface;
 
     // 유저 등록
-    public void saveUser(UserRequestDTO userRequestDTO) throws BaseException {
-        log.info("유저 정보 저장 시작===================> "+ userRequestDTO.getNickname());
+    public void saveUser(UserSignUpDTO userSignUpDTO) throws BaseException {
+
         UserEntity userEntity = UserEntity.builder()
-                .uid(userRequestDTO.getUid())
-                .nickname(userRequestDTO.getNickname())
-                .email(userRequestDTO.getEmail())
+                .uid(userSignUpDTO.getUid())
+                .nickname(userSignUpDTO.getNickname())
+                .email(userSignUpDTO.getEmail())
                 .build();
-        try {
-            userInterface.save(userEntity);
-        } catch (Exception e) {
-            log.info("유저 정보 저장 실패===================> "+ userRequestDTO.getNickname());
-            throw new BaseException(DATABASE_INSERT_ERROR);
-        }
+
+        userInterface.save(userEntity);
     }
 
 
