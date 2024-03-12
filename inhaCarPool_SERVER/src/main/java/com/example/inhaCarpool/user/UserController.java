@@ -150,12 +150,15 @@ public class UserController {
         HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        log.info("[예외 응답] {}의 ExceptionHandler 호출:: e.message: {}", "UserController", e.getMessage());
+        String validExceptionMessage = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+
+        log.info("[예외 응답] {}의 ExceptionHandler 호출:: e.message: {}", "UserController",
+                validExceptionMessage);
 
         Map<String, String> map = new HashMap<>();
         map.put("error type", httpStatus.getReasonPhrase());
         map.put("code", "400");
-        map.put("message", e.getMessage());
+        map.put("message", validExceptionMessage);
 
         return new ResponseEntity<>(map, responseHeaders, httpStatus);
     }

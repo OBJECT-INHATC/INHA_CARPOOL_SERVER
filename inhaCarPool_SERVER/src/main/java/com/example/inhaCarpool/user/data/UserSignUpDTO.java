@@ -10,16 +10,14 @@ import lombok.NoArgsConstructor;
  * - 유저 정보 저장 시 필요한 정보를 담은 DTO 클래스
  */
 @Data
-@NoArgsConstructor
 public class UserSignUpDTO {
 
-    @Size(min = 28, max = 28) // 파이어베이스 uid 길이
-    @NotNull
+    @Size(min = 28, max = 28, message = "uid는 28자여야 합니다.") // 파이어베이스 uid 길이
     private String uid;
 
-    @NotNull
+    @NotNull(message = "닉네임은 필수 입력값입니다.")
     private String nickname;
 
-    @NotNull
+    @NotNull(message = "이메일은 필수 입력값입니다.")
     private String email;
 }
