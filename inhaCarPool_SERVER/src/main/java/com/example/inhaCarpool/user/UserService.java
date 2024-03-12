@@ -11,6 +11,7 @@ import com.example.inhaCarpool.user.data.UserRequestDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -37,15 +38,15 @@ public class UserService {
      * 유저 등록 서비스 로직
      *
      * @param userSignUpDTO : db에 저장할 유저 정보
-     * @throws Exception : 이미 존재하는 유저일 경우 예외 처리.
+     * @throws DuplicateKeyException : 이미 존재하는 유저일 경우 예외 처리.
      * throw new Exception 으로 Controller 계층으로 예외를 위임
      *
      */
-    public void saveUser(UserSignUpDTO userSignUpDTO) throws Exception {
+    public void saveUser(UserSignUpDTO userSignUpDTO) throws DuplicateKeyException {
         // 유효성 검사는 Controller의 Vaild를 통해 이미 완료된 후 Service 계층으로 넘어옴
 
         if(userInterface.existsById(userSignUpDTO.getUid())) {
-            throw new Exception("해당 유저가 이미 존재합니다.");
+            throw new DuplicateKeyException("해당 유저가 이미 존재합니다.");
         }
 
         // DTO를 Entity로 변환

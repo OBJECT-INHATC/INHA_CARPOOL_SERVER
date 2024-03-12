@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class UserSignUpDTO {
 
     @Size(min = 28, max = 28) // 파이어베이스 uid 길이
+    @NotNull
     private String uid;
 
     @NotNull
