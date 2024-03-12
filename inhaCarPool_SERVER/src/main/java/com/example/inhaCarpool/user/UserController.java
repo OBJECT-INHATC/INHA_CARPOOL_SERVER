@@ -5,7 +5,9 @@ import com.example.inhaCarpool.exception.BaseResponse;
 import com.example.inhaCarpool.user.data.UserRequestDTO;
 import com.example.inhaCarpool.user.data.UserSignUpDTO;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +23,10 @@ import java.util.Map;
 @Slf4j // Logback 사용을 위한 어노테이션
 @RequestMapping("/user")
 @RestController
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     /**
      * 유저 등록
@@ -34,27 +34,25 @@ public class UserController {
      *                       - uid : 유저 고유번호
      *                       - nickname : 유저 닉네임
      *                       - email : 유저 이메일
+     * @throws Exception : 이미 존재하는 유저일 경우 예외 처리. service 로부터 전달되어온 예외를 ExceptionHandler로 위임
      * @return BaseResponse<String> : 서버에 유저 등록이 완료되었는지 여부
      */
     @PostMapping("/save")
-    public BaseResponse<String> saveUser(
+    public ResponseEntity<String> saveUser(
             @Valid // @RequestBody로 받은 객체에 대한 유효성 검사를 진행
-            @RequestBody UserSignUpDTO userSignUpDTO) {
+            @RequestBody UserSignUpDTO userSignUpDTO) throws Exception {
+
         long startTime = System.currentTimeMillis();
-        try {
-            log.info("{}를 실행합니다.", "saveUser");
+        log.info("{}를 실행합니다.", "saveUser");
 
-            userService.saveUser(userSignUpDTO);
+        userService.saveUser(userSignUpDTO);
+        log.info("[User Table 유저 등록 완료]:: uid : {}, nickname : {}, email : {}",
+                userSignUpDTO.getUid(), userSignUpDTO.getNickname(), userSignUpDTO.getEmail());
 
-            log.info("[User Table 유저 등록]:: uid : {}, nickname : {}, email : {}",
-                    userSignUpDTO.getUid(), userSignUpDTO.getNickname(), userSignUpDTO.getEmail());
-            return new BaseResponse<>("서버에 유저 등록이 완료되었습니다.");
-        } catch (BaseException exception) {
-            return new BaseResponse<>(exception.getStatus());
-        } finally {
-            log.info("[{} 실행 완료]:: time taken = {}ms ",
-                    "saveUser", System.currentTimeMillis() - startTime);
-        }
+        log.info("[{} 실행 완료]:: time taken = {}ms ",
+                "saveUser", System.currentTimeMillis() - startTime);
+
+        return ResponseEntity.ok("유저 등록이 완료되었습니다.");
     }
 
     // 유저 닉네임 업데이트 (현재 사용 X)
@@ -92,14 +90,19 @@ public class UserController {
         throw new Exception("test exception");
     }
 
-    @ExceptionHandler(Exception.class) // UserController 내에서 발생하는 모든 예외를 처리
+    /**
+     * ExceptionHandler
+     * - UserController 내에서 발생하는 예외를 처리하는 메소드
+     * @param e : 발생한 예외
+     * @return ResponseEntity<Map<String, String>> : 예외 처리 결과
+     */
+    @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> ExceptionHandler(Exception e) {
         // ResponseEntity를 반환하기 때문에 header, body, status 채워 넣음
         HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        log.info(e.getMessage());
-        log.info("Controller 내 ExceptionHandler 호출");
+        log.info("Controller 내 ExceptionHandler 호출:: {} error 발생", e.getMessage());
 
         Map<String, String> map = new HashMap<>();
         map.put("error type", httpStatus.getReasonPhrase());

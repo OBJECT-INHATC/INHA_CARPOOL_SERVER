@@ -24,24 +24,41 @@ import static com.example.inhaCarpool.exception.BaseResponseStatus.DATABASE_INSE
  * @version 1.00    2023.09.01
  */
 
-@RequiredArgsConstructor // final + not null 생성자 생성 -> 의존성 주입
+@RequiredArgsConstructor
 @Slf4j
 @Service
+@Transactional
 public class UserService {
 
     private final UserInterface userInterface;
     private final ReportInterface reportInterface;
 
-    // 유저 등록
-    public void saveUser(UserSignUpDTO userSignUpDTO) throws BaseException {
+    /**
+     * 유저 등록 서비스 로직
+     *
+     * @param userSignUpDTO : db에 저장할 유저 정보
+     * @throws Exception : 이미 존재하는 유저일 경우 예외 처리.
+     * throw new Exception 으로 Controller 계층으로 예외를 위임
+     *
+     */
+    public void saveUser(UserSignUpDTO userSignUpDTO) throws Exception {
+        // 유효성 검사는 Controller의 Vaild를 통해 이미 완료된 후 Service 계층으로 넘어옴
 
+        if(userInterface.existsById(userSignUpDTO.getUid())) {
+            throw new Exception("해당 유저가 이미 존재합니다.");
+        }
+
+        // DTO를 Entity로 변환
         UserEntity userEntity = UserEntity.builder()
                 .uid(userSignUpDTO.getUid())
                 .nickname(userSignUpDTO.getNickname())
                 .email(userSignUpDTO.getEmail())
                 .build();
 
+        // 영속성 컨텍스트에 저장
         userInterface.save(userEntity);
+
+        // 이 후 Transaction의 commit 시점에 DB에 반영됨
     }
 
 
