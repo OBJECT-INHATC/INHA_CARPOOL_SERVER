@@ -45,9 +45,9 @@ public class UserService {
     public void saveUser(UserSignUpDTO userSignUpDTO) throws DuplicateKeyException {
         // 유효성 검사는 Controller의 Vaild를 통해 이미 완료된 후 Service 계층으로 넘어옴
 
-        if(userInterface.existsById(userSignUpDTO.getUid())) {
-            throw new DuplicateKeyException("해당 유저가 이미 존재합니다.");
-        }
+//        if(userInterface.existsById(userSignUpDTO.getUid())) {
+//            throw new DuplicateKeyException("해당 유저가 이미 존재합니다.");
+//        }
 
         // DTO를 Entity로 변환
         UserEntity userEntity = UserEntity.builder()
