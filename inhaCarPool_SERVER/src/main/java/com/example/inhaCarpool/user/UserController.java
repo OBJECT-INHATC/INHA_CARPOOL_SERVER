@@ -4,6 +4,8 @@ import com.example.inhaCarpool.exception.BaseException;
 import com.example.inhaCarpool.exception.BaseResponse;
 import com.example.inhaCarpool.user.data.UserSignUpDTO;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
@@ -56,6 +58,30 @@ public class UserController {
         return responseSuccess("유저 등록이 완료되었습니다.");
     }
 
+    /**
+     * 유저가 신고 당한 횟수 조회
+     *
+     * @param nickname : 유저 닉네임
+     * @return ResponseEntity<Integer>: 유저가 신고 당한 횟수
+     */
+    @GetMapping("/count/reported")
+    public ResponseEntity<Integer> getUserReportedCount(
+            @RequestParam(value = "nickname") @Min(value = 5, message = "Validated 테스트") String nickname) {
+
+        long startTime = System.currentTimeMillis();
+        log.info("{}를 실행합니다.", "getUserReportedCount");
+
+        int count = userService.getUserReportedCount(nickname);
+        log.info("[User Table 유저가 신고 당한 횟수 조회 완료]:: nickname : {}, count : {}",
+                nickname, count);
+
+        log.info("[{} 실행 완료]:: time taken = {}ms ",
+                "getUserReportedCount", System.currentTimeMillis() - startTime);
+
+        return ResponseEntity.ok(count);
+    }
+
+
     // 유저 닉네임 업데이트 (현재 사용 X)
     @PutMapping("/update/{uid}/{newNickname}")
     public BaseResponse<String> updateStatus(@PathVariable String uid, @PathVariable String newNickname) {
@@ -77,13 +103,6 @@ public class UserController {
         return ResponseEntity.ok(count);
     }
 
-    // 유저 신고당한 횟수 조회
-    @GetMapping("/count/reported")
-    public ResponseEntity<Integer> getUserReportedCount(@RequestParam(value = "nickname") String nickname) {
-        int count = userService.getUserReportedCount(nickname);
-        log.info("===유저의 신고당한 횟수 조회 :" + count + "=== ");
-        return ResponseEntity.ok(count);
-    }
 
 
     /**
@@ -177,5 +196,6 @@ public class UserController {
 
         return new ResponseEntity<>(map, responseHeaders, httpStatus);
     }
+
 
 }

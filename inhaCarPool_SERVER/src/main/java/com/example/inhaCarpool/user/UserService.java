@@ -63,6 +63,12 @@ public class UserService {
     }
 
 
+    // 유저의 신고당한 횟수 조회
+    public int getUserReportedCount(String nickname) {
+        return reportInterface.countByReportedUser(nickname);
+    }
+
+
     // 닉네임 업데이트
     @Transactional
     public void updateNickname(String uid, String newNickname) throws BaseException {
@@ -85,10 +91,7 @@ public class UserService {
     }
 
 
-    // 유저의 신고당한 횟수 조회
-    public int getUserReportedCount(String nickname) {
-        return reportInterface.countByReportedUser(nickname);
-    }
+
 
 
 
