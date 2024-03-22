@@ -31,7 +31,7 @@ public class UserController {
     private final UserService userService;
 
     /**
-     * 유저 등록
+     * 유저 등록 - apiURL: /user/save
      *
      * @param userSignUpDTO : db에 저장할 유저 정보
      *                      - uid : 유저 고유번호
@@ -46,34 +46,28 @@ public class UserController {
             @RequestBody UserSignUpDTO userSignUpDTO) throws DuplicateKeyException {
 
         long startTime = System.currentTimeMillis();
-        log.info("{}를 실행합니다.", "saveUser");
 
         userService.saveUser(userSignUpDTO);
-        log.info("[User Table 유저 등록 완료]:: uid : {}, nickname : {}, email : {}",
-                userSignUpDTO.getUid(), userSignUpDTO.getNickname(), userSignUpDTO.getEmail());
+        log.info("[User Table에 유저 등록 완료]:: {}", userSignUpDTO.toString());
 
-        log.info("[{} 실행 완료]:: time taken = {}ms ",
-                "saveUser", System.currentTimeMillis() - startTime);
-
-        return responseSuccess("유저 등록이 완료되었습니다.");
+        long timeTaken = System.currentTimeMillis() - startTime;
+        return responseSuccess("유저 등록이 완료되었습니다.", timeTaken);
     }
 
     /**
-     * 유저가 신고 당한 횟수 조회
+     * 유저가 신고 당한 횟수 조회 - apiURL: /user/count/reported/{nickname}
      *
      * @param nickname : 유저 닉네임
      * @return ResponseEntity<Integer>: 유저가 신고 당한 횟수
      */
     @GetMapping("/count/reported")
     public ResponseEntity<Integer> getUserReportedCount(
-            @RequestParam(value = "nickname") @Min(value = 5, message = "Validated 테스트") String nickname) {
+            @RequestParam(value = "nickname") String nickname) {
 
         long startTime = System.currentTimeMillis();
-        log.info("{}를 실행합니다.", "getUserReportedCount");
 
         int count = userService.getUserReportedCount(nickname);
-        log.info("[User Table 유저가 신고 당한 횟수 조회 완료]:: nickname : {}, count : {}",
-                nickname, count);
+        log.info("[Report Table에서 유저가 신고당한 횟수 조회 완료]:: {}", count);
 
         log.info("[{} 실행 완료]:: time taken = {}ms ",
                 "getUserReportedCount", System.currentTimeMillis() - startTime);
@@ -183,11 +177,11 @@ public class UserController {
     }
 
     // 응답 성공 시 반환되는 ResponseEntity 객체
-    public ResponseEntity<Map<String, String>> responseSuccess(String successMessage) {
+    public ResponseEntity<Map<String, String>> responseSuccess(String successMessage, Long timeTaken) {
         HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus httpStatus = HttpStatus.OK;
 
-        log.info("[응답 성공] {}의 responseSuccess 호출:: successMessage: {}", "UserController", successMessage);
+        log.info("[응답 성공] message: {} timeTaken = {}ms", successMessage, timeTaken);
 
         Map<String, String> map = new HashMap<>();
         map.put("error type", httpStatus.getReasonPhrase());

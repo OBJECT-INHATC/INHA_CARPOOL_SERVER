@@ -7,12 +7,11 @@ import com.example.inhaCarpool.report.repo.ReportInterface;
 import com.example.inhaCarpool.user.data.UserEntity;
 import com.example.inhaCarpool.user.data.UserSignUpDTO;
 import com.example.inhaCarpool.user.repo.UserInterface;
-import com.example.inhaCarpool.user.data.UserRequestDTO;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -20,9 +19,6 @@ import static com.example.inhaCarpool.exception.BaseResponseStatus.DATABASE_INSE
 
 /**
  * User 관련 기능을 담당하는 Service
- *
- * @author 이상훈
- * @version 1.00    2023.09.01
  */
 
 @RequiredArgsConstructor
@@ -45,9 +41,13 @@ public class UserService {
     public void saveUser(UserSignUpDTO userSignUpDTO) throws DuplicateKeyException {
         // 유효성 검사는 Controller의 Vaild를 통해 이미 완료된 후 Service 계층으로 넘어옴
 
-//        if(userInterface.existsById(userSignUpDTO.getUid())) {
-//            throw new DuplicateKeyException("해당 유저가 이미 존재합니다.");
-//        }
+        /*
+          uid가 이미 존재하는지 확인하는 로직
+           - 현재는 로그인 시에도 saveUser를 실행하기 때문에 예외로 튕겨버리면 로그인이 안되는 문제가 있어서 주석처리함
+          if(userInterface.existsById(userSignUpDTO.getUid())) {
+              throw new DuplicateKeyException("해당 유저가 이미 존재합니다.");
+          }
+         */
 
         // DTO를 Entity로 변환
         UserEntity userEntity = UserEntity.builder()
@@ -64,13 +64,13 @@ public class UserService {
 
 
     // 유저의 신고당한 횟수 조회
+    @Transactional(readOnly = true)
     public int getUserReportedCount(String nickname) {
         return reportInterface.countByReportedUser(nickname);
     }
 
 
     // 닉네임 업데이트
-    @Transactional
     public void updateNickname(String uid, String newNickname) throws BaseException {
         UserEntity userEntity = userInterface.findByUid(uid)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NOT_FOUND)); // 신고가 없는 경우 예외 처리
@@ -81,6 +81,7 @@ public class UserService {
 
 
     // 유저의 경고 횟수 조회
+    @Transactional(readOnly = true)
     public int getUserYellowCard(String uid) {
         Optional<UserEntity> userEntity = userInterface.findByUid(uid);
         if (userEntity.isPresent()) {

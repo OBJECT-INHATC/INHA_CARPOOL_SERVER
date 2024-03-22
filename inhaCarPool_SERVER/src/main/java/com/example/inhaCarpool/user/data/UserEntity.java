@@ -39,6 +39,9 @@ public class UserEntity {
     @Column(name = "redCard", columnDefinition = "boolean default false") // default false
     private boolean redCard; // 정지 여부
 
+    @Column(name = "createdAt", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
+    private String createdAt; // 생성시간: 자동으로 현재 시간으로 설정
+
 //    @OneToMany(mappedBy = "reporter")
 //    private List<ReportEntity> reporter; // 신고한 리스트에 접근할 때 사용 (보통 사용 안함)
 //
