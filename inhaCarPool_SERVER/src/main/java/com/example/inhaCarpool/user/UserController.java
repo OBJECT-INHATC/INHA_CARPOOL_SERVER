@@ -2,6 +2,7 @@ package com.example.inhaCarpool.user;
 
 import com.example.inhaCarpool.exception.BaseException;
 import com.example.inhaCarpool.exception.BaseResponse;
+import com.example.inhaCarpool.user.data.UserInfoDTO;
 import com.example.inhaCarpool.user.data.UserSignUpDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -75,19 +77,18 @@ public class UserController {
         return ResponseEntity.ok(count);
     }
 
-
-    // 유저 닉네임 업데이트 (현재 사용 X)
-    @PutMapping("/update/{uid}/{newNickname}")
-    public BaseResponse<String> updateStatus(@PathVariable String uid, @PathVariable String newNickname) {
-            log.info("=======서버에 닉네임 "+newNickname+" 으로 변경 진행=========");
-        try {
-            userService.updateNickname(uid, newNickname);
-            log.info("======닉네임 업데이트가 완료되었습니다.=======> "+ newNickname);
-            return new BaseResponse<>("유저 닉네임 업데이트가 완료되었습니다.");
-        } catch (BaseException exception) {
-            return new BaseResponse<>(exception.getStatus());
-        }
+    /**
+     * 모든 유저 정보 조회 - apiURL: /user/all
+     *
+     * @return ResponseEntity<Integer>: 유저가 신고한 횟수
+     */
+    @GetMapping("/all")
+    public ResponseEntity<List<UserInfoDTO>> getAllUserInfo() {
+        List<UserInfoDTO> userInfoDTOList = userService.getAllUserInfo();
+        log.info("[모든 유저 정보 조회 완료]:: {}", userInfoDTOList.toString());
+        return ResponseEntity.ok(userInfoDTOList);
     }
+
 
     // 유저 경고 횟수 조회
     @GetMapping("/count/yellow")

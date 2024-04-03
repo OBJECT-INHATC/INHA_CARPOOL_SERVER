@@ -8,13 +8,13 @@ spring:
           load-on-startup: 1
     datasource:
 
-      url: jdbc:mysql://database-1.ctaso9fje6lo.ap-northeast-2.rds.amazonaws.com:3306/carpool?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&autoReconnect=true&verifyServerCertificate=false&useSSL=true
-      username: inha
-      password: inha1234
+#      url: jdbc:mysql://database-1.ctaso9fje6lo.ap-northeast-2.rds.amazonaws.com:3306/carpool?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&autoReconnect=true&verifyServerCertificate=false&useSSL=true
+#      username: inha
+#      password: inha1234
 
-#      url: jdbc:mysql://localhost:3306/carpool?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&autoReconnect=true&verifyServerCertificate=false&useSSL=true
-#      username: root
-#      password: 12341234
+      url: jdbc:mysql://localhost:3306/carpool?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&autoReconnect=true&verifyServerCertificate=false&useSSL=true
+      username: root
+      password: 12341234
 
       driver-class-name: com.mysql.cj.jdbc.Driver
       hikari:
@@ -36,9 +36,10 @@ spring:
             useServerPrepStmts: true
     jpa:
       hibernate:
-        ddl-auto: update
+        ddl-auto: update  # Hibernate의 DDL 생성 모드를 설정
+      show-sql: true # Hibernate가 실행한 SQL을 출력
       properties:
         hibernate:
-          format_sql: true
-      open-in-view: false
+          format_sql: true # Hibernate가 실행한 SQL을 정렬해서 출력
+          dialect: org.hibernate.dialect.MySQL8Dialect  # Hibernate의 데이터베이스 방언 설정
 

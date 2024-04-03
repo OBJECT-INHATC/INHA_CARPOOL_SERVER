@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class HistoryService {
 
     private final HistoryInterface historyInterface;
@@ -128,6 +129,9 @@ public class HistoryService {
                 uid, uid, uid, uid // uid가 member1, member2, member3, member4 중에 하나라도 포함되어 있는 HistoryEntity의 개수를 조회
         );
     }
+
+    // 이용 내역 조회
+
 
 
 }
