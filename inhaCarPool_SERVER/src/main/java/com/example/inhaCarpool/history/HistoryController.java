@@ -3,6 +3,7 @@ package com.example.inhaCarpool.history;
 
 import com.example.inhaCarpool.history.data.HistoryEntity;
 import com.example.inhaCarpool.history.data.HistoryRequestDTO;
+import com.example.inhaCarpool.history.data.HistoryResponseDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +50,27 @@ public class HistoryController {
 
         }
         log.info("===" + uid + "님의 [[이용 내역 조회가 완료되었습니다.]]========= ");
+        return ResponseEntity.ok(histories);
+    }
+
+    /**
+     * 이용 내역 조회 - apiURL: /history/select/v2/{nickname}
+     *
+     * @param nickname : 유저 닉네임
+     *                 - 이용 내역을 조회할 유저의 닉네임
+     * @return ResponseEntity<List<HistoryResponseDTO>>: 유저의 이용 내역
+     */
+    @GetMapping("/select/v2/{nickname}")
+    public ResponseEntity<List<HistoryResponseDTO>> getHistoryListByMemberV2(
+            @PathVariable String nickname
+    ) {
+        List<HistoryResponseDTO> histories = historyService.getHistoryListByNickname(nickname);
+
+        if (histories.isEmpty()) {
+            log.info("===" + nickname + "님의 [[이용 내역이 존재하지 않습니다.]]========= ");
+            return ResponseEntity.noContent().build();
+        }
+        log.info("===" + nickname + "님의 [[이용 내역 조회가 완료되었습니다.]]========= ");
         return ResponseEntity.ok(histories);
     }
 

@@ -80,17 +80,16 @@ public class UserService {
         List<UserEntity> userEntityList = userInterface.findAll();
 
         return userEntityList.stream().map(userEntity -> UserInfoDTO.builder()
-                .nickname(userEntity.getNickname())
-                .email(userEntity.getEmail())
-                .yellowCard(userEntity.getYellowCard())
-                .redCard(userEntity.isRedCard())
-                .historyCount(
-                        historyInterface.findByMember1ContainingOrMember2ContainingOrMember3ContainingOrMember4Containing(
-                                userEntity.getUid(), userEntity.getUid(), userEntity.getUid(), userEntity.getUid()
-                        ).size()
-                )
-                .build()).toList();
-
+            .nickname(userEntity.getNickname())
+            .email(userEntity.getEmail())
+            .yellowCard(userEntity.getYellowCard())
+            .redCard(userEntity.isRedCard())
+            .historyCount(
+                    historyInterface.findByMember1ContainingOrMember2ContainingOrMember3ContainingOrMember4Containing(
+                            userEntity.getUid(), userEntity.getUid(), userEntity.getUid(), userEntity.getUid()
+                    ).size()
+            )
+            .build()).toList();
     }
 
 

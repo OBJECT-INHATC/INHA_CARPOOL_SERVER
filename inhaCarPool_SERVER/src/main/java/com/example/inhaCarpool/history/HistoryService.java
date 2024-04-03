@@ -1,13 +1,14 @@
 package com.example.inhaCarpool.history;
 
 
+import com.example.inhaCarpool.history.data.HistoryResponseDTO;
 import com.example.inhaCarpool.scheduler.CarpoolResponseDTO;
 import com.example.inhaCarpool.history.data.HistoryRequestDTO;
 import com.example.inhaCarpool.history.data.HistoryEntity;
 import com.example.inhaCarpool.history.repo.HistoryInterface;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -87,6 +88,7 @@ public class HistoryService {
                 .collect(Collectors.toList());
     }
 
+
     // 이용 내역 삭제
     @Transactional
     public boolean deleteHistory(String carPoolId) {
@@ -130,8 +132,30 @@ public class HistoryService {
         );
     }
 
-    // 이용 내역 조회
+    /**
+     * 이용 내역 조회 로직 by nickname
+     *
+     * @param nickname : 조회할 nickname
+     *                 - member1, member2, member3, member4 중 하나라도 포함되어 있는 HistoryEntity를 조회
+     * @return List<HistoryResponseDTO> : 이용 내역 조회 결과
+     */
+    @Transactional
+    public List<HistoryResponseDTO> getHistoryListByNickname(String nickname) {
+        List<HistoryEntity> historyEntityList =  historyInterface.findByMember1ContainingOrMember2ContainingOrMember3ContainingOrMember4Containing(
+                nickname, nickname, nickname, nickname
+        );
 
+        return historyEntityList.stream().map(
+            historyEntity -> HistoryResponseDTO.builder()
+                .startDetailPoint(historyEntity.getStartDetailPoint())
+                .endDetailPoint(historyEntity.getEndDetailPoint())
+                .admin(historyEntity.getAdmin())
+                .members(List.of(historyEntity.getMember1(), historyEntity.getMember2(), historyEntity.getMember3(), historyEntity.getMember4()))
+                .startTime(historyEntity.getStartTime())
+                .build()
+        ).toList();
+
+    }
 
 
 }
