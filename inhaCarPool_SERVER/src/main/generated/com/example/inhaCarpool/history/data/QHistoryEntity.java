@@ -9,7 +9,7 @@ import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
 
 
-/**
+/** 
  * QHistoryEntity is a Querydsl query type for HistoryEntity
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
