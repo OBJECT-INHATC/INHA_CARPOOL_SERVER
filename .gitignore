@@ -44,4 +44,4 @@ inhaCarPool_SERVER/src/main/java/com/example/inha_carpool/service/FCMService.jav
 inhaCarPool_SERVER/local.properties
 
 # QClass
-/src/main/generated/
+!**/src/main/generated/
