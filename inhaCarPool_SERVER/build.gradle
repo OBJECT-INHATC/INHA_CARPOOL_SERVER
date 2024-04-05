@@ -33,6 +33,7 @@ dependencies {
     //spring
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     //mysql
     runtimeOnly 'com.mysql:mysql-connector-j'
     //스웨거
@@ -40,15 +41,28 @@ dependencies {
     //JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    //QueryDSL
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    // Q클래스 생성을 위한 annotationProcessor 설정
+    // QClass란 엔티티 클래스 속성과 구조를 설명해주는 메타데이터 => Type Safe 하게 쿼리 조건 설정 가능
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
     //validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     //firebase
     implementation group: 'com.google.firebase', name: 'firebase-admin', version: '9.1.1'
     //security
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    //
-    implementation 'org.springframework.boot:spring-boot-starter-web'
 
+}
 
+// Querydsl 설정부
+def generatedDir = 'src/main/generated'
+clean {
+    delete file (generatedDir)
+}
+tasks.withType(JavaCompile) {
+    options.generatedSourceOutputDirectory = file(generatedDir)
 }
