@@ -1,11 +1,12 @@
-package com.example.inhaCarpool.report.data;
+package com.example.inhaCarpool.report.data.entity;
 
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  *    Report DB 엔티티
@@ -37,7 +38,7 @@ public class ReportEntity {
     private String reportType; // 신고 타입
 
     @Column(name = "reportDate")
-    private Date reportDate; // 신고 날짜
+    private LocalDateTime reportDate; // 신고 날짜
 
     @Column(name = "status", columnDefinition = "BOOLEAN DEFAULT false")
     private boolean status; // 신고 처리 상태, 기본값은 false
@@ -64,7 +65,7 @@ public class ReportEntity {
         this.reportedUser = reportedUser;
         this.content = content;
         this.reportType = reportType;
-        this.reportDate = new Date();
+        this.reportDate = LocalDateTime.now();
     }
 
 

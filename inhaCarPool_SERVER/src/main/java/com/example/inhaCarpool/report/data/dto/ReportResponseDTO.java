@@ -1,30 +1,25 @@
-package com.example.inhaCarpool.report.data;
+package com.example.inhaCarpool.report.data.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 import java.util.List;
-
-/**
- * Report DTO Class
- *
- * @author 이상훈
- * @version 1.00    2023.09.01
- */
-
 
 @NoArgsConstructor
 @Data
-public class ReportRequstDTO {
+public class ReportResponseDTO {
+
+    private Long reportIdx;
 
     private String content;
 
     private String carpoolId;
 
     // 피신고자 닉네임
-    private String reportedUser;
+    private String reported;
 
     // 신고자 닉네임
     private String reporter;
@@ -34,22 +29,25 @@ public class ReportRequstDTO {
 
     private String reportDate;
 
+    private boolean status;
+
+
     @Builder
-    public ReportRequstDTO(String content, String carpoolId,
-                           String reportedUser, String reporter,
-                           String reportType, String reportDate) {
+    public ReportResponseDTO(Long reportIdx,String content, String carpoolId, String reported, String reporter, String reportType, String reportDate, boolean status) {
+        this.reportIdx = reportIdx;
         this.content = content;
         this.carpoolId = carpoolId;
-        this.reportedUser = reportedUser;
+        this.reported = reported;
         this.reporter = reporter;
         this.reportType = reportType;
         this.reportDate = reportDate;
+        this.status = status;
     }
 
     @Builder
     public static class GetRepostList {
         @JsonProperty
-        private List<ReportRequstDTO> getReportList;
+        private List<ReportResponseDTO> getReportList;
     }
 
 }

@@ -2,17 +2,20 @@ package com.example.inhaCarpool.report;
 
 
 
+import com.example.inhaCarpool.report.data.dto.ReportResponseDTO;
 import com.example.inhaCarpool.user.data.UserEntity;
 import com.example.inhaCarpool.exception.BaseException;
 import com.example.inhaCarpool.exception.BaseResponseStatus;
-import com.example.inhaCarpool.report.data.ReportRequstDTO;
-import com.example.inhaCarpool.report.data.ReportEntity;
+import com.example.inhaCarpool.report.data.dto.ReportRequestDTO;
+import com.example.inhaCarpool.report.data.entity.ReportEntity;
 import com.example.inhaCarpool.user.repo.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import com.example.inhaCarpool.report.repo.ReportInterface;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static com.example.inhaCarpool.exception.BaseResponseStatus.DATABASE_INSERT_ERROR;
 
@@ -35,7 +38,7 @@ public class ReportService {
 
     // 신고자, 피신고자의 닉네임을 받아서 uid를 찾아서 저장
     @Transactional
-    public void saveReport(ReportRequstDTO reportRequstDTO) throws BaseException {
+    public void saveReport(ReportRequestDTO reportRequstDTO) throws BaseException {
 
         ReportEntity report = ReportEntity.builder()
                 .reporter(reportRequstDTO.getReporter())
@@ -52,7 +55,30 @@ public class ReportService {
     }
 
     /**
-     *report Entity에서 신고자, 피신고자의 닉네임이 아닌 uid를 저장할 때 사용 가능 (user와 연관관계)
+     * 모든 신고 리스트 조회
+     */
+    @Transactional
+    public List<ReportResponseDTO> getAllReport() {
+        List<ReportEntity> reportEntities = reportInterface.findAll();
+
+        return reportEntities.stream()
+                .map(reportEntity -> ReportResponseDTO.builder()
+                        .reportIdx(reportEntity.getReportIdx())
+                        .content(reportEntity.getContent())
+                        .carpoolId(reportEntity.getCarPoolId())
+                        .reported(reportEntity.getReportedUser())
+                        .reporter(reportEntity.getReporter())
+                        .reportType(reportEntity.getReportType())
+                        .reportDate(reportEntity.getReportDate().toString())
+                        .status(reportEntity.isStatus())
+                        .build()
+                )
+                .toList();
+    }
+
+
+    /**
+     * report Entity에서 신고자, 피신고자의 닉네임이 아닌 uid를 저장할 때 사용 가능 (user와 연관관계)
      */
 //    // 처리안된 신고 리스트 전체 조회
 //    @Transactional

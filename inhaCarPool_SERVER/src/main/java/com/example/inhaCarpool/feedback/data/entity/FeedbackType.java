@@ -11,7 +11,7 @@ public enum FeedbackType {
             case "SUGGESTION" -> SUGGESTION;
             case "INQUIRY" -> INQUIRY;
             case "REPORT" -> REPORT;
-            default -> throw new IllegalArgumentException("건의 유형 예외처리: " + feedbackType);
+            default -> throw new IllegalArgumentException("피드백 유형 예외발생: " + feedbackType);
         };
     }
 }

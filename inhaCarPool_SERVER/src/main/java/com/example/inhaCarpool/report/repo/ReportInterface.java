@@ -1,6 +1,6 @@
 package com.example.inhaCarpool.report.repo;
 
-import com.example.inhaCarpool.report.data.ReportEntity;
+import com.example.inhaCarpool.report.data.entity.ReportEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

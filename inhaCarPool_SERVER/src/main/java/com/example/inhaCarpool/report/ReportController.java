@@ -2,11 +2,15 @@ package com.example.inhaCarpool.report;
 
 import com.example.inhaCarpool.exception.BaseException;
 import com.example.inhaCarpool.exception.BaseResponse;
-import com.example.inhaCarpool.report.data.ReportRequstDTO;
+import com.example.inhaCarpool.report.data.dto.ReportRequestDTO;
+import com.example.inhaCarpool.report.data.dto.ReportResponseDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -27,7 +31,7 @@ public class ReportController {
     // 신고하기
     @ResponseBody
     @PostMapping("/save")
-    public BaseResponse<String> saveReport(@RequestBody ReportRequstDTO reportRequstDTO) {
+    public BaseResponse<String> saveReport(@RequestBody ReportRequestDTO reportRequstDTO) {
         log.info("신고자 : " + reportRequstDTO.getReporter());
         log.info("신고당한사람 : " + reportRequstDTO.getReportedUser());
         try{
@@ -37,6 +41,19 @@ public class ReportController {
         } catch (BaseException exception){
             return new BaseResponse<>(exception.getStatus());
         }
+    }
+
+    /**
+     * 모든 신고 리스트 조회
+     * @return List<ReportResponseDTO> 신고 리스트
+     */
+    @GetMapping("/all")
+    public ResponseEntity<List<ReportResponseDTO>> findAllReport() {
+
+        List<ReportResponseDTO> reports = reportService.getAllReport();
+        log.info("모든 신고 리스트 조회가 완료되었습니다.===========> ");
+
+        return ResponseEntity.ok(reports);
     }
 
 //    // 신고자 닉네임으로 신고 리스트 조회
