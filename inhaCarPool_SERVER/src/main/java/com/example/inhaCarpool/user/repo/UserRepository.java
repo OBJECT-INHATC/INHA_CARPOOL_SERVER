@@ -12,7 +12,7 @@ import java.util.Optional;
  *   @author           이상훈
  */
 
-public interface UserInterface extends JpaRepository<UserEntity, String> {
+public interface UserRepository extends JpaRepository<UserEntity, String> {
 
     Optional<UserEntity> findByUid(String uid);
     Optional<UserEntity> findByNickname(String nickname);

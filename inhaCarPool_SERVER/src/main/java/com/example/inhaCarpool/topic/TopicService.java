@@ -6,7 +6,7 @@ import com.example.inhaCarpool.user.data.UserEntity;
 import com.example.inhaCarpool.exception.BaseException;
 import com.example.inhaCarpool.exception.BaseResponseStatus;
 import com.example.inhaCarpool.topic.repo.TopicInterface;
-import com.example.inhaCarpool.user.repo.UserInterface;
+import com.example.inhaCarpool.user.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class TopicService {
 
     private final TopicInterface topicInterface;
 
-    private final UserInterface userInterface;
+    private final UserRepository userInterface;
 
     // 토픽 저장
     @Transactional

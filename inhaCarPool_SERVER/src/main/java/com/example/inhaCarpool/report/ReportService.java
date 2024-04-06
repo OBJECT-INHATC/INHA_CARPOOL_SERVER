@@ -7,7 +7,7 @@ import com.example.inhaCarpool.exception.BaseException;
 import com.example.inhaCarpool.exception.BaseResponseStatus;
 import com.example.inhaCarpool.report.data.ReportRequstDTO;
 import com.example.inhaCarpool.report.data.ReportEntity;
-import com.example.inhaCarpool.user.repo.UserInterface;
+import com.example.inhaCarpool.user.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class ReportService {
 
     private final ReportInterface reportInterface;
 
-    private final UserInterface userInterface;
+    private final UserRepository userInterface;
 
 
     // 신고자, 피신고자의 닉네임을 받아서 uid를 찾아서 저장

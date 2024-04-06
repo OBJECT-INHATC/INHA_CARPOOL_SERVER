@@ -8,13 +8,13 @@ spring:
           load-on-startup: 1
     datasource:
 
-      url: jdbc:mysql://database-1.ctaso9fje6lo.ap-northeast-2.rds.amazonaws.com:3306/carpool?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&autoReconnect=true&verifyServerCertificate=false&useSSL=true
-      username: inha
-      password: inha1234
+#      url: jdbc:mysql://database-1.ctaso9fje6lo.ap-northeast-2.rds.amazonaws.com:3306/carpool?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&autoReconnect=true&verifyServerCertificate=false&useSSL=true
+#      username: inha
+#      password: inha1234
 
-#      url: jdbc:mysql://localhost:3306/carpool?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&autoReconnect=true&verifyServerCertificate=false&useSSL=true
-#      username: root
-#      password: 12341234
+      url: jdbc:mysql://localhost:3306/carpool?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&autoReconnect=true&verifyServerCertificate=false&useSSL=true
+      username: root
+      password: 12341234
 
       driver-class-name: com.mysql.cj.jdbc.Driver
       hikari:

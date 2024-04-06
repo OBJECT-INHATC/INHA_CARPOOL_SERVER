@@ -19,7 +19,7 @@ public class SecurityConfig {
                     .httpBasic(AbstractHttpConfigurer::disable)
                     .authorizeHttpRequests( request -> request
                             .requestMatchers("/user/**", "/carpool/**",
-                                    "/history/**", "/report/**","/topic/**"
+                                    "/history/**", "/report/**","/topic/**","/feedback/**"
                             ).permitAll()
                             .anyRequest().authenticated());
 
