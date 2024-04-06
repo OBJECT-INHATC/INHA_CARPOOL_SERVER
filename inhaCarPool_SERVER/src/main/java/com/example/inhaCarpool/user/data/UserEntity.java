@@ -4,6 +4,7 @@ import com.example.inhaCarpool.topic.data.TopicEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -15,10 +16,10 @@ import java.util.List;
  *   @author           이상훈
  */
 
-@Data
 @NoArgsConstructor
 @Table(name = "user")
 @Entity
+@Data
 public class UserEntity {
 
     // 유저가 회원가입 시 생성(저장)되는 엔티티
@@ -42,14 +43,8 @@ public class UserEntity {
     @Column(name = "createdAt", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
     private String createdAt; // 생성시간: 자동으로 현재 시간으로 설정
 
-//    @OneToMany(mappedBy = "reporter")
-//    private List<ReportEntity> reporter; // 신고한 리스트에 접근할 때 사용 (보통 사용 안함)
-//
-//    @OneToMany(mappedBy = "reportedUser")
-//    private List<ReportEntity> reportedUser; // 신고 당한 리스트에 접근할 때 사용 (보통 사용 안함)
-
     @OneToMany(mappedBy = "users")
-    private List<TopicEntity> users; // 유저가 참여한 토픽(채팅방) 리스트에 접근할 때 사용 (보통 사용 안함)
+    private List<TopicEntity> topics; // 유저가 참여한 토픽(채팅방) 리스트에 접근할 때 사용 (보통 사용 안함)
 
     @Builder
     public UserEntity(String uid, String nickname, String email) { // 유저 엔티티의 생성자
@@ -57,7 +52,6 @@ public class UserEntity {
         this.nickname = nickname;
         this.email = email;
     }
-
 }
 
 
