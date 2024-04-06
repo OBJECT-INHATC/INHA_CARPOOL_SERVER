@@ -6,7 +6,7 @@ import com.example.inhaCarpool.report.repo.ReportInterface;
 import com.example.inhaCarpool.user.data.UserEntity;
 import com.example.inhaCarpool.user.data.UserInfoDTO;
 import com.example.inhaCarpool.user.data.UserSignUpDTO;
-import com.example.inhaCarpool.user.repo.UserInterface;
+import com.example.inhaCarpool.user.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
@@ -27,7 +27,7 @@ import java.util.Optional;
 @Transactional
 public class UserService {
 
-    private final UserInterface userInterface;
+    private final UserRepository userInterface;
     private final ReportInterface reportInterface;
     private final HistoryInterface historyInterface;
 

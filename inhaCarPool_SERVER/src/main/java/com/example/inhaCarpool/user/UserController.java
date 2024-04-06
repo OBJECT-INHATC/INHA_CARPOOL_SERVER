@@ -112,7 +112,7 @@ public class UserController {
         HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        log.info("[예외 응답] {}의 ExceptionHandler 호출:: e.message: {}", "UserController", e.getMessage());
+        log.info("[예외 응답] {}의 ExceptionHandler 호출:: {}", "UserController", e.getMessage());
 
         Map<String, String> map = new HashMap<>();
         map.put("error type", httpStatus.getReasonPhrase());

@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserSignUpDTO {
 
     @Size(min = 28, max = 28, message = "uid는 28자여야 합니다.") // 파이어베이스 uid 길이
