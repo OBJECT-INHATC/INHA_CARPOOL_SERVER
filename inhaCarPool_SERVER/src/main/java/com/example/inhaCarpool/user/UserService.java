@@ -45,22 +45,24 @@ public class UserService {
         /*
           uid가 이미 존재하는지 확인하는 로직
            - 현재는 로그인 시에도 saveUser를 실행하기 때문에 예외로 튕겨버리면 로그인이 안되는 문제가 있어서 주석처리함
-          if(userInterface.existsById(userSignUpDTO.getUid())) {
-              throw new DuplicateKeyException("해당 유저가 이미 존재합니다.");
-          }
+             userInterface.existsById(userSignUpDTO.getUid())
          */
 
-        // DTO를 Entity로 변환
-        UserEntity userEntity = UserEntity.builder()
-                .uid(userSignUpDTO.getUid())
-                .nickname(userSignUpDTO.getNickname())
-                .email(userSignUpDTO.getEmail())
-                .build();
+        if(userInterface.existsById(userSignUpDTO.getUid())) {
+            System.out.println("이미 존재하는 유저입니다."); // 변경 예정
+        } else {
+            // DTO를 Entity로 변환
+            UserEntity userEntity = UserEntity.builder()
+                    .uid(userSignUpDTO.getUid())
+                    .nickname(userSignUpDTO.getNickname())
+                    .email(userSignUpDTO.getEmail())
+                    .build();
 
-        // 영속성 컨텍스트에 저장
-        userInterface.save(userEntity);
+            // 영속성 컨텍스트에 저장
+            userInterface.save(userEntity);
 
-        // 이 후 Transaction의 commit 시점에 DB에 반영됨
+            // 이 후 Transaction의 commit 시점에 DB에 반영됨
+        }
     }
 
 
