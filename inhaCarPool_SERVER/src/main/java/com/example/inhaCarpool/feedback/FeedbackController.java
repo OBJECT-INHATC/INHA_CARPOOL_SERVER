@@ -1,14 +1,14 @@
 package com.example.inhaCarpool.feedback;
 
+import com.example.inhaCarpool.feedback.data.dto.FeedbackResponseDTO;
 import com.example.inhaCarpool.feedback.data.dto.FeedbackSaveDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/feedback")
@@ -18,6 +18,11 @@ public class FeedbackController {
 
     private final FeedbackService feedbackService;
 
+    /**
+     * 피드백 저장 apiUrl - /feedback/save
+     * @param feedbackSaveDTO - 피드백 저장 DTO
+     * @return ResponseEntity<?> - 수정 예정
+     */
     @PostMapping("/save")
     public ResponseEntity<?> saveFeedback(
             @Valid
@@ -31,8 +36,18 @@ public class FeedbackController {
         return ResponseEntity.ok().build();
     }
 
-//    @GetMapping("/all")
-//    public ResponseEntity<> getAllFeedback() {
-//
-//    }
+
+    /**
+     * 모든 피드백 조회 apiUrl - /feedback/all
+     * @return ResponseEntity<List<FeedbackResponseDTO>> - 모든 피드백 리스트
+     */
+    @GetMapping("/all")
+    public ResponseEntity<List<FeedbackResponseDTO>> getAllFeedback() {
+
+        log.info("[Feedback Table의 모든 피드백 조회 요청]");
+        feedbackService.getAllFeedback();
+        log.info("[Feedback Table의 모든 피드백 조회 완료]");
+
+        return ResponseEntity.ok(feedbackService.getAllFeedback());
+    }
 }

@@ -1,10 +1,11 @@
 package com.example.inhaCarpool.feedback.data.dto;
 
 import com.example.inhaCarpool.user.data.UserResponseDTO;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -16,12 +17,12 @@ public class FeedbackResponseDTO {
 
     private String content;
 
-    private Long created_at;
+    private LocalDateTime created_at;
 
     private UserResponseDTO user;
 
     @Builder
-    public FeedbackResponseDTO(Long feedbackId, String feedbackType, String content, Long created_at, UserResponseDTO user) {
+    public FeedbackResponseDTO(Long feedbackId, String feedbackType, String content, LocalDateTime created_at, UserResponseDTO user) {
         this.feedbackId = feedbackId;
         this.feedbackType = feedbackType;
         this.content = content;
