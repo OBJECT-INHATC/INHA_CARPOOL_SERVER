@@ -56,6 +56,8 @@ public class ReportController {
         return ResponseEntity.ok(reports);
     }
 
+
+
 //    // 신고자 닉네임으로 신고 리스트 조회
 //    @GetMapping("/select/{nickname}")
 //    public BaseResponse<ReportResponseDTO.GetRepostList> findById(@PathVariable String nickname) {

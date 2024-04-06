@@ -52,6 +52,11 @@ public class UserEntity {
         this.nickname = nickname;
         this.email = email;
     }
+
+    // resetYellowCard: 경고 횟수 초기화
+    public void resetYellowCard() {
+        this.yellowCard = 0;
+    }
 }
 
 

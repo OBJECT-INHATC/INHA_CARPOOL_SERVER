@@ -89,6 +89,22 @@ public class UserController {
         return ResponseEntity.ok(userInfoDTOList);
     }
 
+    /**
+     * 유저의 경고 횟수를 0으로 초기화 - apiURL: /user/reset/yellow
+     * @param nickname : 유저 닉네임
+     * @return
+     */
+    @PutMapping("/reset/yellow")
+    public ResponseEntity<Map<String, String>> resetYellowCard(@RequestParam(value = "nickname") String nickname) {
+        long startTime = System.currentTimeMillis();
+
+        userService.resetYellowCard(nickname);
+        log.info("[유저의 경고 횟수 초기화 완료]:: nickname = {}", nickname);
+
+        long timeTaken = System.currentTimeMillis() - startTime;
+        return ResponseEntity.ok().build();
+    }
+
 
     // 유저 경고 횟수 조회
     @GetMapping("/count/yellow")

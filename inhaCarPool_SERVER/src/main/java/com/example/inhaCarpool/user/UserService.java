@@ -94,6 +94,19 @@ public class UserService {
             .build()).toList();
     }
 
+    /**
+     * 유저의 경고 횟수 0으로 초기화 로직
+     * @param nickname : 경고 횟수를 초기화할 유저의 닉네임
+     * @return
+     */
+    public void resetYellowCard(String nickname) {
+        Optional<UserEntity> userEntity = userInterface.findByNickname(nickname);
+        if (userEntity.isPresent()) {
+            userEntity.get().resetYellowCard();
+        } else {
+            throw new IllegalArgumentException("해당 nickname을 가진 유저가 존재하지 않습니다.");
+        }
+    }
 
 
     // 유저의 신고당한 횟수 조회
