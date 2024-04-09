@@ -18,9 +18,14 @@ public class SecurityConfig {
                     .csrf(AbstractHttpConfigurer::disable)
                     .httpBasic(AbstractHttpConfigurer::disable)
                     .authorizeHttpRequests( request -> request
-                            .requestMatchers("/user/**", "/carpool/**",
+                            .requestMatchers("/swagger*/**", "/v3/api-docs/**"
+                            )
+                            .permitAll()
+                            .requestMatchers(
+                                    "/user/**", "/carpool/**",
                                     "/history/**", "/report/**","/topic/**","/feedback/**"
-                            ).permitAll()
+                                    )
+                            .permitAll()
                             .anyRequest().authenticated());
 
             return http.build();
