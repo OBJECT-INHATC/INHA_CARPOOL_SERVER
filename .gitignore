@@ -5,6 +5,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 inhaCarPool_SERVER/src/main/generated/
+inhaCarPool_SERVER/src/.env
 
 ### STS ###
 .apt_generated
