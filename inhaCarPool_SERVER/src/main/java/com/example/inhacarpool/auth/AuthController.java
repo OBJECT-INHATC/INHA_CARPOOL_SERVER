@@ -1,4 +1,4 @@
-package com.example.inhacarpool.user.auth;
+package com.example.inhacarpool.auth;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
