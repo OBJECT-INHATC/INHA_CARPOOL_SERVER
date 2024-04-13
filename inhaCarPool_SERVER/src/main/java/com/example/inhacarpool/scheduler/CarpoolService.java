@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CarpoolService {
 
-	private final FCMService fcmService;
+	private final FcmService fcmService;
 
 	private final HistoryService historyService;
 
