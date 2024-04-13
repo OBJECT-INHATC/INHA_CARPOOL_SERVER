@@ -11,7 +11,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.example.inhacarpool.exception.BaseException;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -20,8 +19,9 @@ public class FcmService {
 
 	// 푸시 알림을 보낼 때 필요한 서버 키
 	// .env 파일에 저장해서 사용할 예정
-	final String fcmServerKey = Dotenv.load().get("FCM_SERVER_KEY");
-
+	// final String fcmServerKey = Dotenv.load().get("FCM_SERVER_KEY");
+	final String fcmServerKey =
+		"AAAA-NGypFk:APA91bGFNzWfZi-A_81lR4-TFxXvhCdombcWIMZyfk7GNBKd9NYrOtsL8iQUa5ghtB3UtGFCRIG0ciplrJXw9sgyHQ2gI-gkkggZbCFIDHz4rK9-S_y4_tgTPB9Qdi8OS0DhjOuL2Igb";
 	// 푸시 알림을 보낼 때 필요한 FCM 주소
 	final String fcmUrl = "https://fcm.googleapis.com/fcm/send";
 
