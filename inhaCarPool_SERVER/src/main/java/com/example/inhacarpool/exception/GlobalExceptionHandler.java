@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -31,5 +32,21 @@ public class GlobalExceptionHandler {
 		return ResponseEntity
 			.status(HttpStatusCode.valueOf(409)) // 409 Conflict
 			.body(new BaseResponse<>(HttpStatusCode.valueOf(409), responseMsg)); // 중복키 예외 발생 시 응답
+	}
+
+	/**
+	 * EntityNotFoundException 예외 처리
+	 * @param exception : EntityNotFoundException
+	 * @return ResponseEntity<BaseResponse < String>> : EntityNotFoundException 발생 시 응답
+	 */
+	@ExceptionHandler(EntityNotFoundException.class)
+	public ResponseEntity<BaseResponse<String>> handleEntityNotFoundException(EntityNotFoundException exception) {
+		String responseMsg = "EntityNotFoundException: " + exception.getMessage(); // 응답 메세지
+
+		log.error(responseMsg);
+
+		return ResponseEntity
+			.status(HttpStatusCode.valueOf(404)) // 404 Not Found
+			.body(new BaseResponse<>(HttpStatusCode.valueOf(404), responseMsg)); // EntityNotFoundException 발생 시 응답
 	}
 }

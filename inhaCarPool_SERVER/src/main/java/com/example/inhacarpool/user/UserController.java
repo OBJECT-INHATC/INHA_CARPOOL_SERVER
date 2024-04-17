@@ -62,24 +62,24 @@ public class UserController {
 	}
 
 	/**
-	 * 유저가 신고 당한 횟수 조회 - apiURL: /user/count/reported/{nickname}
+	 * 유저가 신고 당한 횟수 조회 - apiURL: /user/count/reported?nickname={nickname}
 	 *
 	 * @param nickname : 유저 닉네임
 	 * @return ResponseEntity<Integer>: 유저가 신고 당한 횟수
 	 */
 	@GetMapping("/count/reported")
-	public ResponseEntity<Integer> getUserReportedCount(
+	public ResponseEntity<BaseResponse<Integer>> getReportedCount(
 		@RequestParam(value = "nickname") String nickname) {
 
 		long startTime = System.currentTimeMillis();
+		int count = userService.getReportedCount(nickname);
+		long timeTaken = System.currentTimeMillis() - startTime;
 
-		int count = userService.getUserReportedCount(nickname);
-		log.info("[Report Table에서 유저가 신고당한 횟수 조회 완료]:: {}", count);
+		log.info("[Report Table에서 유저가 신고당한 횟수 조회 완료]:: {}, [실행 시간 ms]:: {}", count, timeTaken);
 
-		log.info("[{} 실행 완료]:: time taken = {}ms ",
-			"getUserReportedCount", System.currentTimeMillis() - startTime);
-
-		return ResponseEntity.ok(count);
+		return ResponseEntity
+			.status(HttpStatusCode.valueOf(200))
+			.body(new BaseResponse<>(count));
 	}
 
 	/**

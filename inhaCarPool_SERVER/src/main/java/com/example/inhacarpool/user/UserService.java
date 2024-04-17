@@ -14,6 +14,7 @@ import com.example.inhacarpool.user.data.dto.UserInfoDTO;
 import com.example.inhacarpool.user.data.dto.UserSignUpDto;
 import com.example.inhacarpool.user.repo.UserRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -56,6 +57,21 @@ public class UserService {
 
 	}
 
+	/**
+	 * 유저가 신고 당한 횟수 조회 로직
+	 * @param nickname : 유저 닉네임
+	 * @return int : 유저가 신고 당한 횟수
+	 * @throws EntityNotFoundException : 해당 nickname을 가진 유저가 존재하지 않을 경우 예외 처리
+	 */
+	@Transactional(readOnly = true)
+	public int getReportedCount(String nickname) throws EntityNotFoundException {
+		if (userInterface.existsByNickname(nickname)) {
+			return reportInterface.countByReportedUser(nickname);
+		} else {
+			throw new EntityNotFoundException("해당 nickname을 가진 유저가 존재하지 않습니다.");
+		}
+	}
+
 	// 모든 유저 정보를 가져올건데 하나의 레코드에 닉네임, 학번, 옐로우 카드, 레드카드 수, 이용기록 수를 리턴해주는 api
 
 	/**
@@ -93,12 +109,6 @@ public class UserService {
 		} else {
 			throw new IllegalArgumentException("해당 nickname을 가진 유저가 존재하지 않습니다.");
 		}
-	}
-
-	// 유저의 신고당한 횟수 조회
-	@Transactional(readOnly = true)
-	public int getUserReportedCount(String nickname) {
-		return reportInterface.countByReportedUser(nickname);
 	}
 
 	// 유저의 경고 횟수 조회
