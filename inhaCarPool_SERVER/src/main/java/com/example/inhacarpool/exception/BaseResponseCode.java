@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatusCode;
 import lombok.Getter;
 
 @Getter
-public enum BaseResponseStatus {
+public enum BaseResponseCode {
 
 	/**
 	 * 200 : 요청에 성공하였습니다.
@@ -34,7 +34,7 @@ public enum BaseResponseStatus {
 	private final HttpStatusCode statusCode; // 상태 코드 - HttpStatusCode Value
 	private final String message; // 응답 설명 메세지
 
-	BaseResponseStatus(final HttpStatusCode statusCode, final String message) {
+	BaseResponseCode(final HttpStatusCode statusCode, final String message) {
 		this.statusCode = statusCode;
 		this.message = message;
 	}

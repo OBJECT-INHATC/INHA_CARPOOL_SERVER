@@ -26,7 +26,7 @@ public class BaseResponse<T> {
 	 * @param status 실패 상태
 	 *               - BaseResponseStatus의 타입 중 하나 입력
 	 */
-	public BaseResponse(BaseResponseStatus status) {
+	public BaseResponse(BaseResponseCode status) {
 		this.code = status.getStatusCode();
 		this.message = status.getMessage();
 	}
@@ -47,8 +47,8 @@ public class BaseResponse<T> {
 	 * @param result 결과를 담은 객체, null일 수 있음
 	 */
 	public BaseResponse(T result) {
-		this.code = BaseResponseStatus.SUCCESS.getStatusCode();
-		this.message = BaseResponseStatus.SUCCESS.getMessage();
+		this.code = BaseResponseCode.SUCCESS.getStatusCode();
+		this.message = BaseResponseCode.SUCCESS.getMessage();
 		this.result = result;
 	}
 }

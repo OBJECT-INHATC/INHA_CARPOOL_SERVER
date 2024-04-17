@@ -1,6 +1,6 @@
 package com.example.inhacarpool.report;
 
-import static com.example.inhacarpool.exception.BaseResponseStatus.*;
+import static com.example.inhacarpool.exception.BaseResponseCode.*;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.inhacarpool.exception.BaseException;
-import com.example.inhacarpool.exception.BaseResponseStatus;
+import com.example.inhacarpool.exception.BaseResponseCode;
 import com.example.inhacarpool.report.data.dto.ReportRequestDTO;
 import com.example.inhacarpool.report.data.dto.ReportResponseDTO;
 import com.example.inhacarpool.report.data.entity.ReportEntity;
@@ -164,11 +164,11 @@ public class ReportService {
 	@Transactional
 	public void updateStatus(Long reportIdx) throws BaseException {
 		ReportEntity reportEntity = reportInterface.findById(reportIdx)
-			.orElseThrow(() -> new BaseException(BaseResponseStatus.REPORT_NOT_FOUND)); // 신고가 없는 경우 예외 처리
+			.orElseThrow(() -> new BaseException(BaseResponseCode.REPORT_NOT_FOUND)); // 신고가 없는 경우 예외 처리
 
 		// 이미 처리된 신고인 경우 예외 처리
 		if (reportEntity.isStatus()) {
-			throw new BaseException(BaseResponseStatus.ALREADY_PROCESSED); // 이미 처리된 신고인 경우 예외 처리
+			throw new BaseException(BaseResponseCode.ALREADY_PROCESSED); // 이미 처리된 신고인 경우 예외 처리
 		}
 
 		reportEntity.setStatus(true); // 신고 처리 상태를 true로 변경 (update)
@@ -179,12 +179,12 @@ public class ReportService {
 	@Transactional
 	public void updateYellowCard(String uid) throws BaseException {
 		UserEntity userEntity = userInterface.findByUid(uid)
-			.orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NOT_FOUND)); // 유저가 없는 경우 예외 처리
+			.orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND)); // 유저가 없는 경우 예외 처리
 
 		// 이미 정지된 유저인 경우 예외 처리
 		if (userEntity.isRedCard()) {
 			log.info("=================" + uid + "는 이미 정지된 유저입니다.==================");
-			throw new BaseException(BaseResponseStatus.ALREADY_PROCESSED);
+			throw new BaseException(BaseResponseCode.ALREADY_PROCESSED);
 		}
 
 		userEntity.setYellowCard(userEntity.getYellowCard() + 1); // 경고 횟수를 1 증가
@@ -198,12 +198,12 @@ public class ReportService {
 	@Transactional
 	public void updateRedCard(String uid) throws BaseException {
 		UserEntity userEntity = userInterface.findByUid(uid)
-			.orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NOT_FOUND)); // 유저가 없는 경우 예외 처리
+			.orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND)); // 유저가 없는 경우 예외 처리
 
 		// 이미 정지된 유저인 경우 예외 처리
 		if (userEntity.isRedCard()) {
 			log.info("=================" + uid + "는 이미 정지된 유저입니다.==================");
-			throw new BaseException(BaseResponseStatus.ALREADY_PROCESSED);
+			throw new BaseException(BaseResponseCode.ALREADY_PROCESSED);
 		}
 
 		userEntity.setRedCard(true); // 정지 상태로 변경

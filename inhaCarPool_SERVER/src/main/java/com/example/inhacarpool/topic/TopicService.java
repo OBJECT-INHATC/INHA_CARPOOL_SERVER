@@ -1,6 +1,6 @@
 package com.example.inhacarpool.topic;
 
-import static com.example.inhacarpool.exception.BaseResponseStatus.*;
+import static com.example.inhacarpool.exception.BaseResponseCode.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.inhacarpool.exception.BaseException;
-import com.example.inhacarpool.exception.BaseResponseStatus;
+import com.example.inhacarpool.exception.BaseResponseCode;
 import com.example.inhacarpool.topic.data.TopicEntity;
 import com.example.inhacarpool.topic.data.TopicRequestDTO;
 import com.example.inhacarpool.topic.repo.TopicInterface;
@@ -40,11 +40,11 @@ public class TopicService {
 	public void saveTopic(TopicRequestDTO topicRequestDTO) throws BaseException {
 		log.info("---------서버에 카풀을 저장하기 시작합니다 ---------");
 		UserEntity userEntity = userInterface.findByUid(topicRequestDTO.getUid())
-			.orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NOT_FOUND)); // 유저가 없는 경우 예외 처리
+			.orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND)); // 유저가 없는 경우 예외 처리
 
 		// 이미 있는 경우
 		if (topicInterface.findByUsersUidAndCarId(topicRequestDTO.getUid(), topicRequestDTO.getCarId()).isPresent()) {
-			throw new BaseException(BaseResponseStatus.TOPIC_ALREADY_EXIST);
+			throw new BaseException(BaseResponseCode.TOPIC_ALREADY_EXIST);
 		}
 
 		TopicEntity topicEntity = TopicEntity.builder() // 토픽 저장
@@ -63,7 +63,7 @@ public class TopicService {
 	public void deleteTopicByUidAndCarId(String uid, String carId) throws BaseException {
 		// uid와 carId를 사용하여 토픽을 조회
 		TopicEntity topicEntity = topicInterface.deleteByUidAndCarId(uid, carId)
-			.orElseThrow(() -> new BaseException(BaseResponseStatus.TOPIC_NOT_FOUND)); // 토픽이 없는 경우 예외 처리
+			.orElseThrow(() -> new BaseException(BaseResponseCode.TOPIC_NOT_FOUND)); // 토픽이 없는 경우 예외 처리
 
 		// 조회된 토픽을 삭제
 		topicInterface.delete(topicEntity);
@@ -88,7 +88,7 @@ public class TopicService {
 
 		// 조회된 토픽이 없는 경우 예외 처리
 		if (topicEntities.isEmpty()) {
-			throw new BaseException(BaseResponseStatus.TOPIC_NOT_FOUND);
+			throw new BaseException(BaseResponseCode.TOPIC_NOT_FOUND);
 		}
 
 		// 조회된 모든 토픽을 삭제

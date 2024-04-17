@@ -1,6 +1,6 @@
 package com.example.inhacarpool.scheduler;
 
-import static com.example.inhacarpool.exception.BaseResponseStatus.*;
+import static com.example.inhacarpool.exception.BaseResponseCode.*;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
