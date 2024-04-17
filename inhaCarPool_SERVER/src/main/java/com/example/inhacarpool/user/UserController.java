@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.inhacarpool.exception.BaseResponse;
 import com.example.inhacarpool.user.data.UserInfoDTO;
 import com.example.inhacarpool.user.data.UserSignUpDTO;
 
@@ -47,17 +49,19 @@ public class UserController {
 	 * @throws DuplicateKeyException : 이미 존재하는 유저일 경우 예외 처리
 	 */
 	@PostMapping("/save")
-	public ResponseEntity<Map<String, String>> saveUser(
+	public ResponseEntity<BaseResponse<String>> saveUser(
 		@Valid // @RequestBody로 받은 객체에 대한 유효성 검사를 진행
 		@RequestBody UserSignUpDTO userSignUpDto) throws DuplicateKeyException {
 
 		long startTime = System.currentTimeMillis();
-
 		userService.saveUser(userSignUpDto);
-		log.info("[User Table에 유저 등록 완료]:: {}", userSignUpDto);
-
 		long timeTaken = System.currentTimeMillis() - startTime;
-		return responseSuccess("유저 등록이 완료되었습니다.", timeTaken);
+
+		log.info("[User Table에 유저 등록 완료]:: {}\n [실행 시간]:: {}", userSignUpDto, timeTaken);
+
+		return ResponseEntity
+			.status(HttpStatusCode.valueOf(200))
+			.body(new BaseResponse<>(""));
 	}
 
 	/**

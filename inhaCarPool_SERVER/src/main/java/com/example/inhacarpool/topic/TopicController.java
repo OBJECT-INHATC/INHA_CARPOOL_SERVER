@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.inhacarpool.exception.BaseException;
 import com.example.inhacarpool.exception.BaseResponse;
-import com.example.inhacarpool.exception.Constants;
-import com.example.inhacarpool.exception.InhaCarpoolException;
 import com.example.inhacarpool.topic.data.TopicRequestDTO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
