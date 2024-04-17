@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.inhacarpool.exception.BaseResponse;
-import com.example.inhacarpool.user.data.UserInfoDTO;
-import com.example.inhacarpool.user.data.UserSignUpDTO;
+import com.example.inhacarpool.user.data.dto.UserInfoDTO;
+import com.example.inhacarpool.user.data.dto.UserSignUpDto;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -42,26 +42,23 @@ public class UserController {
 	 * 유저 등록 - apiURL: /user/save
 	 *
 	 * @param userSignUpDto : db에 저장할 유저 정보
-	 *                      - uid : 유저 고유번호
-	 *                      - nickname : 유저 닉네임
-	 *                      - email : 유저 이메일
 	 * @return ResponseEntity<String>: 서버에 유저 등록이 완료되었는지 여부
 	 * @throws DuplicateKeyException : 이미 존재하는 유저일 경우 예외 처리
 	 */
 	@PostMapping("/save")
-	public ResponseEntity<BaseResponse<String>> saveUser(
+	public ResponseEntity<BaseResponse<String>> userAdd(
 		@Valid // @RequestBody로 받은 객체에 대한 유효성 검사를 진행
-		@RequestBody UserSignUpDTO userSignUpDto) throws DuplicateKeyException {
+		@RequestBody UserSignUpDto userSignUpDto) throws DuplicateKeyException {
 
 		long startTime = System.currentTimeMillis();
-		userService.saveUser(userSignUpDto);
+		userService.addUser(userSignUpDto);
 		long timeTaken = System.currentTimeMillis() - startTime;
 
-		log.info("[User Table에 유저 등록 완료]:: {}\n [실행 시간]:: {}", userSignUpDto, timeTaken);
+		log.info("[User Table에 유저 등록 완료]:: {}, [실행 시간 ms]:: {}", userSignUpDto, timeTaken);
 
 		return ResponseEntity
 			.status(HttpStatusCode.valueOf(200))
-			.body(new BaseResponse<>(""));
+			.body(new BaseResponse<>("유저 등록 성공"));
 	}
 
 	/**
@@ -122,53 +119,6 @@ public class UserController {
 	}
 
 	/**
-	 * ExceptionHandler - Exception
-	 * - UserController 내에서 발생하는 예외를 처리하는 메소드
-	 * @param exception : 발생한 예외
-	 * @return ResponseEntity<Map < String, String>> : 예외 처리 결과
-	 */
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<Map<String, String>> exceptionHandler(Exception exception) {
-		// ResponseEntity를 반환하기 때문에 ResponseEntity가 필요로 하는 header, body, status 채워 넣음
-		HttpHeaders responseHeaders = new HttpHeaders();
-		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-
-		log.info("[예외 응답] {}의 ExceptionHandler 호출:: {}", "UserController", exception.getMessage());
-
-		Map<String, String> map = new HashMap<>();
-		map.put("error type", httpStatus.getReasonPhrase());
-		map.put("code", "400");
-		map.put("message", "에러 발생");
-
-		return new ResponseEntity<>(map, responseHeaders, httpStatus);
-	}
-
-	/**
-	 * ExceptionHandler - DuplicateKeyException
-	 * - UserController 내에서 발생하는 중복키 예외를 처리하는 메소드
-	 * @param exception : 발생한 예외
-	 *          - DuplicateKeyException : 중복키 예외
-	 *          - HttpStatus.CONFLICT : 409
-	 *          - "해당 유저가 이미 존재합니다." : 예외 메시지
-	 *          - 예외 처리 결과를 ResponseEntity 객체로 생성하여 반환
-	 * @return ResponseEntity<Map < String, String>> : 예외 처리 결과
-	 */
-	@ExceptionHandler(DuplicateKeyException.class)
-	public ResponseEntity<Map<String, String>> exceptionHandler(DuplicateKeyException exception) {
-		HttpHeaders responseHeaders = new HttpHeaders();
-		HttpStatus httpStatus = HttpStatus.CONFLICT;
-
-		log.info("[예외 응답] {}의 ExceptionHandler 호출:: exception.message: {}", "UserController", exception.getMessage());
-
-		Map<String, String> map = new HashMap<>();
-		map.put("error type", httpStatus.getReasonPhrase());
-		map.put("code", "409");
-		map.put("message", exception.getMessage());
-
-		return new ResponseEntity<>(map, responseHeaders, httpStatus);
-	}
-
-	/**
 	 * ExceptionHandler - MethodArgumentNotValidException
 	 * - UserController 내에서 발생하는 유효성 검사 예외를 처리하는 메소드
 	 * - @Valid 어노테이션을 통해 유효성 검사를 진행하고, 유효성 검사에 실패할 경우 발생하는 예외를 처리
@@ -193,21 +143,6 @@ public class UserController {
 		map.put("error type", httpStatus.getReasonPhrase());
 		map.put("code", "400");
 		map.put("message", validExceptionMessage);
-
-		return new ResponseEntity<>(map, responseHeaders, httpStatus);
-	}
-
-	// 응답 성공 시 반환되는 ResponseEntity 객체
-	public ResponseEntity<Map<String, String>> responseSuccess(String successMessage, Long timeTaken) {
-		HttpHeaders responseHeaders = new HttpHeaders();
-		HttpStatus httpStatus = HttpStatus.OK;
-
-		log.info("[응답 성공] message: {} timeTaken = {}ms", successMessage, timeTaken);
-
-		Map<String, String> map = new HashMap<>();
-		map.put("error type", httpStatus.getReasonPhrase());
-		map.put("code", "200");
-		map.put("message", successMessage);
 
 		return new ResponseEntity<>(map, responseHeaders, httpStatus);
 	}

@@ -11,7 +11,7 @@ import com.example.inhacarpool.feedback.data.dto.FeedbackSaveDTO;
 import com.example.inhacarpool.feedback.data.entity.FeedbackEntity;
 import com.example.inhacarpool.feedback.repo.FeedbackRepository;
 import com.example.inhacarpool.user.data.UserEntity;
-import com.example.inhacarpool.user.data.UserResponseDTO;
+import com.example.inhacarpool.user.data.dto.UserResponseDTO;
 import com.example.inhacarpool.user.repo.UserRepository;
 
 import lombok.RequiredArgsConstructor;

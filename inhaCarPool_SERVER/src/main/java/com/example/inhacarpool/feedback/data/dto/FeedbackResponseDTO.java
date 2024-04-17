@@ -2,7 +2,7 @@ package com.example.inhacarpool.feedback.data.dto;
 
 import java.time.LocalDateTime;
 
-import com.example.inhacarpool.user.data.UserResponseDTO;
+import com.example.inhacarpool.user.data.dto.UserResponseDTO;
 
 import lombok.Builder;
 import lombok.Data;

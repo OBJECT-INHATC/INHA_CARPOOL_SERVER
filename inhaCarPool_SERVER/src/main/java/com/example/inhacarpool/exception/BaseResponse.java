@@ -22,7 +22,7 @@ public class BaseResponse<T> {
 	private T result; // 결과
 
 	/**
-	 * 요청 실패 시
+	 * 요청 실패 시 - 커스텀 예외에 대한 응답
 	 * @param status 실패 상태
 	 *               - BaseResponseStatus의 타입 중 하나 입력
 	 */
@@ -32,7 +32,7 @@ public class BaseResponse<T> {
 	}
 
 	/**
-	 * 요청 실패 시
+	 * 요청 실패 시 - 이미 정의된 예외에 대한 응답
 	 * - 각각 실패 상태를 직접 지정할 때 사용
 	 * @param statusCode 상태 코드
 	 * @param message 메시지
@@ -44,7 +44,10 @@ public class BaseResponse<T> {
 
 	/**
 	 * 요청 성공 시
-	 * @param result 결과를 담은 객체, null일 수 있음
+	 * @param result 응답할 값을 담은 객체
+	 *               - 등록, 수정, 삭제 API의 경우 결과값이 필요하지 않을 수 있음
+	 *               - 이 때는 String으로 주고 있음
+	 * @deprecated 조회가 아닌 경우 result의 T를 어떻게 처리할지 고민 필요
 	 */
 	public BaseResponse(T result) {
 		this.code = BaseResponseCode.SUCCESS.getStatusCode();

@@ -1,4 +1,4 @@
-package com.example.inhacarpool.user.data;
+package com.example.inhacarpool.user.data.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
