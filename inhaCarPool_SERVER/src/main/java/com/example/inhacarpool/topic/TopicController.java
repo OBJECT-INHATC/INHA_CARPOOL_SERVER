@@ -3,7 +3,6 @@ package com.example.inhacarpool.topic;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -75,8 +74,4 @@ public class TopicController {
 		}
 	}
 
-	@PostMapping(value = "/topic/exception")
-	public void exceptionTest() throws InhaCarpoolException {
-		throw new InhaCarpoolException(Constants.ExceptionClass.PRODUCT, HttpStatus.BAD_REQUEST, "의도한 에러 발생");
-	}
 }
