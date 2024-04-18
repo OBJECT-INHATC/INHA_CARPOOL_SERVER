@@ -3,6 +3,8 @@ package com.example.inhacarpool.exception;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -75,14 +77,22 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<BaseResponse<String>> exceptionHandler(MethodArgumentNotValidException exception) {
-		String responseMsg = "MethodArgumentNotValidException: " + exception.getMessage(); // 응답 메세지
+
+		// MethodArgumentNotValidException의 경우는 메세지를 바인딩 결과에서 가져와야 함
+		BindingResult bindingResult = exception.getBindingResult();
+		StringBuilder builder = new StringBuilder();
+		for (FieldError fieldError : bindingResult.getFieldErrors()) { // 유효성 검사 에러 메세지를 모두 builder에 담기
+			builder.append(fieldError.getDefaultMessage());
+		}
+
+		String responseMsg = "MethodArgumentNotValidException: " + builder; // 응답 메세지
 
 		log.error(responseMsg);
 
 		return ResponseEntity
 			.status(HttpStatusCode.valueOf(400)) // 400 Bad Request
 			.body(new BaseResponse<>(HttpStatusCode.valueOf(400),
-				responseMsg)); // MethodArgumentNotValidException 발생 시 응답
+				builder.toString())); // MethodArgumentNotValidException 발생 시 응답
 	}
 
 	/**
