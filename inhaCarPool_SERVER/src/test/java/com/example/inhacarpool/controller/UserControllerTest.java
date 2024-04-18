@@ -26,7 +26,7 @@ public class UserControllerTest {
 	@Test
 	void getUserTest() {
 
-		doNothing().when(userService).addUser(new UserSignUpDto(
+		doNothing().when(userService).saveUser(new UserSignUpDto(
 			"1234567891234567891234567891",
 			"nickname",
 			"email")

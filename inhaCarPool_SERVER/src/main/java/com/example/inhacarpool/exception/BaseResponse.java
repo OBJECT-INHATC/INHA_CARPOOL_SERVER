@@ -47,7 +47,7 @@ public class BaseResponse<T> {
 	 * @param result 응답할 값을 담은 객체
 	 *               - 등록, 수정, 삭제 API의 경우 결과값이 필요하지 않을 수 있음
 	 *               - 이 때는 String으로 주고 있음
-	 * @deprecated 조회가 아닌 경우 result의 T를 어떻게 처리할지 고민 필요
+	 * // @deprecated 조회가 아닌 경우 result의 T를 어떻게 처리할지 고민 필요
 	 */
 	public BaseResponse(T result) {
 		this.code = BaseResponseCode.SUCCESS.getStatusCode();

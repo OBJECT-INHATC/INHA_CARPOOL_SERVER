@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UserInfoDTO {
+public class UserInfoDto {
 	private String nickname;
 	private String email;
 	private int yellowCard;
@@ -14,7 +14,7 @@ public class UserInfoDTO {
 	private int historyCount;
 
 	@Builder
-	public UserInfoDTO(String nickname, String email, int yellowCard, boolean redCard, int historyCount) {
+	public UserInfoDto(String nickname, String email, int yellowCard, boolean redCard, int historyCount) {
 		this.nickname = nickname;
 		this.email = email;
 		this.yellowCard = yellowCard;
