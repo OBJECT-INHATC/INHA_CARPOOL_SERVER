@@ -47,7 +47,7 @@ public class ReportController {
 			log.info("========신고가 완료되었습니다.===========> " + reportRequstDTO.getReporter());
 			return new BaseResponse<>("해당 사용자를 신고 완료하였습니다.");
 		} catch (BaseException exception) {
-			return new BaseResponse<>(exception.getStatus());
+			return new BaseResponse<>(exception.getBaseExceptionCode());
 		}
 	}
 
@@ -100,7 +100,7 @@ public class ReportController {
 			return new BaseResponse<>("신고 처리가 완료되었습니다.");
 		} catch (BaseException exception) {
 			log.info("=======신고 처리가 실패하였습니다.===========> " + reportIdx);
-			return new BaseResponse<>(exception.getStatus());
+			return new BaseResponse<>(exception.getBaseExceptionCode());
 		}
 	}
 
@@ -112,7 +112,7 @@ public class ReportController {
 			log.info("=======경고 처리가 완료되었습니다.===========> " + uid);
 			return new BaseResponse<>("경고 처리가 완료되었습니다.");
 		} catch (BaseException exception) {
-			return new BaseResponse<>(exception.getStatus());
+			return new BaseResponse<>(exception.getBaseExceptionCode());
 		}
 	}
 
@@ -124,7 +124,7 @@ public class ReportController {
 			log.info("=======정지 처리가 완료되었습니다.===========> " + uid);
 			return new BaseResponse<>("정지 처리가 완료되었습니다.");
 		} catch (BaseException exception) {
-			return new BaseResponse<>(exception.getStatus());
+			return new BaseResponse<>(exception.getBaseExceptionCode());
 		}
 	}
 

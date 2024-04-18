@@ -10,13 +10,10 @@ import org.springframework.data.repository.query.Param;
 import com.example.inhacarpool.topic.data.TopicEntity;
 
 /**
- *    Topic 관련 기능을 담당하는 Repository
+ * @ClassName    : TopicRepository.java 클래스에 대한 설명을 작성합니다.
  *
- *   @version 1.00    2023.09.01
- *   @author 이상훈
  */
-
-public interface TopicInterface extends JpaRepository<TopicEntity, Long> {
+public interface TopicRepository extends JpaRepository<TopicEntity, Long> {
 
 	@Query("select t FROM TopicEntity t WHERE t.users.uid = :uid AND t.carId = :carId")
 	Optional<TopicEntity> deleteByUidAndCarId(@Param("uid") String uid, @Param("carId") String carId);
@@ -26,6 +23,6 @@ public interface TopicInterface extends JpaRepository<TopicEntity, Long> {
 
 	List<TopicEntity> findByUsersUid(String uid);
 
-	Optional<TopicEntity> findByUsersUidAndCarId(String uid, String carId);
+	boolean existsByUsersUidAndCarId(String uid, String carId);
 
 }

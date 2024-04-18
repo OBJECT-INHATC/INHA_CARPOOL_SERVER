@@ -3,20 +3,22 @@ package com.example.inhacarpool.topic;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.inhacarpool.exception.BaseException;
 import com.example.inhacarpool.exception.BaseResponse;
-import com.example.inhacarpool.topic.data.TopicRequestDTO;
+import com.example.inhacarpool.topic.data.TopicSaveDto;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,20 +34,29 @@ public class TopicController {
 
 	private final TopicService topicService;
 
-	// 유저의 카풀 참가 시 서버에 토픽 저장
-	@ResponseBody
+	/**
+	 * 토픽 저장 - apiURL: /topic/save
+	 *
+	 * @param topicSaveDto : 토픽 저장 정보
+	 * @return ResponseEntity<BaseResponse < String>> : 토픽 저장 성공 여부
+	 */
 	@PostMapping("/topic/save")
-	public BaseResponse<String> saveUser(@RequestBody TopicRequestDTO topicRequestDTO) {
-		try {
-			topicService.saveTopic(topicRequestDTO);
-			log.info("=======" + topicRequestDTO.getCarId() + "====서버에 토픽 등록이 완료되었습니다======> ");
-			return new BaseResponse<>("서버에 토픽 등록이 완료되었습니다.");
-		} catch (BaseException exception) {
-			return new BaseResponse<>(exception.getStatus());
-		}
+	public ResponseEntity<BaseResponse<String>> saveTopic(
+		@RequestBody
+		@Valid TopicSaveDto topicSaveDto) throws BaseException {
+
+		long startTime = System.currentTimeMillis();
+		topicService.saveTopic(topicSaveDto);
+		long timeTaken = System.currentTimeMillis() - startTime;
+
+		log.info("[토픽 저장 완료]:: {}, [실행 시간 ms]:: {}", topicSaveDto, timeTaken);
+
+		return ResponseEntity
+			.status(HttpStatusCode.valueOf(200))
+			.body(new BaseResponse<>("토픽 저장 완료"));
 	}
 
-	// 유저 카풀 나가기 시 토픽 삭제
+	// 유저가 카퓰을 나갈 때 토픽 삭제
 	@DeleteMapping("/topic/delete")
 	public BaseResponse<String> deleteTopicByUidAndCarId(
 		@RequestParam(name = "uid") String uid,
@@ -55,7 +66,7 @@ public class TopicController {
 			log.info("======" + carId + "=======토픽 삭제되었습니다==========");
 			return new BaseResponse<>("토픽이 삭제되었습니다.");
 		} catch (BaseException exception) {
-			return new BaseResponse<>(exception.getStatus());
+			return new BaseResponse<>(exception.getBaseExceptionCode());
 		}
 	}
 

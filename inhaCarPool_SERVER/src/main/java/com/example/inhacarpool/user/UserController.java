@@ -49,7 +49,7 @@ public class UserController {
 	@PostMapping("/save")
 	public ResponseEntity<BaseResponse<String>> saveUser(
 		@Valid
-		@RequestBody UserSignUpDto userSignUpDto) throws DuplicateKeyException {
+		@RequestBody UserSignUpDto userSignUpDto) {
 
 		long startTime = System.currentTimeMillis();
 		userService.saveUser(userSignUpDto);

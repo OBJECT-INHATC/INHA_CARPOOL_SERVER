@@ -19,6 +19,22 @@ import lombok.extern.slf4j.Slf4j;
 public class GlobalExceptionHandler {
 
 	/**
+	 * BaseException 예외 처리
+	 * @param exception : BaseException
+	 * @return ResponseEntity<BaseResponse < BaseResponseCode>> : BaseException 발생 시 응답
+	 */
+	@ExceptionHandler(BaseException.class)
+	public ResponseEntity<BaseResponse<BaseResponseCode>> handleBaseException(BaseException exception) {
+		String responseMsg = "BaseException: " + exception.getBaseExceptionCode().getMessage(); // 응답 메세지
+
+		log.error(responseMsg);
+
+		return ResponseEntity
+			.status(exception.getBaseExceptionCode().getStatusCode()) // BaseException의 status에 따라 상태코드 설정
+			.body(new BaseResponse<>(exception.getBaseExceptionCode())); // BaseException 발생 시 응답
+	}
+
+	/**
 	 * 중복키 예외 처리
 	 * @param exception : DuplicateKeyException
 	 * @return ResponseEntity<BaseResponse < String>> : 중복키 예외 발생 시 응답

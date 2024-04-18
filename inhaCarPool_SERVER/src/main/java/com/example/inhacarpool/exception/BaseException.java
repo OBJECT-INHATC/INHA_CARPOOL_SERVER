@@ -15,5 +15,5 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class BaseException extends RuntimeException { // extends Exception <- extends Throwable <- extends Object
-	private BaseResponseCode status;
+	private BaseResponseCode baseExceptionCode;
 }

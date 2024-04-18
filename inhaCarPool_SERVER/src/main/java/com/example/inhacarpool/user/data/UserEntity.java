@@ -14,12 +14,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- *    User DB 엔티티
+ * @ClassName    : UserEntity.java 클래스에 대한 설명을 작성합니다.
  *
- *   @version 1.00    2023.09.01
- *   @author 이상훈
  */
-
 @NoArgsConstructor
 @Table(name = "user")
 @Entity
@@ -50,11 +47,23 @@ public class UserEntity {
 	@OneToMany(mappedBy = "users")
 	private List<TopicEntity> topics; // 유저가 참여한 토픽(채팅방) 리스트에 접근할 때 사용 (보통 사용 안함)
 
+	// 신규 유저 저장 시 사용
 	@Builder
-	public UserEntity(String uid, String nickname, String email) { // 유저 엔티티의 생성자
+	public UserEntity(String uid, String nickname, String email) {
 		this.uid = uid;
 		this.nickname = nickname;
 		this.email = email;
+	}
+
+	/** @deprecated 이미 존재하는 유저 연관 엔티티 저장 시 사용 */
+	@Builder(builderMethodName = "relationBuilder")
+	public UserEntity(String uid, String nickname, String email, int yellowCard, boolean redCard, String createdAt) {
+		this.uid = uid;
+		this.nickname = nickname;
+		this.email = email;
+		this.yellowCard = yellowCard;
+		this.redCard = redCard;
+		this.createdAt = createdAt;
 	}
 
 	// resetYellowCard: 경고 횟수 초기화
