@@ -17,23 +17,20 @@ import com.example.inhacarpool.exception.BaseResponse;
 import com.example.inhacarpool.topic.data.TopicRequestDTO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- *    Topic 관련 기능을 담당하는 Controller
+ * @ClassName    : TopicController.java 클래스에 대한 설명을 작성합니다.
  *
- *   @version 1.0    2023.09.01
- *   @author 이상훈
  */
-@Tag(name = "topic API", description = "INHA Carpool Swagger 테스트용")
+@Tag(name = "topic API")
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class TopicController {
-	private final TopicService topicService;
 
-	public TopicController(TopicService topicService) {
-		this.topicService = topicService;
-	}
+	private final TopicService topicService;
 
 	// 유저의 카풀 참가 시 서버에 토픽 저장
 	@ResponseBody

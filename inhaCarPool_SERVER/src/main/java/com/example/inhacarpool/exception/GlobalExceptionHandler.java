@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -52,7 +53,7 @@ public class GlobalExceptionHandler {
 	}
 
 	/**
-	 * 유효성 검사 실패 예외 처리
+	 * 유효성 검사 실패 예외 처리 - @Valid에 의한 검사 실패
 	 * @param exception : MethodArgumentNotValidException
 	 * @return ResponseEntity<BaseResponse < String>> : MethodArgumentNotValidException 발생 시 응답
 	 */
@@ -66,5 +67,23 @@ public class GlobalExceptionHandler {
 			.status(HttpStatusCode.valueOf(400)) // 400 Bad Request
 			.body(new BaseResponse<>(HttpStatusCode.valueOf(400),
 				responseMsg)); // MethodArgumentNotValidException 발생 시 응답
+	}
+
+	/**
+	 * 유효성 검사 실패 예외 처리 - @Validated에 의한 검사 실패
+	 * @param exception : ValidationException
+	 * @return ResponseEntity<BaseResponse < String>> : ValidationException 발생 시 응답
+	 */
+	@ExceptionHandler(ValidationException.class)
+	public ResponseEntity<BaseResponse<String>> handleValidationException(
+		ValidationException exception) {
+		String responseMsg = "ValidationException: " + exception.getMessage(); // 응답 메세지
+
+		log.error(responseMsg);
+
+		return ResponseEntity
+			.status(HttpStatusCode.valueOf(400)) // 400 Bad Request
+			.body(new BaseResponse<>(HttpStatusCode.valueOf(400),
+				responseMsg)); // ValidationException 발생 시 응답
 	}
 }

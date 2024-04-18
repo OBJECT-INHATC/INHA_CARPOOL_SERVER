@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,7 +18,10 @@ import com.example.inhacarpool.exception.BaseResponse;
 import com.example.inhacarpool.user.data.dto.UserInfoDto;
 import com.example.inhacarpool.user.data.dto.UserSignUpDto;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,10 +29,12 @@ import lombok.extern.slf4j.Slf4j;
  * @ClassName    : UserController.java 클래스에 대한 설명을 작성합니다.
  *
  */
+@Tag(name = "user API")
 @Slf4j // Logback 사용을 위한 어노테이션
 @RequestMapping("/user")
 @RestController
 @RequiredArgsConstructor
+@Validated
 public class UserController {
 
 	private final UserService userService;
@@ -64,7 +70,8 @@ public class UserController {
 	 */
 	@GetMapping("/count/reported")
 	public ResponseEntity<BaseResponse<Integer>> countReported(
-		@RequestParam(value = "nickname") String nickname) {
+		@RequestParam(value = "nickname")
+		@NotNull String nickname) {
 
 		long startTime = System.currentTimeMillis();
 		int count = userService.countReported(nickname);
@@ -102,7 +109,8 @@ public class UserController {
 	 */
 	@PutMapping("/reset/yellow")
 	public ResponseEntity<BaseResponse<String>> resetYellowCard(
-		@RequestParam(value = "nickname") String nickname) {
+		@RequestParam(value = "nickname")
+		@NotNull String nickname) {
 
 		long startTime = System.currentTimeMillis();
 		userService.resetYellowCard(nickname);
@@ -122,7 +130,8 @@ public class UserController {
 	 */
 	@GetMapping("/count/yellow")
 	public ResponseEntity<BaseResponse<Integer>> countYellowCard(
-		@RequestParam(value = "uid") String uid) {
+		@RequestParam(value = "uid")
+		@NotNull @Size(min = 28, max = 28) String uid) {
 
 		long startTime = System.currentTimeMillis();
 		int count = userService.countYellowCard(uid);

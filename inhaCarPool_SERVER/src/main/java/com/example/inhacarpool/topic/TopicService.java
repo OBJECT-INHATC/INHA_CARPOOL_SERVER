@@ -20,12 +20,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Topic 관련 기능을 담당하는 Service
+ * @ClassName    : TopicService.java 클래스에 대한 설명을 작성합니다.
  *
- * @author 이상훈
- * @version 1.00    2023.09.01
  */
-
 @Service
 @Slf4j
 @RequiredArgsConstructor // final + not null 생성자 생성 -> 의존성 주입
