@@ -43,7 +43,7 @@ public class TopicController {
 	@PostMapping("/topic/save")
 	public ResponseEntity<BaseResponse<String>> saveTopic(
 		@RequestBody
-		@Valid TopicSaveDto topicSaveDto) throws BaseException {
+		TopicSaveDto topicSaveDto) throws BaseException {
 
 		long startTime = System.currentTimeMillis();
 		topicService.saveTopic(topicSaveDto);
@@ -78,7 +78,6 @@ public class TopicController {
 			return topicService.getCarIdByUid(uid);
 		} catch (BaseException exception) {
 			return new ArrayList<>();
-
 		}
 	}
 

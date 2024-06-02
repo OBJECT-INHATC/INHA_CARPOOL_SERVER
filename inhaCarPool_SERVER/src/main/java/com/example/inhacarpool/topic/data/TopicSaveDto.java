@@ -15,12 +15,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class TopicSaveDto {
 
-	@NotNull(message = "uid는 필수 입력값입니다.")
-	@Size(min = 28, max = 28, message = "uid는 28자여야 합니다.")
 	private String uid;
 
-	@NotNull(message = "carId는 필수 입력값입니다.")
-	@Size(min = 20, max = 20, message = "carId는 20자여야 합니다.")
 	private String carid;
 
 }
