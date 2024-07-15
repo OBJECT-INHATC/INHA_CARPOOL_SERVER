@@ -23,6 +23,10 @@ repositories {
 
 dependencies {
 
+    // starter
+    implementation 'org.springframework.boot:spring-boot-starter'
+
+    // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     //spring
@@ -35,7 +39,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     //mysql
-    runtimeOnly 'com.mysql:mysql-connector-j'
+    implementation 'com.mysql:mysql-connector-j'
 
     //스웨거
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
