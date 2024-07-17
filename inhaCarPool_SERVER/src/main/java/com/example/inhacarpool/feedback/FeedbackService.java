@@ -10,9 +10,9 @@ import com.example.inhacarpool.feedback.data.dto.FeedbackResponseDTO;
 import com.example.inhacarpool.feedback.data.dto.FeedbackSaveDTO;
 import com.example.inhacarpool.feedback.data.entity.FeedbackEntity;
 import com.example.inhacarpool.feedback.repo.FeedbackRepository;
-import com.example.inhacarpool.user.data.UserEntity;
+import com.example.inhacarpool.user.infrastructure.UserEntity;
 import com.example.inhacarpool.user.data.dto.UserResponseDTO;
-import com.example.inhacarpool.user.repo.UserRepository;
+import com.example.inhacarpool.user.infrastructure.UserJpaRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public class FeedbackService {
 
 	private final FeedbackRepository feedbackRepository;
-	private final UserRepository userRepository;
+	private final UserJpaRepository userRepository;
 
 	/**
 	 * 피드백 저장 서비스 로직

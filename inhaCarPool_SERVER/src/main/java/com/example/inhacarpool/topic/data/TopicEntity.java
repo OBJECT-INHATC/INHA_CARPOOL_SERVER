@@ -1,6 +1,6 @@
 package com.example.inhacarpool.topic.data;
 
-import com.example.inhacarpool.user.data.UserEntity;
+import com.example.inhacarpool.user.infrastructure.UserEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

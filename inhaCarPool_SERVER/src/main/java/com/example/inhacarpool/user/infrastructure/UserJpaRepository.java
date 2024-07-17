@@ -1,19 +1,10 @@
-package com.example.inhacarpool.user.repo;
+package com.example.inhacarpool.user.infrastructure;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.inhacarpool.user.data.UserEntity;
-
-/**
- *    Report 관련 기능을 담당하는 Repository
- *
- *   @version 1.00    2023.09.01
- *   @author 이상훈
- */
-
-public interface UserRepository extends JpaRepository<UserEntity, String> {
+public interface UserJpaRepository extends JpaRepository<UserEntity, String> {
 
 	Optional<UserEntity> findByUid(String uid);
 

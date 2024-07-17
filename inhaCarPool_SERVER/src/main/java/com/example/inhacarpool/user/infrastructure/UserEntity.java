@@ -1,4 +1,4 @@
-package com.example.inhacarpool.user.data;
+package com.example.inhacarpool.user.infrastructure;
 
 import java.util.List;
 

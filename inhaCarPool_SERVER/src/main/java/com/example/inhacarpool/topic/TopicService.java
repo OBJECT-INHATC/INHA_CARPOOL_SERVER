@@ -12,8 +12,8 @@ import com.example.inhacarpool.exception.BaseResponseCode;
 import com.example.inhacarpool.topic.data.TopicEntity;
 import com.example.inhacarpool.topic.data.TopicSaveDto;
 import com.example.inhacarpool.topic.repo.TopicRepository;
-import com.example.inhacarpool.user.data.UserEntity;
-import com.example.inhacarpool.user.repo.UserRepository;
+import com.example.inhacarpool.user.infrastructure.UserEntity;
+import com.example.inhacarpool.user.infrastructure.UserJpaRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,7 +28,7 @@ public class TopicService {
 
 	private final TopicRepository topicRepository;
 
-	private final UserRepository userRepository;
+	private final UserJpaRepository userRepository;
 
 	public void saveTopic(TopicSaveDto topicSaveDto) throws
 		BaseException { // DuplicateKeyException, EntityNotFoundException을 대체하는 사용자 정의 예외를 던짐

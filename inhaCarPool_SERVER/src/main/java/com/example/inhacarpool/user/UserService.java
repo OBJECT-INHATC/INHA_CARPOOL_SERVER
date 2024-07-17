@@ -9,10 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.inhacarpool.history.repo.HistoryInterface;
 import com.example.inhacarpool.report.repo.ReportInterface;
-import com.example.inhacarpool.user.data.UserEntity;
+import com.example.inhacarpool.user.infrastructure.UserEntity;
 import com.example.inhacarpool.user.data.dto.UserInfoDto;
 import com.example.inhacarpool.user.data.dto.UserSignUpDto;
-import com.example.inhacarpool.user.repo.UserRepository;
+import com.example.inhacarpool.user.infrastructure.UserJpaRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class UserService {
 
-	private final UserRepository userInterface;
+	private final UserJpaRepository userInterface;
 	private final ReportInterface reportInterface;
 	private final HistoryInterface historyInterface;
 

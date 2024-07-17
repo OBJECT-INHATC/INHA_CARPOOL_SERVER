@@ -13,8 +13,8 @@ import com.example.inhacarpool.report.data.dto.ReportRequestDTO;
 import com.example.inhacarpool.report.data.dto.ReportResponseDTO;
 import com.example.inhacarpool.report.data.entity.ReportEntity;
 import com.example.inhacarpool.report.repo.ReportInterface;
-import com.example.inhacarpool.user.data.UserEntity;
-import com.example.inhacarpool.user.repo.UserRepository;
+import com.example.inhacarpool.user.infrastructure.UserEntity;
+import com.example.inhacarpool.user.infrastructure.UserJpaRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class ReportService {
 
 	private final ReportInterface reportInterface;
 
-	private final UserRepository userInterface;
+	private final UserJpaRepository userInterface;
 
 	// 신고자, 피신고자의 닉네임을 받아서 uid를 찾아서 저장
 	@Transactional
