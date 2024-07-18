@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class User {
-    private final Long id;
+    private final String uid;
     private final String nickname;
     private final String email;
     private final int yellowCard;
@@ -14,9 +14,9 @@ public class User {
     private final String updatedAt;
 
     @Builder
-    public User(Long id, String nickname, String email, int yellowCard, boolean redCard, String createdAt,
+    public User(String uid, String nickname, String email, int yellowCard, boolean redCard, String createdAt,
                 String updatedAt) {
-        this.id = id;
+        this.uid = uid;
         this.nickname = nickname;
         this.email = email;
         this.yellowCard = yellowCard;
@@ -25,5 +25,5 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-    
+
 }

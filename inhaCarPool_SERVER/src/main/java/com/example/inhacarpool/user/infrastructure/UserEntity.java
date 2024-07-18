@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 public class UserEntity {
 
     @Id
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "uid")
+    private String uid;
 
     @Column(name = "nickname")
     private String nickname;
@@ -41,7 +41,7 @@ public class UserEntity {
 
     public static UserEntity from(User user) {
         UserEntity userEntity = new UserEntity();
-        userEntity.id = user.getId();
+        userEntity.uid = user.getUid();
         userEntity.nickname = user.getNickname();
         userEntity.email = user.getEmail();
         userEntity.yellowCard = user.getYellowCard();
@@ -53,7 +53,7 @@ public class UserEntity {
 
     public User toModel() {
         return User.builder()
-                .id(id)
+                .uid(uid)
                 .nickname(nickname)
                 .email(email)
                 .yellowCard(yellowCard)
@@ -65,14 +65,14 @@ public class UserEntity {
 
     @Builder
     public UserEntity(String id, String nickname, String email) {
-        this.id = id;
+        this.uid = id;
         this.nickname = nickname;
         this.email = email;
     }
 
     @Builder(builderMethodName = "relationBuilder")
     public UserEntity(String id, String nickname, String email, int yellowCard, boolean redCard, String createdAt) {
-        this.id = id;
+        this.uid = id;
         this.nickname = nickname;
         this.email = email;
         this.yellowCard = yellowCard;
