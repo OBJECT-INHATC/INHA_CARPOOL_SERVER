@@ -1,4 +1,4 @@
-package com.example.inhacarpool.user;
+package com.example.inhacarpool.user.service;
 
 import com.example.inhacarpool.history.repo.HistoryInterface;
 import com.example.inhacarpool.report.repo.ReportInterface;
@@ -22,29 +22,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserService {
 
-    private final UserJpaRepository userInterface;
+    private final UserJpaRepository userJpaRepository;
     private final ReportInterface reportInterface;
     private final HistoryInterface historyInterface;
 
-    /**
-     * 유저 등록 서비스 로직
-     *
-     * @param userSignUpDto : db에 저장할 유저 정보
-     * @throws DuplicateKeyException : 이미 존재하는 유저일 경우 예외를 controller로 위임
-     * @deprecated 현재는 로그인 시에도 saveUser를 실행하기 때문에 예외로 튕겨버리면 Flutter 앱에서 로그인이 안되는 문제가 있음. 현재는 예외를 피하도록 분기해둠. 변경 예정
-     */
     public void saveUser(UserSignUpDto userSignUpDto) throws DuplicateKeyException {
 
-        // 이미 존재하는 유저가 아닐 때만 저장
-        if (!userInterface.existsById(userSignUpDto.getUid())) {
-            // DTO를 Entity로 변환
+        if (!userJpaRepository.existsById(userSignUpDto.getUid())) {
             UserEntity userEntity = UserEntity.builder()
                     .id(userSignUpDto.getUid())
                     .nickname(userSignUpDto.getNickname())
                     .email(userSignUpDto.getEmail())
                     .build();
 
-            userInterface.save(userEntity);
+            userJpaRepository.save(userEntity);
         } /*else {
 			throw new DuplicateKeyException("이미 존재하는 유저입니다.");
 		}*/
@@ -63,7 +54,7 @@ public class UserService {
         // findByNickname을 통해 Optional을 반환받지 않은 이유는, 후에 reportInterface.countByReportedUser만을 하기 때문에,
         // UserEntity가 필요없기 때문
         // 해당 엔티티가 필요하다면, findBy 메서드를 사용하고, Optional을 반환받아서 처리하는 게 좋음
-        if (userInterface.existsByNickname(nickname)) {
+        if (userJpaRepository.existsByNickname(nickname)) {
             return reportInterface.countByReportedUser(nickname);
         } else {
             throw new EntityNotFoundException("해당 nickname을 가진 유저가 존재하지 않습니다.");
@@ -78,7 +69,7 @@ public class UserService {
      */
     @Transactional(readOnly = true)
     public List<UserInfoDto> findAllUserInfo() {
-        List<UserEntity> userEntityList = userInterface.findAll();
+        List<UserEntity> userEntityList = userJpaRepository.findAll();
 
         return userEntityList.stream().map(userEntity -> UserInfoDto.builder()
                 .nickname(userEntity.getNickname())
@@ -102,7 +93,7 @@ public class UserService {
      */
     public void resetYellowCard(String nickname) throws EntityNotFoundException {
         // 해당 엔티티가 필요하기 때문에, existsByNickname을 사용하지 않고, findByNickname을 사용
-        Optional<UserEntity> userEntity = userInterface.findByNickname(nickname);
+        Optional<UserEntity> userEntity = userJpaRepository.findByNickname(nickname);
         if (userEntity.isPresent()) {
             userEntity.get().resetYellowCard();
         } else {
@@ -118,7 +109,7 @@ public class UserService {
      */
     @Transactional(readOnly = true)
     public int countYellowCard(String uid) throws EntityNotFoundException {
-        Optional<UserEntity> userEntity = userInterface.findById(uid);
+        Optional<UserEntity> userEntity = userJpaRepository.findById(uid);
         if (userEntity.isPresent()) {
             return userEntity.get().getYellowCard();
         } else {
