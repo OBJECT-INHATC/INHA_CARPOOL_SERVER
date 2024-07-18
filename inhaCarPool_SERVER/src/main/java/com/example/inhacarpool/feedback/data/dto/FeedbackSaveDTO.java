@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import com.example.inhacarpool.feedback.data.entity.FeedbackEntity;
 import com.example.inhacarpool.feedback.data.entity.FeedbackType;
-import com.example.inhacarpool.user.data.UserEntity;
+import com.example.inhacarpool.user.infrastructure.UserEntity;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

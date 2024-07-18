@@ -2,7 +2,7 @@ package com.example.inhacarpool.feedback.data.entity;
 
 import java.time.LocalDateTime;
 
-import com.example.inhacarpool.user.data.UserEntity;
+import com.example.inhacarpool.user.infrastructure.UserEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
