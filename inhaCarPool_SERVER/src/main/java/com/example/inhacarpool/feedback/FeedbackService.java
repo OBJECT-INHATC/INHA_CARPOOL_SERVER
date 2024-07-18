@@ -60,7 +60,7 @@ public class FeedbackService {
 				.feedbackType(feedbackEntity.getFeedbackType().toString())
 				.created_at(feedbackEntity.getCreatedAt())
 				.user(new UserResponseDTO(
-						feedbackEntity.getUserEntity().getUid(),
+						feedbackEntity.getUserEntity().getId(),
 						feedbackEntity.getUserEntity().getNickname(),
 						feedbackEntity.getUserEntity().getEmail(),
 						feedbackEntity.getUserEntity().getYellowCard(),

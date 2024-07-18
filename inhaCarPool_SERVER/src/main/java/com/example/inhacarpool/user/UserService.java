@@ -90,7 +90,7 @@ public class UserService {
 			.redCard(userEntity.isRedCard())
 			.historyCount( // 유저 수 만큼 추가 쿼리 발생 -> FetchJoin으로 해결 예정
 				historyInterface.findByMember1ContainingOrMember2ContainingOrMember3ContainingOrMember4Containing(
-					userEntity.getUid(), userEntity.getUid(), userEntity.getUid(), userEntity.getUid()
+					userEntity.getId(), userEntity.getId(), userEntity.getId(), userEntity.getId()
 				).size()
 			)
 			.build()
