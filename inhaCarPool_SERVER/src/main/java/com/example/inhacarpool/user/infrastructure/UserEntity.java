@@ -51,6 +51,18 @@ public class UserEntity {
         return userEntity;
     }
 
+    public User toModel() {
+        return User.builder()
+                .id(id)
+                .nickname(nickname)
+                .email(email)
+                .yellowCard(yellowCard)
+                .redCard(redCard)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .build();
+    }
+
     @Builder
     public UserEntity(String id, String nickname, String email) {
         this.id = id;
