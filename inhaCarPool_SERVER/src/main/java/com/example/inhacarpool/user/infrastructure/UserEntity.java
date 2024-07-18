@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,17 +28,17 @@ public class UserEntity {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "yellowCard", columnDefinition = "int default 0")
+    @Column(name = "yellowCard")
     private int yellowCard;
 
-    @Column(name = "redCard", columnDefinition = "boolean default false")
+    @Column(name = "redCard")
     private boolean redCard;
 
-    @Column(name = "createdAt", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
-    private String createdAt;
+    @Column(name = "createdAt")
+    private LocalDateTime createdAt;
 
-    @Column(name = "updatedAt", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP", insertable = false, updatable = false)
-    private String updatedAt;
+    @Column(name = "updatedAt")
+    private LocalDateTime updatedAt;
 
     public static UserEntity from(User user) {
         UserEntity userEntity = new UserEntity();
@@ -69,16 +70,7 @@ public class UserEntity {
         this.nickname = nickname;
         this.email = email;
     }
-
-    @Builder(builderMethodName = "relationBuilder")
-    public UserEntity(String id, String nickname, String email, int yellowCard, boolean redCard, String createdAt) {
-        this.uid = id;
-        this.nickname = nickname;
-        this.email = email;
-        this.yellowCard = yellowCard;
-        this.redCard = redCard;
-        this.createdAt = createdAt;
-    }
+    
 
     public void resetYellowCard() {
         this.yellowCard = 0;

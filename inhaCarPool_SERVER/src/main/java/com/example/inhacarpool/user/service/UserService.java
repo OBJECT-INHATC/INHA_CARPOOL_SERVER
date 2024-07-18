@@ -2,27 +2,28 @@ package com.example.inhacarpool.user.service;
 
 import com.example.inhacarpool.history.repo.HistoryInterface;
 import com.example.inhacarpool.report.repo.ReportInterface;
+import com.example.inhacarpool.user.controller.request.UserCreateRequest;
 import com.example.inhacarpool.user.data.dto.UserInfoDto;
 import com.example.inhacarpool.user.data.dto.UserSignUpDto;
+import com.example.inhacarpool.user.domain.User;
 import com.example.inhacarpool.user.infrastructure.UserEntity;
 import com.example.inhacarpool.user.infrastructure.UserJpaRepository;
+import com.example.inhacarpool.user.service.port.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.yaml.snakeyaml.constructor.DuplicateKeyException;
 
-/**
- * The type User service.
- */
 @RequiredArgsConstructor
 @Service
 @Transactional
 public class UserService {
 
     private final UserJpaRepository userJpaRepository;
+    private final UserRepository userRepository;
     private final ReportInterface reportInterface;
     private final HistoryInterface historyInterface;
 
@@ -39,6 +40,13 @@ public class UserService {
         } /*else {
 			throw new DuplicateKeyException("이미 존재하는 유저입니다.");
 		}*/
+    }
+
+    @Transactional
+    public User create(UserCreateRequest userCreateRequest) {
+        User user = User.from(userCreateRequest.to());
+        user = userRepository.save(user);
+        return user;
     }
 
     /**

@@ -1,9 +1,13 @@
 package com.example.inhacarpool.user.controller;
 
 import com.example.inhacarpool.exception.BaseResponse;
+import com.example.inhacarpool.user.controller.request.UserCreateRequest;
+import com.example.inhacarpool.user.controller.response.UserResponse;
 import com.example.inhacarpool.user.data.dto.UserInfoDto;
 import com.example.inhacarpool.user.data.dto.UserSignUpDto;
+import com.example.inhacarpool.user.domain.User;
 import com.example.inhacarpool.user.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +15,7 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -23,8 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "user API")
-@Slf4j // Logback 사용을 위한 어노테이션
+@Tag(name = "유저 API")
+@Slf4j
 @RequestMapping("/user")
 @RestController
 @RequiredArgsConstructor
@@ -33,13 +37,16 @@ public class UserController {
 
     private final UserService userService;
 
-    /**
-     * 유저 등록 - apiURL: /user/save
-     *
-     * @param userSignUpDto : 유저 등록 정보
-     * @return ResponseEntity<BaseResponse < String>> : 유저 등록 성공 여부
-     * @throws DuplicateKeyException : 이미 존재하는 유저일 경우 예외를 controller로 위임
-     */
+    @Operation(summary = "유저 회원가입")
+    @PostMapping("/create")
+    public ResponseEntity<UserResponse> createUser(
+            @RequestBody UserCreateRequest userCreateRequest) {
+        User user = userService.create(userCreateRequest);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(UserResponse.from(user));
+    }
+
     @PostMapping("/save")
     public ResponseEntity<BaseResponse<String>> saveUser(
             @Valid
@@ -55,6 +62,7 @@ public class UserController {
                 .status(HttpStatusCode.valueOf(200))
                 .body(new BaseResponse<>("유저 등록 성공"));
     }
+
 
     /**
      * 유저가 신고 당한 횟수 조회 - apiURL: /user/count/reported?nickname={nickname}
