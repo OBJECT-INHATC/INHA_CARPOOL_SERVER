@@ -1,5 +1,6 @@
 package com.example.inhacarpool.user.service;
 
+import com.example.inhacarpool.common.ClockHolder;
 import com.example.inhacarpool.history.repo.HistoryInterface;
 import com.example.inhacarpool.report.repo.ReportInterface;
 import com.example.inhacarpool.user.controller.request.UserCreateRequest;
@@ -26,6 +27,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final ReportInterface reportInterface;
     private final HistoryInterface historyInterface;
+    private final ClockHolder clockHolder;
+
+    @Transactional
+    public User create(UserCreateRequest userCreateRequest) {
+        User user = User.from(userCreateRequest.to(), clockHolder);
+        user = userRepository.save(user);
+        return user;
+    }
 
     public void saveUser(UserSignUpDto userSignUpDto) throws DuplicateKeyException {
 
@@ -40,13 +49,6 @@ public class UserService {
         } /*else {
 			throw new DuplicateKeyException("이미 존재하는 유저입니다.");
 		}*/
-    }
-
-    @Transactional
-    public User create(UserCreateRequest userCreateRequest) {
-        User user = User.from(userCreateRequest.to());
-        user = userRepository.save(user);
-        return user;
     }
 
     /**
@@ -72,8 +74,7 @@ public class UserService {
     /**
      * 모든 유저 정보 조회 로직 (닉네임, 이메일, 옐로우 카드 수, 레드 카드 여부, 이용기록 수)
      *
-     * @return List<UserInfoDTO>  : 모든 유저 정보를 담은 DTO 리스트
-     * @deprecated 현재 history와 user 테이블 간의 연관관계가 없어서 FetchJoin이 불가능함 -> 추후 수정 예정
+     * @return List<UserInfoDTO>  : 모든 유저 정보를 담은 DTO 리스트 현재 history와 user 테이블 간의 연관관계가 없어서 FetchJoin이 불가능함 -> 추후 수정 예정
      */
     @Transactional(readOnly = true)
     public List<UserInfoDto> findAllUserInfo() {

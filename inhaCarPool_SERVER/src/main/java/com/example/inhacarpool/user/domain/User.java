@@ -1,5 +1,6 @@
 package com.example.inhacarpool.user.domain;
 
+import com.example.inhacarpool.common.ClockHolder;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,15 +27,15 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-    public static User from(UserCreate userCreate) {
+    public static User from(UserCreate userCreate, ClockHolder clockHolder) {
         return User.builder()
                 .uid(userCreate.getUid())
                 .nickname(userCreate.getNickname())
                 .email(userCreate.getEmail())
                 .yellowCard(0)
                 .redCard(false)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .createdAt(clockHolder.now())
+                .updatedAt(clockHolder.now())
                 .build();
     }
 }
