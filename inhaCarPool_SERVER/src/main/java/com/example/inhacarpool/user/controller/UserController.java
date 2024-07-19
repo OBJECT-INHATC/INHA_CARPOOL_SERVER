@@ -40,6 +40,7 @@ public class UserController {
     @Operation(summary = "유저 회원가입")
     @PostMapping("/create")
     public ResponseEntity<UserResponse> createUser(
+            @Valid /*TODO: 테스트 전략 알아보기*/
             @RequestBody UserCreateRequest userCreateRequest) {
         User user = userService.create(userCreateRequest);
         return ResponseEntity
