@@ -1,8 +1,7 @@
 package com.example.inhacarpool.user.controller;
 
-import com.example.inhacarpool.exception.BaseResponse;
+import com.example.inhacarpool.common.response.ApiResponse;
 import com.example.inhacarpool.user.controller.request.UserCreateRequest;
-import com.example.inhacarpool.user.controller.response.UserResponse;
 import com.example.inhacarpool.user.data.dto.UserInfoDto;
 import com.example.inhacarpool.user.data.dto.UserSignUpDto;
 import com.example.inhacarpool.user.domain.User;
@@ -39,17 +38,17 @@ public class UserController {
 
     @Operation(summary = "유저 회원가입")
     @PostMapping("/create")
-    public ResponseEntity<UserResponse> createUser(
+    public ResponseEntity<ApiResponse<User>> createUser(
             @Valid /*TODO: 테스트 전략 알아보기*/
             @RequestBody UserCreateRequest userCreateRequest) {
         User user = userService.create(userCreateRequest);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(UserResponse.from(user));
+                .body(new ApiResponse<>(user));
     }
 
     @PostMapping("/save")
-    public ResponseEntity<BaseResponse<String>> saveUser(
+    public ResponseEntity<ApiResponse<String>> saveUser(
             @Valid
             @RequestBody UserSignUpDto userSignUpDto) {
 
@@ -61,7 +60,7 @@ public class UserController {
 
         return ResponseEntity
                 .status(HttpStatusCode.valueOf(200))
-                .body(new BaseResponse<>("유저 등록 성공"));
+                .body(new ApiResponse<>("유저 등록 성공"));
     }
 
 
@@ -72,7 +71,7 @@ public class UserController {
      * @return ResponseEntity<Integer> : 유저가 신고 당한 횟수
      */
     @GetMapping("/count/reported")
-    public ResponseEntity<BaseResponse<Integer>> countReported(
+    public ResponseEntity<ApiResponse<Integer>> countReported(
             @RequestParam(value = "nickname")
             @NotNull String nickname) {
 
@@ -84,7 +83,7 @@ public class UserController {
 
         return ResponseEntity
                 .status(HttpStatusCode.valueOf(200))
-                .body(new BaseResponse<>(count));
+                .body(new ApiResponse<>(count));
     }
 
     /**
@@ -93,7 +92,7 @@ public class UserController {
      * @return ResponseEntity<BaseResponse < List < UserInfoDto>>> : 모든 유저 정보
      */
     @GetMapping("/all")
-    public ResponseEntity<BaseResponse<List<UserInfoDto>>> findAllUserInfo() {
+    public ResponseEntity<ApiResponse<List<UserInfoDto>>> findAllUserInfo() {
 
         long startTime = System.currentTimeMillis();
         List<UserInfoDto> userInfoDtoList = userService.findAllUserInfo();
@@ -103,7 +102,7 @@ public class UserController {
 
         return ResponseEntity
                 .status(HttpStatusCode.valueOf(200))
-                .body(new BaseResponse<>(userInfoDtoList));
+                .body(new ApiResponse<>(userInfoDtoList));
     }
 
     /**
@@ -113,7 +112,7 @@ public class UserController {
      * @return ResponseEntity response entity
      */
     @PutMapping("/reset/yellow")
-    public ResponseEntity<BaseResponse<String>> resetYellowCard(
+    public ResponseEntity<ApiResponse<String>> resetYellowCard(
             @RequestParam(value = "nickname")
             @NotNull String nickname) {
 
@@ -125,7 +124,7 @@ public class UserController {
 
         return ResponseEntity
                 .status(HttpStatusCode.valueOf(200))
-                .body(new BaseResponse<>("유저의 경고 횟수 초기화 완료"));
+                .body(new ApiResponse<>("유저의 경고 횟수 초기화 완료"));
     }
 
     /**
@@ -135,7 +134,7 @@ public class UserController {
      * @return ResponseEntity response entity
      */
     @GetMapping("/count/yellow")
-    public ResponseEntity<BaseResponse<Integer>> countYellowCard(
+    public ResponseEntity<ApiResponse<Integer>> countYellowCard(
             @RequestParam(value = "uid")
             @NotNull @Size(min = 28, max = 28) String uid) {
 
@@ -147,7 +146,7 @@ public class UserController {
 
         return ResponseEntity
                 .status(HttpStatusCode.valueOf(200))
-                .body(new BaseResponse<>(count));
+                .body(new ApiResponse<>(count));
     }
 
 }
