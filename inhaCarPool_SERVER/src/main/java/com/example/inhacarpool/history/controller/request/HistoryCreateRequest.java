@@ -3,6 +3,7 @@ package com.example.inhacarpool.history.controller.request;
 import com.example.inhacarpool.history.domain.History;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Optional;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -24,6 +25,7 @@ public class HistoryCreateRequest {
     private final String endPointName;
     private final String gender;
 
+    @Builder
     public HistoryCreateRequest(
             @JsonProperty("carPoolId") String carPoolId,
             @JsonProperty("admin") String admin,
