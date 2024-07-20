@@ -3,7 +3,6 @@ package com.example.inhacarpool.user.controller;
 import com.example.inhacarpool.common.response.ApiResponse;
 import com.example.inhacarpool.user.controller.request.UserCreateRequest;
 import com.example.inhacarpool.user.data.dto.UserInfoDto;
-import com.example.inhacarpool.user.data.dto.UserSignUpDto;
 import com.example.inhacarpool.user.domain.User;
 import com.example.inhacarpool.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,23 +45,6 @@ public class UserController {
                 .status(HttpStatus.CREATED)
                 .body(new ApiResponse<>(user));
     }
-
-    @PostMapping("/save")
-    public ResponseEntity<ApiResponse<String>> saveUser(
-            @Valid
-            @RequestBody UserSignUpDto userSignUpDto) {
-
-        long startTime = System.currentTimeMillis();
-        userService.saveUser(userSignUpDto);
-        long timeTaken = System.currentTimeMillis() - startTime;
-
-        log.info("[유저 등록 완료]:: {}, [실행 시간 ms]:: {}", userSignUpDto, timeTaken);
-
-        return ResponseEntity
-                .status(HttpStatusCode.valueOf(200))
-                .body(new ApiResponse<>("유저 등록 성공"));
-    }
-
 
     /**
      * 유저가 신고 당한 횟수 조회 - apiURL: /user/count/reported?nickname={nickname}
