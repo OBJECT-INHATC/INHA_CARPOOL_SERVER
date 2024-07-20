@@ -1,4 +1,4 @@
-package com.example.inhacarpool.common;
+package com.example.inhacarpool.common.port;
 
 import java.time.LocalDateTime;
 

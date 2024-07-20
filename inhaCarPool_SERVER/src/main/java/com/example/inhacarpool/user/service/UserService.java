@@ -1,6 +1,6 @@
 package com.example.inhacarpool.user.service;
 
-import com.example.inhacarpool.common.ClockHolder;
+import com.example.inhacarpool.common.port.ClockHolder;
 import com.example.inhacarpool.history.repo.HistoryInterface;
 import com.example.inhacarpool.report.repo.ReportInterface;
 import com.example.inhacarpool.user.controller.request.UserCreateRequest;
