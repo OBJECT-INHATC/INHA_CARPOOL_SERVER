@@ -4,7 +4,6 @@ import com.example.inhacarpool.common.port.ClockHolder;
 import com.example.inhacarpool.history.infrastructure.HistoryJpaRepository;
 import com.example.inhacarpool.report.repo.ReportInterface;
 import com.example.inhacarpool.user.controller.request.UserCreateRequest;
-import com.example.inhacarpool.user.controller.response.UserResponse;
 import com.example.inhacarpool.user.data.dto.UserInfoDto;
 import com.example.inhacarpool.user.domain.User;
 import com.example.inhacarpool.user.infrastructure.UserEntity;
@@ -36,9 +35,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public List<UserResponse> findAllUser() {
-        List<User> users = userRepository.findAll();
-        return users.stream().map(UserResponse::from).toList();
+    public List<User> findAllUser() {
+        return userRepository.findAll();
     }
 
     /**
