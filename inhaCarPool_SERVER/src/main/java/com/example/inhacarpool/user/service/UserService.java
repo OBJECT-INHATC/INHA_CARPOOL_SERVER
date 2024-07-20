@@ -4,6 +4,7 @@ import com.example.inhacarpool.common.port.ClockHolder;
 import com.example.inhacarpool.history.repo.HistoryInterface;
 import com.example.inhacarpool.report.repo.ReportInterface;
 import com.example.inhacarpool.user.controller.request.UserCreateRequest;
+import com.example.inhacarpool.user.controller.response.UserResponse;
 import com.example.inhacarpool.user.data.dto.UserInfoDto;
 import com.example.inhacarpool.user.domain.User;
 import com.example.inhacarpool.user.infrastructure.UserEntity;
@@ -27,12 +28,17 @@ public class UserService {
     private final HistoryInterface historyInterface;
     private final ClockHolder clockHolder;
 
-    @Transactional
     public User create(UserCreateRequest userCreateRequest) {
         /*TODO: DuplicateKeyException 처리*/
         User user = User.from(userCreateRequest.to(), clockHolder);
         user = userRepository.save(user);
         return user;
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserResponse> findAllUser() {
+        List<User> users = userRepository.findAll();
+        return users.stream().map(UserResponse::from).toList();
     }
 
     /**
@@ -109,5 +115,4 @@ public class UserService {
             throw new EntityNotFoundException("해당 uid를 가진 유저가 존재하지 않습니다.");
         }
     }
-
 }

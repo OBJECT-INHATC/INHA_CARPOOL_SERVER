@@ -2,6 +2,7 @@ package com.example.inhacarpool.user.controller;
 
 import com.example.inhacarpool.common.response.ApiResponse;
 import com.example.inhacarpool.user.controller.request.UserCreateRequest;
+import com.example.inhacarpool.user.controller.response.UserResponse;
 import com.example.inhacarpool.user.data.dto.UserInfoDto;
 import com.example.inhacarpool.user.domain.User;
 import com.example.inhacarpool.user.service.UserService;
@@ -46,6 +47,36 @@ public class UserController {
                 .body(new ApiResponse<>(user));
     }
 
+    @Operation(summary = "모든 유저 정보 조회")
+    @GetMapping("/all/v2")
+    public ResponseEntity<ApiResponse<List<UserResponse>>> findAllUser() {
+        List<UserResponse> users = userService.findAllUser();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ApiResponse<>(users));
+    }
+
+
+    /**
+     * 모든 유저 정보 조회 with 이용기록 횟수 - apiURL: /user/all - 관리자 앱에서 사용 예정
+     *
+     * @return ResponseEntity<BaseResponse < List < UserInfoDto>>> : 모든 유저 정보
+     */
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<UserInfoDto>>> findAllUserInfo() {
+
+        long startTime = System.currentTimeMillis();
+        List<UserInfoDto> userInfoDtoList = userService.findAllUserInfo();
+        long timeTaken = System.currentTimeMillis() - startTime;
+
+        log.info("[모든 유저 정보 조회 완료]:: {}, [실행 시간 ms]:: {}", userInfoDtoList, timeTaken);
+
+        return ResponseEntity
+                .status(HttpStatusCode.valueOf(200))
+                .body(new ApiResponse<>(userInfoDtoList));
+    }
+
+
     /**
      * 유저가 신고 당한 횟수 조회 - apiURL: /user/count/reported?nickname={nickname}
      *
@@ -68,24 +99,6 @@ public class UserController {
                 .body(new ApiResponse<>(count));
     }
 
-    /**
-     * 모든 유저 정보 조회 - apiURL: /user/all - 관리자 앱에서 사용 예정
-     *
-     * @return ResponseEntity<BaseResponse < List < UserInfoDto>>> : 모든 유저 정보
-     */
-    @GetMapping("/all")
-    public ResponseEntity<ApiResponse<List<UserInfoDto>>> findAllUserInfo() {
-
-        long startTime = System.currentTimeMillis();
-        List<UserInfoDto> userInfoDtoList = userService.findAllUserInfo();
-        long timeTaken = System.currentTimeMillis() - startTime;
-
-        log.info("[모든 유저 정보 조회 완료]:: {}, [실행 시간 ms]:: {}", userInfoDtoList, timeTaken);
-
-        return ResponseEntity
-                .status(HttpStatusCode.valueOf(200))
-                .body(new ApiResponse<>(userInfoDtoList));
-    }
 
     /**
      * 유저의 경고 횟수를 0으로 초기화 - apiURL: /user/reset/yellow
