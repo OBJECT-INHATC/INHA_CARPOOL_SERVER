@@ -1,8 +1,8 @@
 package com.example.inhacarpool.scheduler;
 
 import com.example.inhacarpool.common.exception.InhaCarpoolException;
-import com.example.inhacarpool.history.HistoryService;
 import com.example.inhacarpool.history.data.HistoryRequestDTO;
+import com.example.inhacarpool.history.service.HistoryService;
 import com.example.inhacarpool.topic.TopicService;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;

@@ -1,10 +1,9 @@
 package com.example.inhacarpool.user.service;
 
 import com.example.inhacarpool.common.port.ClockHolder;
-import com.example.inhacarpool.history.repo.HistoryInterface;
+import com.example.inhacarpool.history.infrastructure.HistoryJpaRepository;
 import com.example.inhacarpool.report.repo.ReportInterface;
 import com.example.inhacarpool.user.controller.request.UserCreateRequest;
-import com.example.inhacarpool.user.controller.response.UserResponse;
 import com.example.inhacarpool.user.data.dto.UserInfoDto;
 import com.example.inhacarpool.user.domain.User;
 import com.example.inhacarpool.user.infrastructure.UserEntity;
@@ -25,7 +24,7 @@ public class UserService {
     private final UserJpaRepository userJpaRepository;
     private final UserRepository userRepository;
     private final ReportInterface reportInterface;
-    private final HistoryInterface historyInterface;
+    private final HistoryJpaRepository historyJpaRepository;
     private final ClockHolder clockHolder;
 
     public User create(UserCreateRequest userCreateRequest) {
@@ -36,9 +35,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public List<UserResponse> findAllUser() {
-        List<User> users = userRepository.findAll();
-        return users.stream().map(UserResponse::from).toList();
+    public List<User> findAllUser() {
+        return userRepository.findAll();
     }
 
     /**
@@ -76,7 +74,7 @@ public class UserService {
                 .yellowCard(userEntity.getYellowCard())
                 .redCard(userEntity.isRedCard())
                 .historyCount( // 유저 수 만큼 추가 쿼리 발생 -> FetchJoin으로 해결 예정
-                        historyInterface.findByMember1ContainingOrMember2ContainingOrMember3ContainingOrMember4Containing(
+                        historyJpaRepository.findByMember1ContainingOrMember2ContainingOrMember3ContainingOrMember4Containing(
                                 userEntity.getUid(), userEntity.getUid(), userEntity.getUid(), userEntity.getUid()
                         ).size()
                 )
