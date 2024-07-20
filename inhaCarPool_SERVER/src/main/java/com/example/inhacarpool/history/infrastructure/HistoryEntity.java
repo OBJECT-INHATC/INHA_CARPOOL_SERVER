@@ -1,5 +1,6 @@
 package com.example.inhacarpool.history.infrastructure;
 
+import com.example.inhacarpool.history.domain.History;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -86,4 +87,45 @@ public class HistoryEntity {
         this.gender = gender;
     }
 
+    public static HistoryEntity from(History history) {
+        return HistoryEntity.builder()
+                .carPoolId(history.getCarPoolId())
+                .admin(history.getAdmin())
+                .member1(history.getMember1())
+                .member2(history.getMember2())
+                .member3(history.getMember3())
+                .member4(history.getMember4())
+                .nowMember(history.getNowMember())
+                .maxMember(history.getMaxMember())
+                .startDetailPoint(history.getStartDetailPoint())
+                .startPoint(history.getStartPoint())
+                .startPointName(history.getStartPointName())
+                .startTime(history.getStartTime())
+                .endDetailPoint(history.getEndDetailPoint())
+                .endPoint(history.getEndPoint())
+                .endPointName(history.getEndPointName())
+                .gender(history.getGender())
+                .build();
+    }
+
+    public History toModel() {
+        return History.builder()
+                .carPoolId(carPoolId)
+                .admin(admin)
+                .member1(member1)
+                .member2(member2)
+                .member3(member3)
+                .member4(member4)
+                .nowMember(nowMember)
+                .maxMember(maxMember)
+                .startDetailPoint(startDetailPoint)
+                .startPoint(startPoint)
+                .startPointName(startPointName)
+                .startTime(startTime)
+                .endDetailPoint(endDetailPoint)
+                .endPoint(endPoint)
+                .endPointName(endPointName)
+                .gender(gender)
+                .build();
+    }
 }

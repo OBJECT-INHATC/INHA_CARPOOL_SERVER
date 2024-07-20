@@ -43,5 +43,4 @@ public class History {
         this.endPointName = endPointName;
         this.gender = gender;
     }
-
 }

@@ -2,8 +2,10 @@ package com.example.inhacarpool.history.service;
 
 import com.example.inhacarpool.history.data.HistoryRequestDTO;
 import com.example.inhacarpool.history.data.HistoryResponseDTO;
+import com.example.inhacarpool.history.domain.History;
 import com.example.inhacarpool.history.infrastructure.HistoryEntity;
 import com.example.inhacarpool.history.infrastructure.HistoryJpaRepository;
+import com.example.inhacarpool.history.service.port.HistoryRepository;
 import com.example.inhacarpool.scheduler.CarpoolResponseDTO;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,9 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class HistoryService {
 
     private final HistoryJpaRepository historyJpaRepository;
+    private final HistoryRepository historyRepository;
 
     // 이용 내역 저장
-    @Transactional
     public void saveHistory(HistoryRequestDTO historyRequestDTO) {
 
         // maxMember가 null이면 기본값으로 4로 설정
@@ -58,6 +60,11 @@ public class HistoryService {
         }
 
         historyJpaRepository.save(historyEntity);
+    }
+
+    public History create(History history) {
+        /*TODO 이미 존재하는 이용기록일 때 예외처리 추가*/
+        return historyRepository.save(history);
     }
 
     // 이용 내역 조회

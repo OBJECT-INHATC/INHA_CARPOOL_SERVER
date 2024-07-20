@@ -1,11 +1,18 @@
 package com.example.inhacarpool.history.controller;
 
+import com.example.inhacarpool.common.response.ApiResponse;
+import com.example.inhacarpool.history.controller.request.HistoryCreateRequest;
+import com.example.inhacarpool.history.controller.response.HistoryResponse;
 import com.example.inhacarpool.history.data.HistoryRequestDTO;
 import com.example.inhacarpool.history.data.HistoryResponseDTO;
+import com.example.inhacarpool.history.domain.History;
 import com.example.inhacarpool.history.infrastructure.HistoryEntity;
 import com.example.inhacarpool.history.service.HistoryService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequestMapping("/history")
 @RestController
+@Tag(name = "이용기록 API")
 public class HistoryController {
 
     private final HistoryService historyService;
@@ -39,6 +47,17 @@ public class HistoryController {
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @Operation(summary = "이용 내역 저장")
+    @PostMapping("/create")
+    public ResponseEntity<ApiResponse<HistoryResponse>> createHistory(
+            @RequestBody HistoryCreateRequest historyCreateRequest
+    ) {
+        History history = historyService.create(historyCreateRequest.to());
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new ApiResponse<>(HistoryResponse.from(history)));
     }
 
     // 이용 내역 조회 메소드

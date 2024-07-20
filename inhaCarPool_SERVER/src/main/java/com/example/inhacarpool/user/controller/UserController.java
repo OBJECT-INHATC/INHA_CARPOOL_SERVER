@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @Operation(summary = "모든 유저 정보 조회")
-    @GetMapping("/all/v2")
+    @GetMapping("/v2/all")
     public ResponseEntity<ApiResponse<List<UserResponse>>> findAllUser() {
         List<UserResponse> users = userService.findAllUser().stream()
                 .map(UserResponse::from)
