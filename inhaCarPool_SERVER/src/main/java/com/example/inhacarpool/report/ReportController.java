@@ -44,7 +44,7 @@ public class ReportController {
             log.info("========신고가 완료되었습니다.===========> " + reportRequstDTO.getReporter());
             return new ApiResponse<>("해당 사용자를 신고 완료하였습니다.");
         } catch (InhaCarpoolException exception) {
-            return new ApiResponse<>(exception.getBaseExceptionCode());
+            return new ApiResponse<>(exception.getCustomException());
         }
     }
 
@@ -98,7 +98,7 @@ public class ReportController {
             return new ApiResponse<>("신고 처리가 완료되었습니다.");
         } catch (InhaCarpoolException exception) {
             log.info("=======신고 처리가 실패하였습니다.===========> " + reportIdx);
-            return new ApiResponse<>(exception.getBaseExceptionCode());
+            return new ApiResponse<>(exception.getCustomException());
         }
     }
 

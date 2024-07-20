@@ -1,6 +1,6 @@
 package com.example.inhacarpool.topic;
 
-import com.example.inhacarpool.common.exception.ExceptionCode;
+import com.example.inhacarpool.common.exception.CustomException;
 import com.example.inhacarpool.common.exception.InhaCarpoolException;
 import com.example.inhacarpool.topic.data.TopicEntity;
 import com.example.inhacarpool.topic.data.TopicSaveDto;
@@ -34,13 +34,13 @@ public class TopicService {
         // 해당 유저가 존재하지 않으면 예외 처리
         Optional<UserEntity> userOptional = userRepository.findById(topicSaveDto.getUid());
         if (userOptional.isEmpty()) {
-            throw new InhaCarpoolException(ExceptionCode.USER_NOT_FOUND);
+            throw new InhaCarpoolException(CustomException.USER_NOT_FOUND);
         }
         UserEntity userEntity = userOptional.get();
 
         // 해당 토픽이 이미 존재하면 예외 처리
         if (topicRepository.existsByUsersUidAndCarId(topicSaveDto.getUid(), topicSaveDto.getCarid())) {
-            throw new InhaCarpoolException(ExceptionCode.TOPIC_ALREADY_EXIST);
+            throw new InhaCarpoolException(CustomException.TOPIC_ALREADY_EXIST);
         }
 
         // 토픽 생성
@@ -64,7 +64,7 @@ public class TopicService {
     public void deleteTopicByUidAndCarId(String uid, String carId) throws InhaCarpoolException {
         // uid와 carId를 사용하여 토픽을 조회
         TopicEntity topicEntity = topicRepository.deleteByUidAndCarId(uid, carId)
-                .orElseThrow(() -> new InhaCarpoolException(ExceptionCode.TOPIC_NOT_FOUND)); // 토픽이 없는 경우 예외 처리
+                .orElseThrow(() -> new InhaCarpoolException(CustomException.TOPIC_NOT_FOUND)); // 토픽이 없는 경우 예외 처리
 
         // 조회된 토픽을 삭제
         topicRepository.delete(topicEntity);
@@ -102,7 +102,7 @@ public class TopicService {
 
         // 조회된 토픽이 없는 경우 예외 처리
         if (topicEntities.isEmpty()) {
-            throw new InhaCarpoolException(ExceptionCode.TOPIC_NOT_FOUND);
+            throw new InhaCarpoolException(CustomException.TOPIC_NOT_FOUND);
         }
 
         // 조회된 모든 토픽을 삭제

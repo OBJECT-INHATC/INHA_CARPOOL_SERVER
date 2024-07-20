@@ -1,6 +1,6 @@
 package com.example.inhacarpool.common.response;
 
-import com.example.inhacarpool.common.exception.ExceptionCode;
+import com.example.inhacarpool.common.exception.CustomException;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -45,7 +45,7 @@ public class ApiResponse<T> {
      *
      * @param status 실패 상태 - BaseResponseStatus의 타입 중 하나 입력
      */
-    public ApiResponse(ExceptionCode status) {
+    public ApiResponse(CustomException status) {
         this.code = status.getStatusCode();
         this.message = status.getMessage();
     }

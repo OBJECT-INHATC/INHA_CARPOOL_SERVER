@@ -1,6 +1,6 @@
 package com.example.inhacarpool.scheduler;
 
-import static com.example.inhacarpool.common.exception.ExceptionCode.FCM_SEND_ERROR;
+import static com.example.inhacarpool.common.exception.CustomException.FCM_SEND_ERROR;
 
 import com.example.inhacarpool.common.exception.InhaCarpoolException;
 import lombok.extern.slf4j.Slf4j;

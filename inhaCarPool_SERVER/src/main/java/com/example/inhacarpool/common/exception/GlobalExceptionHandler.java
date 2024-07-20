@@ -13,36 +13,21 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-/**
- * GlobalExceptionHandler : 전역 예외 처리 클래스
- */
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
 
-    /**
-     * BaseException 예외 처리
-     *
-     * @param exception : BaseException
-     * @return ResponseEntity<BaseResponse < BaseResponseCode>> : BaseException 발생 시 응답
-     */
     @ExceptionHandler(InhaCarpoolException.class)
-    public ResponseEntity<ApiResponse<ExceptionCode>> handleBaseException(InhaCarpoolException exception) {
-        String responseMsg = "BaseException: " + exception.getBaseExceptionCode().getMessage(); // 응답 메세지
+    public ResponseEntity<ApiResponse<CustomException>> handleBaseException(InhaCarpoolException exception) {
+        String responseMsg = exception.getCustomException().getMessage(); // 응답 메세지
 
         log.error(responseMsg);
 
         return ResponseEntity
-                .status(exception.getBaseExceptionCode().getStatusCode()) // BaseException의 status에 따라 상태코드 설정
-                .body(new ApiResponse<>(exception.getBaseExceptionCode())); // BaseException 발생 시 응답
+                .status(exception.getCustomException().getStatusCode()) // BaseException의 status에 따라 상태코드 설정
+                .body(new ApiResponse<>(exception.getCustomException())); // BaseException 발생 시 응답
     }
 
-    /**
-     * 중복키 예외 처리
-     *
-     * @param exception : DuplicateKeyException
-     * @return ResponseEntity<BaseResponse < String>> : 중복키 예외 발생 시 응답
-     */
     @ExceptionHandler(DuplicateKeyException.class)
     public ResponseEntity<ApiResponse<String>> handleDuplicateKeyException(DuplicateKeyException exception) {
         String responseMsg = "DuplicateKeyException: " + exception.getMessage(); // 응답 메세지
@@ -55,12 +40,6 @@ public class GlobalExceptionHandler {
                         responseMsg)); // 중복키 예외 발생 시 응답
     }
 
-    /**
-     * 레코드 없음 예외 처리
-     *
-     * @param exception : EntityNotFoundException
-     * @return ResponseEntity<BaseResponse < String>> : EntityNotFoundException 발생 시 응답
-     */
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ApiResponse<String>> handleEntityNotFoundException(EntityNotFoundException exception) {
         String responseMsg = "EntityNotFoundException: " + exception.getMessage(); // 응답 메세지
@@ -73,12 +52,6 @@ public class GlobalExceptionHandler {
                         responseMsg)); // EntityNotFoundException 발생 시 응답
     }
 
-    /**
-     * 유효성 검사 실패 예외 처리 - @Valid에 의한 검사 실패
-     *
-     * @param exception : MethodArgumentNotValidException
-     * @return ResponseEntity<BaseResponse < String>> : MethodArgumentNotValidException 발생 시 응답
-     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<String>> exceptionHandler(MethodArgumentNotValidException exception) {
 
@@ -98,13 +71,7 @@ public class GlobalExceptionHandler {
                 .body(new ApiResponse<>(HttpStatusCode.valueOf(400),
                         builder.toString())); // MethodArgumentNotValidException 발생 시 응답
     }
-
-    /**
-     * 유효성 검사 실패 예외 처리 - @Validated에 의한 검사 실패
-     *
-     * @param exception : ValidationException
-     * @return ResponseEntity<BaseResponse < String>> : ValidationException 발생 시 응답
-     */
+    
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<ApiResponse<String>> handleValidationException(
             ValidationException exception) {

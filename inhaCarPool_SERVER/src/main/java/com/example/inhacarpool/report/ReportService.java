@@ -1,8 +1,8 @@
 package com.example.inhacarpool.report;
 
-import static com.example.inhacarpool.common.exception.ExceptionCode.DATABASE_INSERT_ERROR;
+import static com.example.inhacarpool.common.exception.CustomException.DATABASE_INSERT_ERROR;
 
-import com.example.inhacarpool.common.exception.ExceptionCode;
+import com.example.inhacarpool.common.exception.CustomException;
 import com.example.inhacarpool.common.exception.InhaCarpoolException;
 import com.example.inhacarpool.report.data.dto.ReportRequestDTO;
 import com.example.inhacarpool.report.data.dto.ReportResponseDTO;
@@ -160,11 +160,11 @@ public class ReportService {
     @Transactional
     public void updateStatus(Long reportIdx) throws InhaCarpoolException {
         ReportEntity reportEntity = reportInterface.findById(reportIdx)
-                .orElseThrow(() -> new InhaCarpoolException(ExceptionCode.REPORT_NOT_FOUND)); // 신고가 없는 경우 예외 처리
+                .orElseThrow(() -> new InhaCarpoolException(CustomException.REPORT_NOT_FOUND)); // 신고가 없는 경우 예외 처리
 
         // 이미 처리된 신고인 경우 예외 처리
         if (reportEntity.isStatus()) {
-            throw new InhaCarpoolException(ExceptionCode.ALREADY_PROCESSED); // 이미 처리된 신고인 경우 예외 처리
+            throw new InhaCarpoolException(CustomException.ALREADY_PROCESSED); // 이미 처리된 신고인 경우 예외 처리
         }
 
         reportEntity.setStatus(true); // 신고 처리 상태를 true로 변경 (update)

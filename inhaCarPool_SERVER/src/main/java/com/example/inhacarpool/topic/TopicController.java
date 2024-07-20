@@ -61,7 +61,7 @@ public class TopicController {
             log.info("======" + carId + "=======토픽 삭제되었습니다==========");
             return new ApiResponse<>("토픽이 삭제되었습니다.");
         } catch (InhaCarpoolException exception) {
-            return new ApiResponse<>(exception.getBaseExceptionCode());
+            return new ApiResponse<>(exception.getCustomException());
         }
     }
 

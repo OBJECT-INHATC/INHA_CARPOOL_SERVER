@@ -4,7 +4,7 @@ import lombok.Getter;
 import org.springframework.http.HttpStatusCode;
 
 @Getter
-public enum ExceptionCode {
+public enum CustomException {
 
     // 유저
     USER_NOT_FOUND(HttpStatusCode.valueOf(404), "해당 유저가 존재하지 않습니다."),
@@ -25,7 +25,7 @@ public enum ExceptionCode {
     private final HttpStatusCode statusCode; // 상태 코드 - HttpStatusCode Value
     private final String message; // 응답 설명 메세지
 
-    ExceptionCode(final HttpStatusCode statusCode, final String message) {
+    CustomException(final HttpStatusCode statusCode, final String message) {
         this.statusCode = statusCode;
         this.message = message;
     }
