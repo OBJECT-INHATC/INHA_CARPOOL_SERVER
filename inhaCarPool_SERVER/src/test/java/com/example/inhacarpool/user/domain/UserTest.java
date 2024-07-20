@@ -2,8 +2,8 @@ package com.example.inhacarpool.user.domain;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import com.example.inhacarpool.common.ClockHolder;
 import com.example.inhacarpool.common.FixedClockHolder;
+import com.example.inhacarpool.common.port.ClockHolder;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

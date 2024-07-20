@@ -1,11 +1,11 @@
 package com.example.inhacarpool.user.service;
 
-import com.example.inhacarpool.common.ClockHolder;
+import com.example.inhacarpool.common.port.ClockHolder;
 import com.example.inhacarpool.history.repo.HistoryInterface;
 import com.example.inhacarpool.report.repo.ReportInterface;
 import com.example.inhacarpool.user.controller.request.UserCreateRequest;
+import com.example.inhacarpool.user.controller.response.UserResponse;
 import com.example.inhacarpool.user.data.dto.UserInfoDto;
-import com.example.inhacarpool.user.data.dto.UserSignUpDto;
 import com.example.inhacarpool.user.domain.User;
 import com.example.inhacarpool.user.infrastructure.UserEntity;
 import com.example.inhacarpool.user.infrastructure.UserJpaRepository;
@@ -16,7 +16,6 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.yaml.snakeyaml.constructor.DuplicateKeyException;
 
 @RequiredArgsConstructor
 @Service
@@ -29,26 +28,17 @@ public class UserService {
     private final HistoryInterface historyInterface;
     private final ClockHolder clockHolder;
 
-    @Transactional
     public User create(UserCreateRequest userCreateRequest) {
+        /*TODO: DuplicateKeyException 처리*/
         User user = User.from(userCreateRequest.to(), clockHolder);
         user = userRepository.save(user);
         return user;
     }
 
-    public void saveUser(UserSignUpDto userSignUpDto) throws DuplicateKeyException {
-
-        if (!userJpaRepository.existsById(userSignUpDto.getUid())) {
-            UserEntity userEntity = UserEntity.builder()
-                    .id(userSignUpDto.getUid())
-                    .nickname(userSignUpDto.getNickname())
-                    .email(userSignUpDto.getEmail())
-                    .build();
-
-            userJpaRepository.save(userEntity);
-        } /*else {
-			throw new DuplicateKeyException("이미 존재하는 유저입니다.");
-		}*/
+    @Transactional(readOnly = true)
+    public List<UserResponse> findAllUser() {
+        List<User> users = userRepository.findAll();
+        return users.stream().map(UserResponse::from).toList();
     }
 
     /**
@@ -125,5 +115,4 @@ public class UserService {
             throw new EntityNotFoundException("해당 uid를 가진 유저가 존재하지 않습니다.");
         }
     }
-
 }

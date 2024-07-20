@@ -1,10 +1,9 @@
 package com.example.inhacarpool.user.controller;
 
-import com.example.inhacarpool.exception.BaseResponse;
+import com.example.inhacarpool.common.response.ApiResponse;
 import com.example.inhacarpool.user.controller.request.UserCreateRequest;
 import com.example.inhacarpool.user.controller.response.UserResponse;
 import com.example.inhacarpool.user.data.dto.UserInfoDto;
-import com.example.inhacarpool.user.data.dto.UserSignUpDto;
 import com.example.inhacarpool.user.domain.User;
 import com.example.inhacarpool.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,28 +38,42 @@ public class UserController {
 
     @Operation(summary = "유저 회원가입")
     @PostMapping("/create")
-    public ResponseEntity<UserResponse> createUser(
+    public ResponseEntity<ApiResponse<User>> createUser(
+            @Valid /*TODO: 테스트 전략 알아보기*/
             @RequestBody UserCreateRequest userCreateRequest) {
         User user = userService.create(userCreateRequest);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(UserResponse.from(user));
+                .body(new ApiResponse<>(user));
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<BaseResponse<String>> saveUser(
-            @Valid
-            @RequestBody UserSignUpDto userSignUpDto) {
+    @Operation(summary = "모든 유저 정보 조회")
+    @GetMapping("/all/v2")
+    public ResponseEntity<ApiResponse<List<UserResponse>>> findAllUser() {
+        List<UserResponse> users = userService.findAllUser();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ApiResponse<>(users));
+    }
+
+
+    /**
+     * 모든 유저 정보 조회 with 이용기록 횟수 - apiURL: /user/all - 관리자 앱에서 사용 예정
+     *
+     * @return ResponseEntity<BaseResponse < List < UserInfoDto>>> : 모든 유저 정보
+     */
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<UserInfoDto>>> findAllUserInfo() {
 
         long startTime = System.currentTimeMillis();
-        userService.saveUser(userSignUpDto);
+        List<UserInfoDto> userInfoDtoList = userService.findAllUserInfo();
         long timeTaken = System.currentTimeMillis() - startTime;
 
-        log.info("[유저 등록 완료]:: {}, [실행 시간 ms]:: {}", userSignUpDto, timeTaken);
+        log.info("[모든 유저 정보 조회 완료]:: {}, [실행 시간 ms]:: {}", userInfoDtoList, timeTaken);
 
         return ResponseEntity
                 .status(HttpStatusCode.valueOf(200))
-                .body(new BaseResponse<>("유저 등록 성공"));
+                .body(new ApiResponse<>(userInfoDtoList));
     }
 
 
@@ -71,7 +84,7 @@ public class UserController {
      * @return ResponseEntity<Integer> : 유저가 신고 당한 횟수
      */
     @GetMapping("/count/reported")
-    public ResponseEntity<BaseResponse<Integer>> countReported(
+    public ResponseEntity<ApiResponse<Integer>> countReported(
             @RequestParam(value = "nickname")
             @NotNull String nickname) {
 
@@ -83,27 +96,9 @@ public class UserController {
 
         return ResponseEntity
                 .status(HttpStatusCode.valueOf(200))
-                .body(new BaseResponse<>(count));
+                .body(new ApiResponse<>(count));
     }
 
-    /**
-     * 모든 유저 정보 조회 - apiURL: /user/all - 관리자 앱에서 사용 예정
-     *
-     * @return ResponseEntity<BaseResponse < List < UserInfoDto>>> : 모든 유저 정보
-     */
-    @GetMapping("/all")
-    public ResponseEntity<BaseResponse<List<UserInfoDto>>> findAllUserInfo() {
-
-        long startTime = System.currentTimeMillis();
-        List<UserInfoDto> userInfoDtoList = userService.findAllUserInfo();
-        long timeTaken = System.currentTimeMillis() - startTime;
-
-        log.info("[모든 유저 정보 조회 완료]:: {}, [실행 시간 ms]:: {}", userInfoDtoList, timeTaken);
-
-        return ResponseEntity
-                .status(HttpStatusCode.valueOf(200))
-                .body(new BaseResponse<>(userInfoDtoList));
-    }
 
     /**
      * 유저의 경고 횟수를 0으로 초기화 - apiURL: /user/reset/yellow
@@ -112,7 +107,7 @@ public class UserController {
      * @return ResponseEntity response entity
      */
     @PutMapping("/reset/yellow")
-    public ResponseEntity<BaseResponse<String>> resetYellowCard(
+    public ResponseEntity<ApiResponse<String>> resetYellowCard(
             @RequestParam(value = "nickname")
             @NotNull String nickname) {
 
@@ -124,7 +119,7 @@ public class UserController {
 
         return ResponseEntity
                 .status(HttpStatusCode.valueOf(200))
-                .body(new BaseResponse<>("유저의 경고 횟수 초기화 완료"));
+                .body(new ApiResponse<>("유저의 경고 횟수 초기화 완료"));
     }
 
     /**
@@ -134,7 +129,7 @@ public class UserController {
      * @return ResponseEntity response entity
      */
     @GetMapping("/count/yellow")
-    public ResponseEntity<BaseResponse<Integer>> countYellowCard(
+    public ResponseEntity<ApiResponse<Integer>> countYellowCard(
             @RequestParam(value = "uid")
             @NotNull @Size(min = 28, max = 28) String uid) {
 
@@ -146,7 +141,7 @@ public class UserController {
 
         return ResponseEntity
                 .status(HttpStatusCode.valueOf(200))
-                .body(new BaseResponse<>(count));
+                .body(new ApiResponse<>(count));
     }
 
 }

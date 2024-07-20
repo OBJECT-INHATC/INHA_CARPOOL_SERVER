@@ -1,7 +1,7 @@
 package com.example.inhacarpool.report;
 
-import com.example.inhacarpool.exception.BaseException;
-import com.example.inhacarpool.exception.BaseResponse;
+import com.example.inhacarpool.common.exception.InhaCarpoolException;
+import com.example.inhacarpool.common.response.ApiResponse;
 import com.example.inhacarpool.report.data.dto.ReportRequestDTO;
 import com.example.inhacarpool.report.data.dto.ReportResponseDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,15 +36,15 @@ public class ReportController {
     // 신고하기
     @ResponseBody
     @PostMapping("/save")
-    public BaseResponse<String> saveReport(@RequestBody ReportRequestDTO reportRequstDTO) {
+    public ApiResponse<String> saveReport(@RequestBody ReportRequestDTO reportRequstDTO) {
         log.info("신고자 : " + reportRequstDTO.getReporter());
         log.info("신고당한사람 : " + reportRequstDTO.getReportedUser());
         try {
             this.reportService.saveReport(reportRequstDTO);
             log.info("========신고가 완료되었습니다.===========> " + reportRequstDTO.getReporter());
-            return new BaseResponse<>("해당 사용자를 신고 완료하였습니다.");
-        } catch (BaseException exception) {
-            return new BaseResponse<>(exception.getBaseExceptionCode());
+            return new ApiResponse<>("해당 사용자를 신고 완료하였습니다.");
+        } catch (InhaCarpoolException exception) {
+            return new ApiResponse<>(exception.getCustomException());
         }
     }
 
@@ -91,14 +91,14 @@ public class ReportController {
 
     // 신고 처리
     @PutMapping("/status/{reportIdx}")
-    public BaseResponse<String> updateStatus(@PathVariable Long reportIdx) {
+    public ApiResponse<String> updateStatus(@PathVariable Long reportIdx) {
         try {
             reportService.updateStatus(reportIdx);
             log.info("=======신고 처리가 완료되었습니다.===========> " + reportIdx);
-            return new BaseResponse<>("신고 처리가 완료되었습니다.");
-        } catch (BaseException exception) {
+            return new ApiResponse<>("신고 처리가 완료되었습니다.");
+        } catch (InhaCarpoolException exception) {
             log.info("=======신고 처리가 실패하였습니다.===========> " + reportIdx);
-            return new BaseResponse<>(exception.getBaseExceptionCode());
+            return new ApiResponse<>(exception.getCustomException());
         }
     }
 

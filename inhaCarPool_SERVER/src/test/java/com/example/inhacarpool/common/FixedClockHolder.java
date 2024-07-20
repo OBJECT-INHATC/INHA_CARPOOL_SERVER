@@ -1,5 +1,6 @@
 package com.example.inhacarpool.common;
 
+import com.example.inhacarpool.common.port.ClockHolder;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 

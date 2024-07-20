@@ -1,9 +1,9 @@
 package com.example.inhacarpool.report;
 
-import static com.example.inhacarpool.exception.BaseResponseCode.DATABASE_INSERT_ERROR;
+import static com.example.inhacarpool.common.exception.CustomException.DATABASE_INSERT_ERROR;
 
-import com.example.inhacarpool.exception.BaseException;
-import com.example.inhacarpool.exception.BaseResponseCode;
+import com.example.inhacarpool.common.exception.CustomException;
+import com.example.inhacarpool.common.exception.InhaCarpoolException;
 import com.example.inhacarpool.report.data.dto.ReportRequestDTO;
 import com.example.inhacarpool.report.data.dto.ReportResponseDTO;
 import com.example.inhacarpool.report.data.entity.ReportEntity;
@@ -33,7 +33,7 @@ public class ReportService {
 
     // 신고자, 피신고자의 닉네임을 받아서 uid를 찾아서 저장
     @Transactional
-    public void saveReport(ReportRequestDTO reportRequstDTO) throws BaseException {
+    public void saveReport(ReportRequestDTO reportRequstDTO) throws InhaCarpoolException {
 
         ReportEntity report = ReportEntity.builder()
                 .reporter(reportRequstDTO.getReporter())
@@ -45,7 +45,7 @@ public class ReportService {
         try {
             reportInterface.save(report);
         } catch (Exception e) {
-            throw new BaseException(DATABASE_INSERT_ERROR);
+            throw new InhaCarpoolException(DATABASE_INSERT_ERROR);
         }
     }
 
@@ -158,13 +158,13 @@ public class ReportService {
     //        }
     //    }
     @Transactional
-    public void updateStatus(Long reportIdx) throws BaseException {
+    public void updateStatus(Long reportIdx) throws InhaCarpoolException {
         ReportEntity reportEntity = reportInterface.findById(reportIdx)
-                .orElseThrow(() -> new BaseException(BaseResponseCode.REPORT_NOT_FOUND)); // 신고가 없는 경우 예외 처리
+                .orElseThrow(() -> new InhaCarpoolException(CustomException.REPORT_NOT_FOUND)); // 신고가 없는 경우 예외 처리
 
         // 이미 처리된 신고인 경우 예외 처리
         if (reportEntity.isStatus()) {
-            throw new BaseException(BaseResponseCode.ALREADY_PROCESSED); // 이미 처리된 신고인 경우 예외 처리
+            throw new InhaCarpoolException(CustomException.ALREADY_PROCESSED); // 이미 처리된 신고인 경우 예외 처리
         }
 
         reportEntity.setStatus(true); // 신고 처리 상태를 true로 변경 (update)
