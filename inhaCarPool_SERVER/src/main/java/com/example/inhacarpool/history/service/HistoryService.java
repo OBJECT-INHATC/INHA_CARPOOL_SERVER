@@ -3,7 +3,7 @@ package com.example.inhacarpool.history.service;
 import com.example.inhacarpool.history.data.HistoryRequestDTO;
 import com.example.inhacarpool.history.data.HistoryResponseDTO;
 import com.example.inhacarpool.history.infrastructure.HistoryEntity;
-import com.example.inhacarpool.history.service.port.HistoryRepository;
+import com.example.inhacarpool.history.infrastructure.HistoryJpaRepository;
 import com.example.inhacarpool.scheduler.CarpoolResponseDTO;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class HistoryService {
 
-    private final HistoryRepository historyRepository;
+    private final HistoryJpaRepository historyJpaRepository;
 
     // 이용 내역 저장
     @Transactional
@@ -50,20 +50,20 @@ public class HistoryService {
                 .gender(historyRequestDTO.getGender())
                 .build();
 
-        HistoryEntity existingEntity = historyRepository.findByCarPoolId(
+        HistoryEntity existingEntity = historyJpaRepository.findByCarPoolId(
                 historyRequestDTO.getCarPoolId()); // 이미 존재하는 carPoolId인지 확인
 
         if (existingEntity != null) { // 이미 존재하는 carPoolId라면 예외처리
             throw new IllegalArgumentException("이용내역에 이미 존재하는 carPoolId입니다.");
         }
 
-        historyRepository.save(historyEntity);
+        historyJpaRepository.save(historyEntity);
     }
 
     // 이용 내역 조회
     @Transactional
     public List<HistoryRequestDTO> getHistoryListByMember(String uid) {
-        return historyRepository.findByMember1ContainingOrMember2ContainingOrMember3ContainingOrMember4Containing(
+        return historyJpaRepository.findByMember1ContainingOrMember2ContainingOrMember3ContainingOrMember4Containing(
                         uid, uid, uid, uid // uid가 member1, member2, member3, member4 중에 하나라도 포함되어 있는 HistoryEntity를 조회
                 ).stream()
                 .map(historyEntity -> HistoryRequestDTO.builder() // HistoryEntity를 HistoryRequestDTO로 변환 (response로 수정 예정)
@@ -90,10 +90,10 @@ public class HistoryService {
     // 이용 내역 삭제
     @Transactional
     public boolean deleteHistory(String carPoolId) {
-        HistoryEntity carPool = historyRepository.findByCarPoolId(carPoolId);
+        HistoryEntity carPool = historyJpaRepository.findByCarPoolId(carPoolId);
 
         try {
-            historyRepository.delete(carPool);
+            historyJpaRepository.delete(carPool);
             return true;
         } catch (Exception e) {
             return false;
@@ -125,7 +125,7 @@ public class HistoryService {
     // 이용 내역 횟수 조회
     @Transactional
     public Long countHistoryByMember(String uid) {
-        return historyRepository.countByMember1ContainingOrMember2ContainingOrMember3ContainingOrMember4Containing(
+        return historyJpaRepository.countByMember1ContainingOrMember2ContainingOrMember3ContainingOrMember4Containing(
                 uid, uid, uid, uid // uid가 member1, member2, member3, member4 중에 하나라도 포함되어 있는 HistoryEntity의 개수를 조회
         );
     }
@@ -138,7 +138,7 @@ public class HistoryService {
      */
     @Transactional
     public List<HistoryResponseDTO> getHistoryListByNickname(String nickname) {
-        List<HistoryEntity> historyEntityList = historyRepository.findByMember1ContainingOrMember2ContainingOrMember3ContainingOrMember4Containing(
+        List<HistoryEntity> historyEntityList = historyJpaRepository.findByMember1ContainingOrMember2ContainingOrMember3ContainingOrMember4Containing(
                 nickname, nickname, nickname, nickname
         );
 
