@@ -9,8 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Table(name = "carpool")
@@ -46,20 +46,8 @@ public class CarpoolEntity {
 
     private String detailEndPoint;
 
-    @Builder
-    public CarpoolEntity(String id, UserEntity admin, int nowMember, int maxMember, String shortStartPoint,
-                         String startPointCoordinate, String detailStartPoint, Long startTime,
-                         String shortEndPoint, String endPointCoordinate, String detailEndPoint) {
-        this.id = id;
-        this.admin = admin;
-        this.nowMember = nowMember;
-        this.maxMember = maxMember;
-        this.shortStartPoint = shortStartPoint;
-        this.startPointCoordinate = startPointCoordinate;
-        this.detailStartPoint = detailStartPoint;
-        this.startTime = startTime;
-        this.shortEndPoint = shortEndPoint;
-        this.endPointCoordinate = endPointCoordinate;
-        this.detailEndPoint = detailEndPoint;
-    }
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
 }
