@@ -43,13 +43,13 @@ public class HistoryCreateRequestTest {
         assertThat(history.getMember4()).isEqualTo("yeong0jae");
         assertThat(history.getNowMember()).isEqualTo(1L);
         assertThat(history.getMaxMember()).isEqualTo(4L);
-        assertThat(history.getStartDetailPoint()).isEqualTo("startDetailPoint");
-        assertThat(history.getStartPoint()).isEqualTo("startPoint");
-        assertThat(history.getStartPointName()).isEqualTo("startPointName");
+        assertThat(history.getShortStartPoint()).isEqualTo("startDetailPoint");
+        assertThat(history.getStartPointCoordinate()).isEqualTo("startPoint");
+        assertThat(history.getDetailStartPoint()).isEqualTo("startPointName");
         assertThat(history.getStartTime()).isEqualTo(1L);
-        assertThat(history.getEndDetailPoint()).isEqualTo("endDetailPoint");
-        assertThat(history.getEndPoint()).isEqualTo("endPoint");
-        assertThat(history.getEndPointName()).isEqualTo("endPointName");
+        assertThat(history.getShortEndPoint()).isEqualTo("endDetailPoint");
+        assertThat(history.getEndPointCoordinate()).isEqualTo("endPoint");
+        assertThat(history.getDetailEndPoint()).isEqualTo("endPointName");
         assertThat(history.getGender()).isEqualTo("무관");
     }
 }

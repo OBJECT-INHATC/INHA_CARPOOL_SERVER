@@ -42,13 +42,13 @@ public class HistoryService {
                 .member4(member4)
                 .nowMember(historyRequestDTO.getNowMember())
                 .maxMember(maxMember)
-                .startDetailPoint(historyRequestDTO.getStartDetailPoint())
-                .startPoint(historyRequestDTO.getStartPoint())
-                .startPointName(historyRequestDTO.getStartPointName())
+                .shortStartPoint(historyRequestDTO.getStartDetailPoint())
+                .startPointCoordinate(historyRequestDTO.getStartPoint())
+                .detailStartPoint(historyRequestDTO.getStartPointName())
                 .startTime(historyRequestDTO.getStartTime())
-                .endDetailPoint(historyRequestDTO.getEndDetailPoint())
-                .endPoint(historyRequestDTO.getEndPoint())
-                .endPointName(historyRequestDTO.getEndPointName())
+                .shortEndPoint(historyRequestDTO.getEndDetailPoint())
+                .endPointCoordinate(historyRequestDTO.getEndPoint())
+                .detailEndPoint(historyRequestDTO.getEndPointName())
                 .gender(historyRequestDTO.getGender())
                 .build();
 
@@ -82,13 +82,13 @@ public class HistoryService {
                         .member4(historyEntity.getMember4())
                         .nowMember(historyEntity.getNowMember())
                         .maxMember(historyEntity.getMaxMember())
-                        .startDetailPoint(historyEntity.getStartDetailPoint())
-                        .startPoint(historyEntity.getStartPoint())
-                        .startPointName(historyEntity.getStartPointName())
+                        .startDetailPoint(historyEntity.getShortStartPoint())
+                        .startPoint(historyEntity.getStartPointCoordinate())
+                        .startPointName(historyEntity.getDetailStartPoint())
                         .startTime(historyEntity.getStartTime())
-                        .endDetailPoint(historyEntity.getEndDetailPoint())
-                        .endPoint(historyEntity.getEndPoint())
-                        .endPointName(historyEntity.getEndPointName())
+                        .endDetailPoint(historyEntity.getShortEndPoint())
+                        .endPoint(historyEntity.getEndPointCoordinate())
+                        .endPointName(historyEntity.getDetailEndPoint())
                         .gender(historyEntity.getGender())
                         .build())
                 .collect(Collectors.toList());
@@ -151,8 +151,8 @@ public class HistoryService {
 
         return historyEntityList.stream().map(
                 historyEntity -> HistoryResponseDTO.builder()
-                        .startDetailPoint(historyEntity.getStartDetailPoint())
-                        .endDetailPoint(historyEntity.getEndDetailPoint())
+                        .startDetailPoint(historyEntity.getShortStartPoint())
+                        .endDetailPoint(historyEntity.getShortEndPoint())
                         .admin(historyEntity.getAdmin())
                         .members(List.of(historyEntity.getMember1(), historyEntity.getMember2(),
                                 historyEntity.getMember3(),
