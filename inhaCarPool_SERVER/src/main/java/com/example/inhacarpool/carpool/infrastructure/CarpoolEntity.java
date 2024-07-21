@@ -50,17 +50,17 @@ public class CarpoolEntity {
 
     private Long startTime; // epoch time
 
-    private String shortStartPoint; // 출발지 요약 주소
+    private String shortStartPoint;
 
-    private String startPointCoordinate; // 출발지 위도 경도
+    private String startPointCoordinate;
 
-    private String detailStartPoint; // 출발지 상세 주소
+    private String detailStartPoint;
 
-    private String shortEndPoint; // 도착지 요약 주소
+    private String shortEndPoint;
 
-    private String endPointCoordinate; // 도착지 위도 경도
+    private String endPointCoordinate;
 
-    private String detailEndPoint; // 도착지 주소
+    private String detailEndPoint;
 
     @Builder
     public CarpoolEntity(String id, UserEntity admin, UserEntity member1, UserEntity member2, UserEntity member3,
