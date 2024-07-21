@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "history")
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class HistoryEntity {
 
     @Id
@@ -40,35 +41,36 @@ public class HistoryEntity {
     @Column(name = "maxMember")
     private Long maxMember; // 최대 인원
 
-    @Column(name = "startDetailPoint")
-    private String startDetailPoint; // 출발지 요약 주소
-
-    @Column(name = "startPoint")
-    private String startPoint; // 출발지 위도 경도
-
-    @Column(name = "startPointName")
-    private String startPointName; // 출발지 주소
+    @Column(name = "gender")
+    private String gender; // 성별
 
     @Column(name = "startTime")
     private Long startTime; // 출발 시간
 
-    @Column(name = "endDetailPoint")
-    private String endDetailPoint; // 도착지 요약 주소
+    @Column(name = "shortStartPoint")
+    private String shortStartPoint; // 출발지 요약 주소
 
-    @Column(name = "endPoint")
-    private String endPoint; // 도착지 위도 경도
+    @Column(name = "startPointCoordinate")
+    private String startPointCoordinate; // 출발지 위도 경도
 
-    @Column(name = "endPointName")
-    private String endPointName; // 도착지 주소
+    @Column(name = "detailStartPoint")
+    private String detailStartPoint; // 출발지 상세 주소
 
-    @Column(name = "gender")
-    private String gender; // 성별
+    @Column(name = "shortEndPoint")
+    private String shortEndPoint; // 도착지 요약 주소
+
+    @Column(name = "endPointCoordinate")
+    private String endPointCoordinate; // 도착지 위도 경도
+
+    @Column(name = "detailEndPoint")
+    private String detailEndPoint; // 도착지 주소
+
 
     @Builder
     public HistoryEntity(String carPoolId, String admin, String member1, String member2, String member3, String member4,
-                         Long nowMember, Long maxMember, String startDetailPoint, String startPoint,
-                         String startPointName, Long startTime, String endDetailPoint, String endPoint,
-                         String endPointName, String gender) {
+                         Long nowMember, Long maxMember, String shortStartPoint, String startPointCoordinate,
+                         String detailStartPoint, Long startTime, String shortEndPoint, String endPointCoordinate,
+                         String detailEndPoint, String gender) {
         this.carPoolId = carPoolId;
         this.admin = admin;
         this.member1 = member1;
@@ -77,13 +79,13 @@ public class HistoryEntity {
         this.member4 = member4;
         this.nowMember = nowMember;
         this.maxMember = maxMember;
-        this.startDetailPoint = startDetailPoint;
-        this.startPoint = startPoint;
-        this.startPointName = startPointName;
+        this.shortStartPoint = shortStartPoint;
+        this.startPointCoordinate = startPointCoordinate;
+        this.detailStartPoint = detailStartPoint;
         this.startTime = startTime;
-        this.endDetailPoint = endDetailPoint;
-        this.endPoint = endPoint;
-        this.endPointName = endPointName;
+        this.shortEndPoint = shortEndPoint;
+        this.endPointCoordinate = endPointCoordinate;
+        this.detailEndPoint = detailEndPoint;
         this.gender = gender;
     }
 
@@ -97,13 +99,13 @@ public class HistoryEntity {
                 .member4(history.getMember4())
                 .nowMember(history.getNowMember())
                 .maxMember(history.getMaxMember())
-                .startDetailPoint(history.getStartDetailPoint())
-                .startPoint(history.getStartPoint())
-                .startPointName(history.getStartPointName())
+                .shortStartPoint(history.getShortStartPoint())
+                .startPointCoordinate(history.getStartPointCoordinate())
+                .detailStartPoint(history.getDetailStartPoint())
                 .startTime(history.getStartTime())
-                .endDetailPoint(history.getEndDetailPoint())
-                .endPoint(history.getEndPoint())
-                .endPointName(history.getEndPointName())
+                .shortEndPoint(history.getShortEndPoint())
+                .endPointCoordinate(history.getEndPointCoordinate())
+                .detailEndPoint(history.getDetailEndPoint())
                 .gender(history.getGender())
                 .build();
     }
@@ -118,13 +120,13 @@ public class HistoryEntity {
                 .member4(member4)
                 .nowMember(nowMember)
                 .maxMember(maxMember)
-                .startDetailPoint(startDetailPoint)
-                .startPoint(startPoint)
-                .startPointName(startPointName)
+                .shortStartPoint(shortStartPoint)
+                .startPointCoordinate(startPointCoordinate)
+                .detailStartPoint(detailStartPoint)
                 .startTime(startTime)
-                .endDetailPoint(endDetailPoint)
-                .endPoint(endPoint)
-                .endPointName(endPointName)
+                .shortEndPoint(shortEndPoint)
+                .endPointCoordinate(endPointCoordinate)
+                .detailEndPoint(detailEndPoint)
                 .gender(gender)
                 .build();
     }

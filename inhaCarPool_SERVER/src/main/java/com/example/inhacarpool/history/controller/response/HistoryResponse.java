@@ -15,13 +15,13 @@ public class HistoryResponse {
     private final String member4;
     private final Long nowMember;
     private final Long maxMember;
-    private final String startDetailPoint;
-    private final String startPoint;
-    private final String startPointName;
+    private final String shortStartPoint;
+    private final String startPointCoordinate;
+    private final String detailStartPoint;
     private final Long startTime;
-    private final String endDetailPoint;
-    private final String endPoint;
-    private final String endPointName;
+    private final String shortEndPoint;
+    private final String endPointCoordinate;
+    private final String detailEndPoint;
     private final String gender;
 
     public static HistoryResponse from(History history) {
@@ -34,13 +34,13 @@ public class HistoryResponse {
                 .member4(history.getMember4())
                 .nowMember(history.getNowMember())
                 .maxMember(history.getMaxMember())
-                .startDetailPoint(history.getStartDetailPoint())
-                .startPoint(history.getStartPoint())
-                .startPointName(history.getStartPointName())
+                .shortStartPoint(history.getShortStartPoint())
+                .startPointCoordinate(history.getStartPointCoordinate())
+                .detailStartPoint(history.getDetailStartPoint())
                 .startTime(history.getStartTime())
-                .endDetailPoint(history.getEndDetailPoint())
-                .endPoint(history.getEndPoint())
-                .endPointName(history.getEndPointName())
+                .shortEndPoint(history.getShortEndPoint())
+                .endPointCoordinate(history.getEndPointCoordinate())
+                .detailEndPoint(history.getDetailEndPoint())
                 .gender(history.getGender())
                 .build();
     }

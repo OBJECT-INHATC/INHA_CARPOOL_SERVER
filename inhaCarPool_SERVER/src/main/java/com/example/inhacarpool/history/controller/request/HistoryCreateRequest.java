@@ -16,13 +16,13 @@ public class HistoryCreateRequest {
     private final String member4;
     private final Long nowMember;
     private final Long maxMember;
-    private final String startDetailPoint;
-    private final String startPoint;
-    private final String startPointName;
+    private final String shortStartPoint;
+    private final String startPointCoordinate;
+    private final String detailStartPoint;
     private final Long startTime;
-    private final String endDetailPoint;
-    private final String endPoint;
-    private final String endPointName;
+    private final String shortEndPoint;
+    private final String endPointCoordinate;
+    private final String detailEndPoint;
     private final String gender;
 
     @Builder
@@ -35,13 +35,13 @@ public class HistoryCreateRequest {
             @JsonProperty("member4") String member4,
             @JsonProperty("nowMember") Long nowMember,
             @JsonProperty("maxMember") Long maxMember,
-            @JsonProperty("startDetailPoint") String startDetailPoint,
-            @JsonProperty("startPoint") String startPoint,
-            @JsonProperty("startPointName") String startPointName,
+            @JsonProperty("startDetailPoint") String shortStartPoint,
+            @JsonProperty("startPoint") String startPointCoordinate,
+            @JsonProperty("startPointName") String detailStartPoint,
             @JsonProperty("startTime") Long startTime,
-            @JsonProperty("endDetailPoint") String endDetailPoint,
-            @JsonProperty("endPoint") String endPoint,
-            @JsonProperty("endPointName") String endPointName,
+            @JsonProperty("endDetailPoint") String shortEndPoint,
+            @JsonProperty("endPoint") String endPointCoordinate,
+            @JsonProperty("endPointName") String detailEndPoint,
             @JsonProperty("gender") String gender
     ) {
         this.carPoolId = carPoolId;
@@ -52,13 +52,13 @@ public class HistoryCreateRequest {
         this.member4 = member4;
         this.nowMember = nowMember;
         this.maxMember = maxMember;
-        this.startDetailPoint = startDetailPoint;
-        this.startPoint = startPoint;
-        this.startPointName = startPointName;
+        this.shortStartPoint = shortStartPoint;
+        this.startPointCoordinate = startPointCoordinate;
+        this.detailStartPoint = detailStartPoint;
         this.startTime = startTime;
-        this.endDetailPoint = endDetailPoint;
-        this.endPoint = endPoint;
-        this.endPointName = endPointName;
+        this.shortEndPoint = shortEndPoint;
+        this.endPointCoordinate = endPointCoordinate;
+        this.detailEndPoint = detailEndPoint;
         this.gender = gender;
     }
 
@@ -79,13 +79,13 @@ public class HistoryCreateRequest {
                 .member4(member4)
                 .nowMember(nowMember)
                 .maxMember(maxMember)
-                .startDetailPoint(startDetailPoint)
-                .startPoint(startPoint)
-                .startPointName(startPointName)
+                .shortStartPoint(shortStartPoint)
+                .startPointCoordinate(startPointCoordinate)
+                .detailStartPoint(detailStartPoint)
                 .startTime(startTime)
-                .endDetailPoint(endDetailPoint)
-                .endPoint(endPoint)
-                .endPointName(endPointName)
+                .shortEndPoint(shortEndPoint)
+                .endPointCoordinate(endPointCoordinate)
+                .detailEndPoint(detailEndPoint)
                 .gender(gender)
                 .build();
     }

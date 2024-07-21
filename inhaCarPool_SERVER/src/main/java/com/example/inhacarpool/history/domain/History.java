@@ -13,19 +13,21 @@ public class History {
     private final String member4;
     private final Long nowMember;
     private final Long maxMember;
-    private final String startDetailPoint;
-    private final String startPoint;
-    private final String startPointName;
+    private final String shortStartPoint;
+    private final String startPointCoordinate;
+    private final String detailStartPoint;
     private final Long startTime;
-    private final String endDetailPoint;
-    private final String endPoint;
-    private final String endPointName;
+    private final String shortEndPoint;
+    private final String endPointCoordinate;
+    private final String detailEndPoint;
     private final String gender;
 
     @Builder
     public History(String carPoolId, String admin, String member1, String member2, String member3, String member4,
-                   Long nowMember, Long maxMember, String startDetailPoint, String startPoint, String startPointName,
-                   Long startTime, String endDetailPoint, String endPoint, String endPointName, String gender) {
+                   Long nowMember, Long maxMember, String shortStartPoint, String startPointCoordinate,
+                   String detailStartPoint,
+                   Long startTime, String shortEndPoint, String endPointCoordinate, String detailEndPoint,
+                   String gender) {
         this.carPoolId = carPoolId;
         this.admin = admin;
         this.member1 = member1;
@@ -34,13 +36,13 @@ public class History {
         this.member4 = member4;
         this.nowMember = nowMember;
         this.maxMember = maxMember;
-        this.startDetailPoint = startDetailPoint;
-        this.startPoint = startPoint;
-        this.startPointName = startPointName;
+        this.shortStartPoint = shortStartPoint;
+        this.startPointCoordinate = startPointCoordinate;
+        this.detailStartPoint = detailStartPoint;
         this.startTime = startTime;
-        this.endDetailPoint = endDetailPoint;
-        this.endPoint = endPoint;
-        this.endPointName = endPointName;
+        this.shortEndPoint = shortEndPoint;
+        this.endPointCoordinate = endPointCoordinate;
+        this.detailEndPoint = detailEndPoint;
         this.gender = gender;
     }
 }
