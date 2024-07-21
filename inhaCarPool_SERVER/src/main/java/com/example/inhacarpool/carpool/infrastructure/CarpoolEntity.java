@@ -25,22 +25,6 @@ public class CarpoolEntity {
     @JoinColumn(name = "admin")
     private UserEntity admin;
 
-    @ManyToOne
-    @JoinColumn(name = "member1")
-    private UserEntity member1;
-
-    @ManyToOne
-    @JoinColumn(name = "member2")
-    private UserEntity member2;
-
-    @ManyToOne
-    @JoinColumn(name = "member3")
-    private UserEntity member3;
-
-    @ManyToOne
-    @JoinColumn(name = "member4")
-    private UserEntity member4;
-
     private int nowMember;
 
     private int maxMember;
@@ -63,16 +47,11 @@ public class CarpoolEntity {
     private String detailEndPoint;
 
     @Builder
-    public CarpoolEntity(String id, UserEntity admin, UserEntity member1, UserEntity member2, UserEntity member3,
-                         UserEntity member4, int nowMember, int maxMember, String shortStartPoint,
+    public CarpoolEntity(String id, UserEntity admin, int nowMember, int maxMember, String shortStartPoint,
                          String startPointCoordinate, String detailStartPoint, Long startTime,
                          String shortEndPoint, String endPointCoordinate, String detailEndPoint) {
         this.id = id;
         this.admin = admin;
-        this.member1 = member1;
-        this.member2 = member2;
-        this.member3 = member3;
-        this.member4 = member4;
         this.nowMember = nowMember;
         this.maxMember = maxMember;
         this.shortStartPoint = shortStartPoint;

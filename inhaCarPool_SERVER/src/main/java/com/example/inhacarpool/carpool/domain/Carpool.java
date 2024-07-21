@@ -7,10 +7,6 @@ import lombok.Getter;
 public class Carpool {
     private final Long id;
     private final String admin;
-    private final String member1;
-    private final String member2;
-    private final String member3;
-    private final String member4;
     private final Long nowMember;
     private final Long maxMember;
     private final GenderType gender;
@@ -23,17 +19,12 @@ public class Carpool {
     private final String detailEndPoint;
 
     @Builder
-    public Carpool(Long id, String admin, String member1, String member2, String member3, String member4,
-                   Long nowMember, Long maxMember, GenderType gender,
+    public Carpool(Long id, String admin, Long nowMember, Long maxMember, GenderType gender,
                    Long startTime, String shortStartPoint, String startPointCoordinate, String detailStartPoint,
                    String shortEndPoint,
                    String endPointCoordinate, String detailEndPoint) {
         this.id = id;
         this.admin = admin;
-        this.member1 = member1;
-        this.member2 = member2;
-        this.member3 = member3;
-        this.member4 = member4;
         this.nowMember = nowMember;
         this.maxMember = maxMember;
         this.gender = gender;
