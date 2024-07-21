@@ -1,4 +1,4 @@
-package com.example.inhacarpool.carpool.infrastructure;
+package com.example.inhacarpool.carpool.domain;
 
 import lombok.Getter;
 

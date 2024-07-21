@@ -1,7 +1,7 @@
 package com.example.inhacarpool.carpool.infrastructure;
 
+import com.example.inhacarpool.carpool.domain.GenderType;
 import com.example.inhacarpool.user.infrastructure.UserEntity;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -16,10 +16,9 @@ import lombok.NoArgsConstructor;
 @Table(name = "carpool")
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CarpootEntity {
+public class CarpoolEntity {
 
     @Id
-    @Column(name = "id")
     private String id; // firebase carpoolId와 동일
 
     @ManyToOne
@@ -42,44 +41,32 @@ public class CarpootEntity {
     @JoinColumn(name = "member4")
     private UserEntity member4;
 
-    @Column(name = "nowMember")
     private int nowMember;
 
-    @Column(name = "maxMember")
     private int maxMember;
 
-    @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     private GenderType gender;
 
-    @Column(name = "startTime")
     private Long startTime; // epoch time
 
-    @Column(name = "shortStartPoint")
     private String shortStartPoint; // 출발지 요약 주소
 
-    @Column(name = "startPointCoordinate")
     private String startPointCoordinate; // 출발지 위도 경도
 
-    @Column(name = "detailStartPoint")
     private String detailStartPoint; // 출발지 상세 주소
 
-    @Column(name = "shortEndPoint")
     private String shortEndPoint; // 도착지 요약 주소
 
-    @Column(name = "endPointCoordinate")
     private String endPointCoordinate; // 도착지 위도 경도
 
-    @Column(name = "detailEndPoint")
     private String detailEndPoint; // 도착지 주소
 
-
     @Builder
-    public CarpootEntity(String id, UserEntity admin, UserEntity member1, UserEntity member2, UserEntity member3,
-                         UserEntity member4,
-                         int nowMember, int maxMember, String shortStartPoint, String startPointCoordinate,
-                         String detailStartPoint, Long startTime, String shortEndPoint, String endPointCoordinate,
-                         String detailEndPoint) {
+    public CarpoolEntity(String id, UserEntity admin, UserEntity member1, UserEntity member2, UserEntity member3,
+                         UserEntity member4, int nowMember, int maxMember, String shortStartPoint,
+                         String startPointCoordinate, String detailStartPoint, Long startTime,
+                         String shortEndPoint, String endPointCoordinate, String detailEndPoint) {
         this.id = id;
         this.admin = admin;
         this.member1 = member1;
