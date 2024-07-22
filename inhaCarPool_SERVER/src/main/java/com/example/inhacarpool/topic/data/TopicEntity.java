@@ -1,8 +1,7 @@
 package com.example.inhacarpool.topic.data;
 
+import com.example.inhacarpool.carpool.infrastructure.CarpoolEntity;
 import com.example.inhacarpool.user.infrastructure.UserEntity;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,42 +9,35 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-/**
- *    FCM_topic DB 엔티티
- *
- *   @version 1.00    2023.09.01
- *   @author 이상훈
- */
 
-@Data
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "topic")
 @Entity
+@Getter
 public class TopicEntity {
 
-	// 유저가 새로운 방 참가시 생성(저장)되는 엔티티
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Id
-	@Column(name = "topicIdx")
-	@GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
-	private Long topicIdx; // 인위적 식별자
+    @ManyToOne
+    @JoinColumn(name = "carpool")
+    private CarpoolEntity carpool;
 
-	@Column(name = "carId")
-	private String carId; // 카풀 Id (파이어베이스의 carId)
+    @ManyToOne
+    @JoinColumn(name = "user")
+    private UserEntity user;
 
-	@ManyToOne
-	@JoinColumn(name = "users") // 외래키 컬럼
-	private UserEntity users; // uid (파이어베이스의 uid)
-
-	@Builder
-	public TopicEntity(String carId, UserEntity users) {
-		this.carId = carId;
-		this.users = users;
-	}
+    @Builder
+    public TopicEntity(CarpoolEntity carpool, UserEntity user) {
+        this.carpool = carpool;
+        this.user = user;
+    }
 
 }
 
