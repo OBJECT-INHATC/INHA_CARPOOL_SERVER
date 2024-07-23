@@ -10,9 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -88,19 +86,19 @@ public class ReportController {
     //            return new BaseResponse<>(exception.getStatus());
     //        }
     //    }
-
-    // 신고 처리
-    @PutMapping("/status/{reportIdx}")
-    public ApiResponse<String> updateStatus(@PathVariable Long reportIdx) {
-        try {
-            reportService.updateStatus(reportIdx);
-            log.info("=======신고 처리가 완료되었습니다.===========> " + reportIdx);
-            return new ApiResponse<>("신고 처리가 완료되었습니다.");
-        } catch (InhaCarpoolException exception) {
-            log.info("=======신고 처리가 실패하였습니다.===========> " + reportIdx);
-            return new ApiResponse<>(exception.getCustomException());
-        }
-    }
+//
+//    // 신고 처리
+//    @PutMapping("/status/{reportIdx}")
+//    public ApiResponse<String> updateStatus(@PathVariable Long reportIdx) {
+//        try {
+//            reportService.updateStatus(reportIdx);
+//            log.info("=======신고 처리가 완료되었습니다.===========> " + reportIdx);
+//            return new ApiResponse<>("신고 처리가 완료되었습니다.");
+//        } catch (InhaCarpoolException exception) {
+//            log.info("=======신고 처리가 실패하였습니다.===========> " + reportIdx);
+//            return new ApiResponse<>(exception.getCustomException());
+//        }
+//    }
 
 //	// 경고 처리
 //	@PutMapping("/yellowCard/{uid}")
