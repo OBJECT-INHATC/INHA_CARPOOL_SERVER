@@ -78,28 +78,27 @@ public class UserController {
                 .body(new ApiResponse<>(userInfoDtoList));
     }
 
-
     /**
      * 유저가 신고 당한 횟수 조회 - apiURL: /user/count/reported?nickname={nickname}
      *
      * @param nickname : 유저 닉네임
      * @return ResponseEntity<Integer> : 유저가 신고 당한 횟수
      */
-    @GetMapping("/count/reported")
-    public ResponseEntity<ApiResponse<Integer>> countReported(
-            @RequestParam(value = "nickname")
-            @NotNull String nickname) {
-
-        long startTime = System.currentTimeMillis();
-        int count = userService.countReported(nickname);
-        long timeTaken = System.currentTimeMillis() - startTime;
-
-        log.info("[피신고 횟수 조회 완료]:: {}, [실행 시간 ms]:: {}", count, timeTaken);
-
-        return ResponseEntity
-                .status(HttpStatusCode.valueOf(200))
-                .body(new ApiResponse<>(count));
-    }
+//    @GetMapping("/count/reported")
+//    public ResponseEntity<ApiResponse<Integer>> countReported(
+//            @RequestParam(value = "nickname")
+//            @NotNull String nickname) {
+//
+//        long startTime = System.currentTimeMillis();
+//        int count = userService.countReported(nickname);
+//        long timeTaken = System.currentTimeMillis() - startTime;
+//
+//        log.info("[피신고 횟수 조회 완료]:: {}, [실행 시간 ms]:: {}", count, timeTaken);
+//
+//        return ResponseEntity
+//                .status(HttpStatusCode.valueOf(200))
+//                .body(new ApiResponse<>(count));
+//    }
 
 
     /**

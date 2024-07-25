@@ -1,25 +1,11 @@
 package com.example.inhacarpool.report;
 
-import static com.example.inhacarpool.common.exception.CustomException.DATABASE_INSERT_ERROR;
-
-import com.example.inhacarpool.common.exception.InhaCarpoolException;
-import com.example.inhacarpool.report.data.dto.ReportRequestDTO;
-import com.example.inhacarpool.report.data.dto.ReportResponseDTO;
-import com.example.inhacarpool.report.data.entity.ReportEntity;
 import com.example.inhacarpool.report.repo.ReportInterface;
 import com.example.inhacarpool.user.infrastructure.UserJpaRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-/**
- * Report 관련 기능을 담당하는 Service
- *
- * @author 이상훈
- * @version 1.00    2023.09.01
- */
 
 @Service
 @RequiredArgsConstructor // final + not null 생성자 생성 -> 의존성 주입
@@ -30,45 +16,45 @@ public class ReportService {
 
     private final UserJpaRepository userInterface;
 
-    // 신고자, 피신고자의 닉네임을 받아서 uid를 찾아서 저장
-    @Transactional
-    public void saveReport(ReportRequestDTO reportRequstDTO) throws InhaCarpoolException {
-
-        ReportEntity report = ReportEntity.builder()
-                .reporter(reportRequstDTO.getReporter())
-                .reportedUser(reportRequstDTO.getReportedUser())
-                .carPoolId(reportRequstDTO.getCarpoolId())
-                .reportType(reportRequstDTO.getReportType())
-                .content(reportRequstDTO.getContent())
-                .build();
-        try {
-            reportInterface.save(report);
-        } catch (Exception e) {
-            throw new InhaCarpoolException(DATABASE_INSERT_ERROR);
-        }
-    }
-
-    /**
-     * 모든 신고 리스트 조회
-     */
-    @Transactional
-    public List<ReportResponseDTO> getAllReport() {
-        List<ReportEntity> reportEntities = reportInterface.findAll();
-
-        return reportEntities.stream()
-                .map(reportEntity -> ReportResponseDTO.builder()
-                        .reportIdx(reportEntity.getReportIdx())
-                        .content(reportEntity.getContent())
-                        .carpoolId(reportEntity.getCarPoolId())
-                        .reported(reportEntity.getReportedUser())
-                        .reporter(reportEntity.getReporter())
-                        .reportType(reportEntity.getReportType())
-                        .reportDate(reportEntity.getReportDate().toString())
-                        .status(reportEntity.isStatus())
-                        .build()
-                )
-                .toList();
-    }
+//    // 신고자, 피신고자의 닉네임을 받아서 uid를 찾아서 저장
+//    @Transactional
+//    public void saveReport(ReportRequestDTO reportRequstDTO) throws InhaCarpoolException {
+//
+//        ReportEntity report = ReportEntity.builder()
+//                .reporter(reportRequstDTO.getReporter())
+//                .reportedUser(reportRequstDTO.getReportedUser())
+//                .carPoolId(reportRequstDTO.getCarpoolId())
+//                .reportType(reportRequstDTO.getReportType())
+//                .content(reportRequstDTO.getContent())
+//                .build();
+//        try {
+//            reportInterface.save(report);
+//        } catch (Exception e) {
+//            throw new InhaCarpoolException(DATABASE_INSERT_ERROR);
+//        }
+//    }
+//
+//    /**
+//     * 모든 신고 리스트 조회
+//     */
+//    @Transactional
+//    public List<ReportResponseDTO> getAllReport() {
+//        List<ReportEntity> reportEntities = reportInterface.findAll();
+//
+//        return reportEntities.stream()
+//                .map(reportEntity -> ReportResponseDTO.builder()
+//                        .reportIdx(reportEntity.getReportIdx())
+//                        .content(reportEntity.getContent())
+//                        .carpoolId(reportEntity.getCarPoolId())
+//                        .reported(reportEntity.getReportedUser())
+//                        .reporter(reportEntity.getReporter())
+//                        .reportType(reportEntity.getReportType())
+//                        .reportDate(reportEntity.getReportDate().toString())
+//                        .status(reportEntity.isStatus())
+//                        .build()
+//                )
+//                .toList();
+//    }
 
     /**
      * report Entity에서 신고자, 피신고자의 닉네임이 아닌 uid를 저장할 때 사용 가능 (user와 연관관계)

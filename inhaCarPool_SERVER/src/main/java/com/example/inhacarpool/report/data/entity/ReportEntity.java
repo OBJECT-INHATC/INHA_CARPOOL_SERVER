@@ -1,10 +1,15 @@
 package com.example.inhacarpool.report.data.entity;
 
+import com.example.inhacarpool.carpool.infrastructure.CarpoolEntity;
+import com.example.inhacarpool.history.infrastructure.HistoryEntity;
+import com.example.inhacarpool.user.infrastructure.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -18,51 +23,45 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ReportEntity {
 
-    // 신고가 생성(저장)되는 엔티티
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "reportIdx")
-    private Long reportIdx; // 신고 인덱스 (고유 식별자)
+    private Long id;
 
-    @Column(name = "carPoolId")
-    private String carPoolId; // 신고된 카풀 ID
+    private String content;
 
-    @Column(name = "content")
-    private String content; // 신고 내용
+    private String reportType; // 신고 종류 [욕설, 폭언, 성희롱, 기타]
 
-    @Column(name = "type")
-    private String reportType; // 신고 타입
+    private LocalDateTime reportDate;
 
-    @Column(name = "reportDate")
-    private LocalDateTime reportDate; // 신고 날짜
-
-    @Column(name = "status", columnDefinition = "BOOLEAN DEFAULT false")
+    @Column(columnDefinition = "BOOLEAN DEFAULT false")
     private boolean status; // 신고 처리 상태, 기본값은 false
 
-    @Column(name = "reportedUser")
-    private String reportedUser; // 피신고자 닉네임
+    @ManyToOne
+    @JoinColumn(name = "carpool")
+    private CarpoolEntity carpool;
 
-    @Column(name = "reporter")
-    private String reporter; // 신고자 닉네임
+    @ManyToOne
+    @JoinColumn(name = "history")
+    private HistoryEntity history;
 
-    //    @ManyToOne
-    //    @JoinColumn(name = "reportedUser") // 외래키 컬럼
-    //    private UserEntity reportedUser; // 피신고자 ID
-    //
-    //    @ManyToOne
-    //    @JoinColumn(name = "reporter") // 외래키 컬럼
-    //    private UserEntity reporter; // 신고자 ID
+    @ManyToOne
+    @JoinColumn(name = "reported")
+    private UserEntity reported;
+
+    @ManyToOne
+    @JoinColumn(name = "reporter")
+    private UserEntity reporter;
 
     @Builder
-    public ReportEntity(String reporter, String carPoolId,
-                        String reportedUser, String content, String reportType) {
-        this.reporter = reporter;
-        this.carPoolId = carPoolId;
-        this.reportedUser = reportedUser;
+    public ReportEntity(String content, String reportType, LocalDateTime reportDate, CarpoolEntity carpool,
+                        HistoryEntity history, UserEntity reported, UserEntity reporter) {
         this.content = content;
         this.reportType = reportType;
-        this.reportDate = LocalDateTime.now();
+        this.reportDate = reportDate;
+        this.carpool = carpool;
+        this.history = history;
+        this.reported = reported;
+        this.reporter = reporter;
     }
 
 }

@@ -46,18 +46,18 @@ public class UserService {
      * @return int : 유저가 신고 당한 횟수
      * @throws EntityNotFoundException : 해당 nickname을 가진 유저가 존재하지 않을 경우 예외 처리
      */
-    @Transactional(readOnly = true)
-    public int countReported(String nickname) throws EntityNotFoundException {
-
-        // findByNickname을 통해 Optional을 반환받지 않은 이유는, 후에 reportInterface.countByReportedUser만을 하기 때문에,
-        // UserEntity가 필요없기 때문
-        // 해당 엔티티가 필요하다면, findBy 메서드를 사용하고, Optional을 반환받아서 처리하는 게 좋음
-        if (userJpaRepository.existsByNickname(nickname)) {
-            return reportInterface.countByReportedUser(nickname);
-        } else {
-            throw new EntityNotFoundException("해당 nickname을 가진 유저가 존재하지 않습니다.");
-        }
-    }
+//    @Transactional(readOnly = true)
+//    public int countReported(String nickname) throws EntityNotFoundException {
+//
+//        // findByNickname을 통해 Optional을 반환받지 않은 이유는, 후에 reportInterface.countByReportedUser만을 하기 때문에,
+//        // UserEntity가 필요없기 때문
+//        // 해당 엔티티가 필요하다면, findBy 메서드를 사용하고, Optional을 반환받아서 처리하는 게 좋음
+//        if (userJpaRepository.existsByNickname(nickname)) {
+//            return reportInterface.countByReportedUser(nickname);
+//        } else {
+//            throw new EntityNotFoundException("해당 nickname을 가진 유저가 존재하지 않습니다.");
+//        }
+//    }
 
     /**
      * 모든 유저 정보 조회 로직 (닉네임, 이메일, 옐로우 카드 수, 레드 카드 여부, 이용기록 수)
