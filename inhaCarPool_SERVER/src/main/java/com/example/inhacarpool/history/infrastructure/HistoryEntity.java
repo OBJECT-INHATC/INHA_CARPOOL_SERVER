@@ -10,6 +10,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * @Deprecated 사용하지 않는 Entity
+ */
+
 @Entity
 @Table(name = "history")
 @Getter

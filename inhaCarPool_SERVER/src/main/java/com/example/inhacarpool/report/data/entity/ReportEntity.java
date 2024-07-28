@@ -1,7 +1,6 @@
 package com.example.inhacarpool.report.data.entity;
 
 import com.example.inhacarpool.carpool.infrastructure.CarpoolEntity;
-import com.example.inhacarpool.history.infrastructure.HistoryEntity;
 import com.example.inhacarpool.user.infrastructure.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,10 +40,6 @@ public class ReportEntity {
     private CarpoolEntity carpool;
 
     @ManyToOne
-    @JoinColumn(name = "history")
-    private HistoryEntity history;
-
-    @ManyToOne
     @JoinColumn(name = "reported")
     private UserEntity reported;
 
@@ -54,12 +49,11 @@ public class ReportEntity {
 
     @Builder
     public ReportEntity(String content, String reportType, LocalDateTime reportDate, CarpoolEntity carpool,
-                        HistoryEntity history, UserEntity reported, UserEntity reporter) {
+                        UserEntity reported, UserEntity reporter) {
         this.content = content;
         this.reportType = reportType;
         this.reportDate = reportDate;
         this.carpool = carpool;
-        this.history = history;
         this.reported = reported;
         this.reporter = reporter;
     }
