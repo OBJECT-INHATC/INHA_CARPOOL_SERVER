@@ -1,5 +1,6 @@
 package com.example.inhacarpool.carpool.domain;
 
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,12 +18,18 @@ public class Carpool {
     private final String shortEndPoint;
     private final String endPointCoordinate;
     private final String detailEndPoint;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
+    private final boolean status;
+    private final Long endTime;
 
     @Builder
     public Carpool(Long id, String admin, Long nowMember, Long maxMember, GenderType gender,
                    Long startTime, String shortStartPoint, String startPointCoordinate, String detailStartPoint,
                    String shortEndPoint,
-                   String endPointCoordinate, String detailEndPoint) {
+                   String endPointCoordinate, String detailEndPoint, LocalDateTime createdAt, LocalDateTime updatedAt,
+                   boolean status,
+                   Long endTime) {
         this.id = id;
         this.admin = admin;
         this.nowMember = nowMember;
@@ -35,6 +42,10 @@ public class Carpool {
         this.shortEndPoint = shortEndPoint;
         this.endPointCoordinate = endPointCoordinate;
         this.detailEndPoint = detailEndPoint;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.status = status;
+        this.endTime = endTime;
     }
 
 
