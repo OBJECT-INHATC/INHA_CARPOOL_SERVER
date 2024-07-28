@@ -3,7 +3,7 @@ package com.example.inhacarpool.topic.service;
 import com.example.inhacarpool.topic.controller.port.TopicService;
 import com.example.inhacarpool.topic.service.port.TopicRepository;
 import com.example.inhacarpool.user.controller.port.UserService;
-import com.example.inhacarpool.user.infrastructure.UserEntity;
+import com.example.inhacarpool.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +18,8 @@ public class TopicServiceImpl implements TopicService {
     private final UserService userService;
 
     public Long findHistoryCount(String uid) {
-        UserEntity userEntity = UserEntity.from(userService.findUser(uid));
-        return topicRepository.findHistoryCount(userEntity);
+        User user = userService.findUser(uid);
+        return topicRepository.findHistoryCount(user);
     }
 
 //    public void saveTopic(TopicSaveDto topicSaveDto) throws

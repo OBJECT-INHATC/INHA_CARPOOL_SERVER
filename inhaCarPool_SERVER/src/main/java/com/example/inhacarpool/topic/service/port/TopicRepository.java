@@ -1,8 +1,8 @@
 package com.example.inhacarpool.topic.service.port;
 
-import com.example.inhacarpool.user.infrastructure.UserEntity;
+import com.example.inhacarpool.user.domain.User;
 
 public interface TopicRepository {
 
-    Long findHistoryCount(UserEntity userEntity);
+    Long findHistoryCount(User user);
 }

@@ -1,18 +1,34 @@
 package com.example.inhacarpool.topic.controller;
 
-import com.example.inhacarpool.topic.service.TopicServiceImpl;
+import com.example.inhacarpool.common.response.ApiResponse;
+import com.example.inhacarpool.topic.controller.port.TopicService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "topic API")
+@Tag(name = "토픽 API")
 @Slf4j
 @RestController
+@RequestMapping("/topic")
 @RequiredArgsConstructor
 public class TopicController {
 
-    private final TopicServiceImpl topicServiceImpl;
+    private final TopicService topicService;
+
+    @Operation(summary = "유저의 이용 횟수 조회")
+    @GetMapping("/{uid}")
+    public ResponseEntity<ApiResponse<Long>> findHistoryCount(@PathVariable String uid) {
+        Long historyCount = topicService.findHistoryCount(uid);
+        return ResponseEntity
+                .ok()
+                .body(new ApiResponse<>(historyCount));
+    }
 
 //    /**
 //     * 토픽 저장 - apiURL: /topic/save
