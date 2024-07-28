@@ -36,7 +36,8 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public List<User> findAllUser() {
-        return userRepository.findAll();
+        List<User> users = userRepository.findAll();
+        return users;
     }
 
     /**

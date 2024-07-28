@@ -58,12 +58,6 @@ public class UserController {
                 .body(new ApiResponse<>(users));
     }
 
-
-    /**
-     * 모든 유저 정보 조회 with 이용기록 횟수 - apiURL: /user/all - 관리자 앱에서 사용 예정
-     *
-     * @return ResponseEntity<BaseResponse < List < UserInfoDto>>> : 모든 유저 정보
-     */
     @GetMapping("/all")
     public ResponseEntity<ApiResponse<List<UserInfoDto>>> findAllUserInfo() {
 

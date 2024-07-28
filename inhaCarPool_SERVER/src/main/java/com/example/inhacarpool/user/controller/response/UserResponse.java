@@ -13,13 +13,18 @@ public class UserResponse {
     private final int yellowCard;
     private final boolean redCard;
 
-    public static UserResponse from(User user) {
+//    private final Long historyCount;
+
+    public static UserResponse from(User user
+//            , Long historyCount
+    ) {
         return UserResponse.builder()
                 .uid(user.getUid())
                 .nickname(user.getNickname())
                 .email(user.getEmail())
                 .yellowCard(user.getYellowCard())
                 .redCard(user.isRedCard())
+//                .historyCount(historyCount)
                 .build();
     }
 }
