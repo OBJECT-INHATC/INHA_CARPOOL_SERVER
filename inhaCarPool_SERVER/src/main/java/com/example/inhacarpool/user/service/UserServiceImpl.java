@@ -3,6 +3,7 @@ package com.example.inhacarpool.user.service;
 import com.example.inhacarpool.common.port.ClockHolder;
 import com.example.inhacarpool.history.infrastructure.HistoryJpaRepository;
 import com.example.inhacarpool.report.repo.ReportInterface;
+import com.example.inhacarpool.user.controller.port.UserService;
 import com.example.inhacarpool.user.controller.request.UserCreateRequest;
 import com.example.inhacarpool.user.data.dto.UserInfoDto;
 import com.example.inhacarpool.user.domain.User;
@@ -19,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 @Transactional
-public class UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserJpaRepository userJpaRepository;
     private final UserRepository userRepository;
@@ -35,7 +36,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public List<User> findAllUser() {
+    public List<User> findAll() {
         List<User> users = userRepository.findAll();
         return users;
     }
