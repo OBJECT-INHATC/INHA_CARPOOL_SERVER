@@ -4,7 +4,7 @@ import com.example.inhacarpool.carpool.controller.port.CarpoolService;
 
 public class CarpoolServiceImpl implements CarpoolService {
 
-    public Long findHistoryCount() {
-        return null;
+    public Long findHistoryCount(String uid) {
+        return 0L;
     }
 }

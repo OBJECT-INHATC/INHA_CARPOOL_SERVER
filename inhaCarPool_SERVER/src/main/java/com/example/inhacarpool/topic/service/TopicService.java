@@ -1,24 +1,17 @@
-package com.example.inhacarpool.topic;
+package com.example.inhacarpool.topic.service;
 
-import com.example.inhacarpool.topic.repo.TopicRepository;
-import com.example.inhacarpool.user.infrastructure.UserJpaRepository;
+import com.example.inhacarpool.topic.service.port.TopicRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * The type Topic service.
- *
- * @ClassName : TopicService.java 클래스에 대한 설명을 작성합니다.
- */
+
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class TopicService {
 
     private final TopicRepository topicRepository;
-
-    private final UserJpaRepository userRepository;
 
 //    public void saveTopic(TopicSaveDto topicSaveDto) throws
 //            InhaCarpoolException { // DuplicateKeyException, EntityNotFoundException을 대체하는 사용자 정의 예외를 던짐

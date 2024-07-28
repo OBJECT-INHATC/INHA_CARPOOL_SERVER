@@ -1,4 +1,4 @@
-package com.example.inhacarpool.topic.data;
+package com.example.inhacarpool.topic.infrastructure;
 
 import com.example.inhacarpool.carpool.infrastructure.CarpoolEntity;
 import com.example.inhacarpool.user.infrastructure.UserEntity;

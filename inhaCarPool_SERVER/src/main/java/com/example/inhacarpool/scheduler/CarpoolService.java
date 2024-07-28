@@ -1,7 +1,7 @@
 package com.example.inhacarpool.scheduler;
 
 import com.example.inhacarpool.history.service.HistoryService;
-import com.example.inhacarpool.topic.TopicService;
+import com.example.inhacarpool.topic.service.TopicService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

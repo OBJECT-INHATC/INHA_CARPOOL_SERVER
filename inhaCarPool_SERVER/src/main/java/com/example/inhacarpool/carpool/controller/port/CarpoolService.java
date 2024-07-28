@@ -2,5 +2,5 @@ package com.example.inhacarpool.carpool.controller.port;
 
 public interface CarpoolService {
 
-    Long findHistoryCount();
+    Long findHistoryCount(String uid);
 }
