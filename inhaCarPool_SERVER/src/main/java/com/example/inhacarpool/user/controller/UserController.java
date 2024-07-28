@@ -52,9 +52,7 @@ public class UserController {
     @Operation(summary = "모든 유저 정보 조회")
     @GetMapping("/v2/all")
     public ResponseEntity<ApiResponse<List<UserResponse>>> findAllUser() {
-        List<UserResponse> users = userService.findAll().stream()
-                .map(UserResponse::from)
-                .toList();
+        List<UserResponse> users = userService.findAll();
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ApiResponse<>(users));

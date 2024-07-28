@@ -3,8 +3,10 @@ package com.example.inhacarpool.user.service;
 import com.example.inhacarpool.common.port.ClockHolder;
 import com.example.inhacarpool.history.infrastructure.HistoryJpaRepository;
 import com.example.inhacarpool.report.repo.ReportInterface;
+import com.example.inhacarpool.topic.controller.port.TopicService;
 import com.example.inhacarpool.user.controller.port.UserService;
 import com.example.inhacarpool.user.controller.request.UserCreateRequest;
+import com.example.inhacarpool.user.controller.response.UserResponse;
 import com.example.inhacarpool.user.data.dto.UserInfoDto;
 import com.example.inhacarpool.user.domain.User;
 import com.example.inhacarpool.user.infrastructure.UserEntity;
@@ -24,6 +26,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserJpaRepository userJpaRepository;
     private final UserRepository userRepository;
+    private final TopicService topicService;
     private final ReportInterface reportInterface;
     private final HistoryJpaRepository historyJpaRepository;
     private final ClockHolder clockHolder;
@@ -36,9 +39,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional(readOnly = true)
-    public List<User> findAll() {
+    public List<UserResponse> findAll() {
         List<User> users = userRepository.findAll();
-        return users;
+        List<UserResponse> userResponseList = users.stream().map(user -> {
+            Long historyCount = topicService.findHistoryCount(user);
+            return UserResponse.from(user, historyCount);
+        }).toList();
+        return userResponseList;
     }
 
     @Transactional(readOnly = true)
