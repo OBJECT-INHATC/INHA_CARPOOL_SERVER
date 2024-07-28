@@ -1,6 +1,9 @@
 package com.example.inhacarpool.topic.service;
 
+import com.example.inhacarpool.topic.controller.port.TopicService;
 import com.example.inhacarpool.topic.service.port.TopicRepository;
+import com.example.inhacarpool.user.controller.port.UserService;
+import com.example.inhacarpool.user.infrastructure.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,9 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class TopicService {
+public class TopicServiceImpl implements TopicService {
 
     private final TopicRepository topicRepository;
+    private final UserService userService;
+
+    public Long findHistoryCount(String uid) {
+        UserEntity userEntity = UserEntity.from(userService.findUser(uid));
+        return topicRepository.findHistoryCount(userEntity);
+    }
 
 //    public void saveTopic(TopicSaveDto topicSaveDto) throws
 //            InhaCarpoolException { // DuplicateKeyException, EntityNotFoundException을 대체하는 사용자 정의 예외를 던짐

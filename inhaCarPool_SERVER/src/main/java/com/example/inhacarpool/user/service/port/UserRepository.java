@@ -9,4 +9,6 @@ public interface UserRepository {
 
     List<User> findAll();
 
+    User findById(String uid);
+
 }

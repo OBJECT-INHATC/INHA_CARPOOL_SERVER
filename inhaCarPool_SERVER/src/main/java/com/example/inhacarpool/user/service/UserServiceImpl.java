@@ -41,6 +41,11 @@ public class UserServiceImpl implements UserService {
         return users;
     }
 
+    @Transactional(readOnly = true)
+    public User findUser(String uid) {
+        return userRepository.findById(uid);
+    }
+
     /**
      * 유저가 신고 당한 횟수 조회 로직
      *

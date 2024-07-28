@@ -9,4 +9,6 @@ public interface UserService {
     User create(UserCreateRequest userCreateRequest);
 
     List<User> findAll();
+
+    User findUser(String uid);
 }

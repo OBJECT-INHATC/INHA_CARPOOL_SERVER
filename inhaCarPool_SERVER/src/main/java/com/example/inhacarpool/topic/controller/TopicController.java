@@ -1,6 +1,6 @@
 package com.example.inhacarpool.topic.controller;
 
-import com.example.inhacarpool.topic.service.TopicService;
+import com.example.inhacarpool.topic.service.TopicServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TopicController {
 
-    private final TopicService topicService;
+    private final TopicServiceImpl topicServiceImpl;
 
 //    /**
 //     * 토픽 저장 - apiURL: /topic/save
