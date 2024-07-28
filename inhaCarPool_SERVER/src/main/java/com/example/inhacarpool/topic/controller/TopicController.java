@@ -1,16 +1,16 @@
-package com.example.inhacarpool.topic;
+package com.example.inhacarpool.topic.controller;
 
+import com.example.inhacarpool.topic.controller.port.TopicService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * @ClassName : TopicController.java 클래스에 대한 설명을 작성합니다.
- */
-@Tag(name = "topic API")
+@Tag(name = "토픽 API")
 @Slf4j
 @RestController
+@RequestMapping("/topic")
 @RequiredArgsConstructor
 public class TopicController {
 

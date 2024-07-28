@@ -21,4 +21,9 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> findAll() {
         return userJpaRepository.findAll().stream().map(UserEntity::toModel).toList();
     }
+
+    @Override
+    public User findById(String uid) {
+        return userJpaRepository.findById(uid).map(UserEntity::toModel).orElse(null);
+    }
 }

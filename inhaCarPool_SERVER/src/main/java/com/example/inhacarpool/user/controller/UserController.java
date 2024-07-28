@@ -1,11 +1,12 @@
 package com.example.inhacarpool.user.controller;
 
 import com.example.inhacarpool.common.response.ApiResponse;
+import com.example.inhacarpool.user.controller.port.UserService;
 import com.example.inhacarpool.user.controller.request.UserCreateRequest;
 import com.example.inhacarpool.user.controller.response.UserResponse;
 import com.example.inhacarpool.user.data.dto.UserInfoDto;
 import com.example.inhacarpool.user.domain.User;
-import com.example.inhacarpool.user.service.UserService;
+import com.example.inhacarpool.user.service.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class UserController {
 
+    private final UserServiceImpl userServiceImpl;
     private final UserService userService;
 
     @Operation(summary = "유저 회원가입")
@@ -50,25 +52,17 @@ public class UserController {
     @Operation(summary = "모든 유저 정보 조회")
     @GetMapping("/v2/all")
     public ResponseEntity<ApiResponse<List<UserResponse>>> findAllUser() {
-        List<UserResponse> users = userService.findAllUser().stream()
-                .map(UserResponse::from)
-                .toList();
+        List<UserResponse> users = userService.findAll();
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ApiResponse<>(users));
     }
 
-
-    /**
-     * 모든 유저 정보 조회 with 이용기록 횟수 - apiURL: /user/all - 관리자 앱에서 사용 예정
-     *
-     * @return ResponseEntity<BaseResponse < List < UserInfoDto>>> : 모든 유저 정보
-     */
     @GetMapping("/all")
     public ResponseEntity<ApiResponse<List<UserInfoDto>>> findAllUserInfo() {
 
         long startTime = System.currentTimeMillis();
-        List<UserInfoDto> userInfoDtoList = userService.findAllUserInfo();
+        List<UserInfoDto> userInfoDtoList = userServiceImpl.findAllUserInfo();
         long timeTaken = System.currentTimeMillis() - startTime;
 
         log.info("[모든 유저 정보 조회 완료]:: {}, [실행 시간 ms]:: {}", userInfoDtoList, timeTaken);
@@ -113,7 +107,7 @@ public class UserController {
             @NotNull String nickname) {
 
         long startTime = System.currentTimeMillis();
-        userService.resetYellowCard(nickname);
+        userServiceImpl.resetYellowCard(nickname);
         long timeTaken = System.currentTimeMillis() - startTime;
 
         log.info("[유저 경고 횟수 초기화 완료]:: {}, [실행 시간 ms]:: {}", nickname, timeTaken);
@@ -135,7 +129,7 @@ public class UserController {
             @NotNull @Size(min = 28, max = 28) String uid) {
 
         long startTime = System.currentTimeMillis();
-        int count = userService.countYellowCard(uid);
+        int count = userServiceImpl.countYellowCard(uid);
         long timeTaken = System.currentTimeMillis() - startTime;
 
         log.info("[유저 경고 횟수 조회 완료]:: {}, [실행 시간 ms]:: {}", count, timeTaken);

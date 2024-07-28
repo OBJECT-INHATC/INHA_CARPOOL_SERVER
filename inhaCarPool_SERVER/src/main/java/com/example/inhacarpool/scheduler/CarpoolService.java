@@ -1,7 +1,7 @@
 package com.example.inhacarpool.scheduler;
 
 import com.example.inhacarpool.history.service.HistoryService;
-import com.example.inhacarpool.topic.TopicService;
+import com.example.inhacarpool.topic.service.TopicServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ public class CarpoolService {
 
     private final HistoryService historyService;
 
-    private final TopicService topicService;
+    private final TopicServiceImpl topicServiceImpl;
     private static final String COLLECTION_NAME = "carpool";
 
     @SuppressWarnings("unchecked")
