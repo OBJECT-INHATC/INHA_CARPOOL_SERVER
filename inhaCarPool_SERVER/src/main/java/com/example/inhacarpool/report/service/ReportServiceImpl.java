@@ -1,20 +1,21 @@
-package com.example.inhacarpool.report;
+package com.example.inhacarpool.report.service;
 
-import com.example.inhacarpool.report.repo.ReportInterface;
-import com.example.inhacarpool.user.infrastructure.UserJpaRepository;
+import com.example.inhacarpool.report.controller.port.ReportService;
+import com.example.inhacarpool.report.service.port.ReportRepository;
+import com.example.inhacarpool.user.domain.User;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 
 @Service
-@RequiredArgsConstructor // final + not null 생성자 생성 -> 의존성 주입
-@Slf4j
-public class ReportService {
+@RequiredArgsConstructor
+public class ReportServiceImpl implements ReportService {
 
-    private final ReportInterface reportInterface;
-
-    private final UserJpaRepository userInterface;
+    private final ReportRepository reportRepository;
+    
+    public int countReported(User user) {
+        return reportRepository.countReported(user);
+    }
 
 //    // 신고자, 피신고자의 닉네임을 받아서 uid를 찾아서 저장
 //    @Transactional

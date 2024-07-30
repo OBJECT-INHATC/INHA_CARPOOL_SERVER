@@ -12,4 +12,6 @@ public interface UserService {
     List<UserResponse> findAll();
 
     User findUser(String uid);
+
+    int countReported(String uid);
 }
