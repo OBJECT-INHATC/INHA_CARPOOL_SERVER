@@ -1,16 +1,15 @@
 package com.example.inhacarpool.report.service;
 
+import com.example.inhacarpool.report.controller.port.ReportService;
 import com.example.inhacarpool.report.infrastructure.ReportJpaRepository;
 import com.example.inhacarpool.user.infrastructure.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 
 @Service
-@RequiredArgsConstructor // final + not null 생성자 생성 -> 의존성 주입
-@Slf4j
-public class ReportService {
+@RequiredArgsConstructor
+public class ReportServiceImpl implements ReportService {
 
     private final ReportJpaRepository reportJpaRepository;
 

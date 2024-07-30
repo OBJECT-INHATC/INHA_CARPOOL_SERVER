@@ -1,6 +1,6 @@
 package com.example.inhacarpool.report.controller;
 
-import com.example.inhacarpool.report.service.ReportService;
+import com.example.inhacarpool.report.service.ReportServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ReportController {
 
-    private final ReportService reportService;
+    private final ReportServiceImpl reportServiceImpl;
 
 //    // 신고하기
 //    @ResponseBody
