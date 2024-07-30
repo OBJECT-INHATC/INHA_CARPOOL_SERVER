@@ -1,5 +1,6 @@
-package com.example.inhacarpool.report;
+package com.example.inhacarpool.report.controller;
 
+import com.example.inhacarpool.report.service.ReportService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

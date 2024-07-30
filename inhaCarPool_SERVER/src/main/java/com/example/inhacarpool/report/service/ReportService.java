@@ -1,6 +1,6 @@
-package com.example.inhacarpool.report;
+package com.example.inhacarpool.report.service;
 
-import com.example.inhacarpool.report.repo.ReportInterface;
+import com.example.inhacarpool.report.infrastructure.ReportJpaRepository;
 import com.example.inhacarpool.user.infrastructure.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ReportService {
 
-    private final ReportInterface reportInterface;
+    private final ReportJpaRepository reportJpaRepository;
 
     private final UserJpaRepository userInterface;
 
