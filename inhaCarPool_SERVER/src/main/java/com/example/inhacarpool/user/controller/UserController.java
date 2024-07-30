@@ -4,7 +4,6 @@ import com.example.inhacarpool.common.response.ApiResponse;
 import com.example.inhacarpool.user.controller.port.UserService;
 import com.example.inhacarpool.user.controller.request.UserCreateRequest;
 import com.example.inhacarpool.user.controller.response.UserResponse;
-import com.example.inhacarpool.user.data.dto.UserInfoDto;
 import com.example.inhacarpool.user.domain.User;
 import com.example.inhacarpool.user.service.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,6 +19,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,8 +49,8 @@ public class UserController {
                 .body(new ApiResponse<>(user));
     }
 
-    @Operation(summary = "모든 유저 정보 조회")
-    @GetMapping("/v2/all")
+    @Operation(summary = "모든 유저 정보 조회 with 이용 횟수")
+    @GetMapping("/all")
     public ResponseEntity<ApiResponse<List<UserResponse>>> findAllUser() {
         List<UserResponse> users = userService.findAll();
         return ResponseEntity
@@ -58,42 +58,14 @@ public class UserController {
                 .body(new ApiResponse<>(users));
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<ApiResponse<List<UserInfoDto>>> findAllUserInfo() {
-
-        long startTime = System.currentTimeMillis();
-        List<UserInfoDto> userInfoDtoList = userServiceImpl.findAllUserInfo();
-        long timeTaken = System.currentTimeMillis() - startTime;
-
-        log.info("[모든 유저 정보 조회 완료]:: {}, [실행 시간 ms]:: {}", userInfoDtoList, timeTaken);
-
+    @Operation(summary = "유저의 신고 당한 횟수 조회")
+    @GetMapping("/count/reported/{uid}")
+    public ResponseEntity<ApiResponse<Integer>> countReported(@PathVariable String uid) {
+        int reportedCount = userService.countReported(uid);
         return ResponseEntity
-                .status(HttpStatusCode.valueOf(200))
-                .body(new ApiResponse<>(userInfoDtoList));
+                .status(HttpStatus.OK)
+                .body(new ApiResponse<>(reportedCount));
     }
-
-    /**
-     * 유저가 신고 당한 횟수 조회 - apiURL: /user/count/reported?nickname={nickname}
-     *
-     * @param nickname : 유저 닉네임
-     * @return ResponseEntity<Integer> : 유저가 신고 당한 횟수
-     */
-//    @GetMapping("/count/reported")
-//    public ResponseEntity<ApiResponse<Integer>> countReported(
-//            @RequestParam(value = "nickname")
-//            @NotNull String nickname) {
-//
-//        long startTime = System.currentTimeMillis();
-//        int count = userService.countReported(nickname);
-//        long timeTaken = System.currentTimeMillis() - startTime;
-//
-//        log.info("[피신고 횟수 조회 완료]:: {}, [실행 시간 ms]:: {}", count, timeTaken);
-//
-//        return ResponseEntity
-//                .status(HttpStatusCode.valueOf(200))
-//                .body(new ApiResponse<>(count));
-//    }
-
 
     /**
      * 유저의 경고 횟수를 0으로 초기화 - apiURL: /user/reset/yellow
