@@ -4,6 +4,7 @@ import com.example.inhacarpool.common.response.ApiResponse;
 import com.example.inhacarpool.user.controller.port.UserService;
 import com.example.inhacarpool.user.controller.request.UserCreateRequest;
 import com.example.inhacarpool.user.controller.response.UserResponse;
+import com.example.inhacarpool.user.controller.response.UserWithHistoryCount;
 import com.example.inhacarpool.user.domain.User;
 import com.example.inhacarpool.user.service.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,19 +41,19 @@ public class UserController {
 
     @Operation(summary = "유저 회원가입")
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<User>> createUser(
+    public ResponseEntity<ApiResponse<UserResponse>> createUser(
             @Valid /*TODO: 테스트 전략 알아보기*/
             @RequestBody UserCreateRequest userCreateRequest) {
         User user = userService.create(userCreateRequest);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new ApiResponse<>(user));
+                .body(new ApiResponse<>(UserResponse.from(user)));
     }
 
     @Operation(summary = "모든 유저 정보 조회 with 이용 횟수")
     @GetMapping("/all")
-    public ResponseEntity<ApiResponse<List<UserResponse>>> findAllUser() {
-        List<UserResponse> users = userService.findAll();
+    public ResponseEntity<ApiResponse<List<UserWithHistoryCount>>> findAllUser() {
+        List<UserWithHistoryCount> users = userService.findAll();
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ApiResponse<>(users));
@@ -67,27 +68,36 @@ public class UserController {
                 .body(new ApiResponse<>(reportedCount));
     }
 
+    @Operation(summary = "유저의 경고 횟수를 0으로 초기화")
+    @PutMapping("/reset/yellow/{uid}")
+    public ResponseEntity<ApiResponse<UserResponse>> resetYellow(@PathVariable String uid) {
+        User user = userService.resetYellow(uid);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ApiResponse<>(UserResponse.from(user)));
+    }
+
     /**
      * 유저의 경고 횟수를 0으로 초기화 - apiURL: /user/reset/yellow
      *
      * @param nickname : 유저 닉네임
      * @return ResponseEntity response entity
      */
-    @PutMapping("/reset/yellow")
-    public ResponseEntity<ApiResponse<String>> resetYellowCard(
-            @RequestParam(value = "nickname")
-            @NotNull String nickname) {
-
-        long startTime = System.currentTimeMillis();
-        userServiceImpl.resetYellowCard(nickname);
-        long timeTaken = System.currentTimeMillis() - startTime;
-
-        log.info("[유저 경고 횟수 초기화 완료]:: {}, [실행 시간 ms]:: {}", nickname, timeTaken);
-
-        return ResponseEntity
-                .status(HttpStatusCode.valueOf(200))
-                .body(new ApiResponse<>("유저의 경고 횟수 초기화 완료"));
-    }
+//    @PutMapping("/reset/yellow")
+//    public ResponseEntity<ApiResponse<String>> resetYellowCard(
+//            @RequestParam(value = "nickname")
+//            @NotNull String nickname) {
+//
+//        long startTime = System.currentTimeMillis();
+//        userServiceImpl.resetYellowCard(nickname);
+//        long timeTaken = System.currentTimeMillis() - startTime;
+//
+//        log.info("[유저 경고 횟수 초기화 완료]:: {}, [실행 시간 ms]:: {}", nickname, timeTaken);
+//
+//        return ResponseEntity
+//                .status(HttpStatusCode.valueOf(200))
+//                .body(new ApiResponse<>("유저의 경고 횟수 초기화 완료"));
+//    }
 
     /**
      * 유저의 경고 횟수 조회 - apiURL: /user/count/yellow?uid={uid}
