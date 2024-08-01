@@ -38,4 +38,16 @@ public class User {
                 .updatedAt(clockHolder.now())
                 .build();
     }
+
+    public static User resetYellow(User user) {
+        return User.builder()
+                .uid(user.getUid())
+                .nickname(user.getNickname())
+                .email(user.getEmail())
+                .yellowCard(0)
+                .redCard(user.isRedCard())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
+                .build();
+    }
 }

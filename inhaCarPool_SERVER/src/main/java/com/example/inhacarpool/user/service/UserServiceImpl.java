@@ -6,7 +6,7 @@ import com.example.inhacarpool.report.controller.port.ReportService;
 import com.example.inhacarpool.topic.controller.port.TopicService;
 import com.example.inhacarpool.user.controller.port.UserService;
 import com.example.inhacarpool.user.controller.request.UserCreateRequest;
-import com.example.inhacarpool.user.controller.response.UserResponse;
+import com.example.inhacarpool.user.controller.response.UserWithHistoryCount;
 import com.example.inhacarpool.user.data.dto.UserInfoDto;
 import com.example.inhacarpool.user.domain.User;
 import com.example.inhacarpool.user.infrastructure.UserEntity;
@@ -39,11 +39,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional(readOnly = true)
-    public List<UserResponse> findAll() {
+    public List<UserWithHistoryCount> findAll() {
         List<User> users = userRepository.findAll();
         return users.stream().map(user -> {
             Long historyCount = topicService.findHistoryCount(user);
-            return UserResponse.from(user, historyCount);
+            return UserWithHistoryCount.from(user, historyCount);
         }).toList();
     }
 
@@ -56,6 +56,12 @@ public class UserServiceImpl implements UserService {
     public int countReported(String uid) {
         User user = userRepository.findById(uid);
         return reportService.countReported(user);
+    }
+
+    public User resetYellow(String uid) {
+        User user = userRepository.findById(uid);
+        user = User.resetYellow(user);
+        return userRepository.save(user);
     }
 
     /**
