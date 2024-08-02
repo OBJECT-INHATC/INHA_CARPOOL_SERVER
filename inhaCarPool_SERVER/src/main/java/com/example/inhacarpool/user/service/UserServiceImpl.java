@@ -18,10 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-    private final TopicService topicService;
     private final ClockHolder clockHolder;
+
+    private final TopicService topicService;
     private final ReportService reportService;
+
+    private final UserRepository userRepository;
 
     public User create(UserCreateRequest userCreateRequest) {
         /*TODO: DuplicateKeyException 처리*/

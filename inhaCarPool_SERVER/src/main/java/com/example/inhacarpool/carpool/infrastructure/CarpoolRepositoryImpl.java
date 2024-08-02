@@ -15,4 +15,9 @@ public class CarpoolRepositoryImpl implements CarpoolRepository {
     public Carpool save(Carpool carpool) {
         return carpoolJpaRepository.save(CarpoolEntity.from(carpool)).toModel();
     }
+
+    @Override
+    public Carpool findCarpool(String carpoolId) {
+        return carpoolJpaRepository.findById(carpoolId).map(CarpoolEntity::toModel).orElse(null);
+    }
 }

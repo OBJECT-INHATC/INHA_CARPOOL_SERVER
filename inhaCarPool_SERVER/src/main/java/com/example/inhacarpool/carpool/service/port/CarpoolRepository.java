@@ -4,4 +4,6 @@ import com.example.inhacarpool.carpool.domain.Carpool;
 
 public interface CarpoolRepository {
     Carpool save(Carpool carpool);
+
+    Carpool findCarpool(String carpoolId);
 }

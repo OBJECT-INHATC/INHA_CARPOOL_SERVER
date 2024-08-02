@@ -1,6 +1,8 @@
 package com.example.inhacarpool.topic.infrastructure;
 
+import com.example.inhacarpool.carpool.domain.Carpool;
 import com.example.inhacarpool.carpool.infrastructure.CarpoolEntity;
+import com.example.inhacarpool.user.domain.User;
 import com.example.inhacarpool.user.infrastructure.UserEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,8 +11,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,11 +35,16 @@ public class TopicEntity {
     @JoinColumn(name = "user")
     private UserEntity user;
 
-    @Builder
-    public TopicEntity(CarpoolEntity carpool, UserEntity user) {
-        this.carpool = carpool;
-        this.user = user;
+    private LocalDateTime createdAt;
+
+    public static TopicEntity from(User user, Carpool carpool) {
+        TopicEntity topicEntity = new TopicEntity();
+        topicEntity.user = UserEntity.from(user);
+        topicEntity.carpool = CarpoolEntity.from(carpool);
+        return topicEntity;
     }
+
+    // TODO topic 도메인 생성 후 엔티티 생성 or user, carpool 도메인 으로 topic 엔티티 생성
 
 }
 

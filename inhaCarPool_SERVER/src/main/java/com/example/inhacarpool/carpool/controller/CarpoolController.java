@@ -30,6 +30,7 @@ public class CarpoolController {
     public ResponseEntity<ApiResponse<CarpoolResponse>> createCarpool(
             @RequestBody CarpoolCreateRequest carpoolCreateRequest) {
         Carpool carpool = carpoolService.create(carpoolCreateRequest.to());
+
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ApiResponse<>(CarpoolResponse.from(carpool)));
