@@ -1,6 +1,7 @@
 package com.example.inhacarpool.topic.infrastructure;
 
 import com.example.inhacarpool.carpool.domain.Carpool;
+import com.example.inhacarpool.common.port.ClockHolder;
 import com.example.inhacarpool.topic.service.port.TopicRepository;
 import com.example.inhacarpool.user.domain.User;
 import com.example.inhacarpool.user.infrastructure.UserEntity;
@@ -19,7 +20,7 @@ public class TopicRepositoryImpl implements TopicRepository {
     }
 
     @Override
-    public void save(User user, Carpool carpool) {
-        topicJpaRepository.save(TopicEntity.from(user, carpool));
+    public void save(User user, Carpool carpool, ClockHolder clockHolder) {
+        topicJpaRepository.save(TopicEntity.from(user, carpool, clockHolder));
     }
 }

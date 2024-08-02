@@ -2,6 +2,7 @@ package com.example.inhacarpool.topic.infrastructure;
 
 import com.example.inhacarpool.carpool.domain.Carpool;
 import com.example.inhacarpool.carpool.infrastructure.CarpoolEntity;
+import com.example.inhacarpool.common.port.ClockHolder;
 import com.example.inhacarpool.user.domain.User;
 import com.example.inhacarpool.user.infrastructure.UserEntity;
 import jakarta.persistence.Entity;
@@ -37,15 +38,12 @@ public class TopicEntity {
 
     private LocalDateTime createdAt;
 
-    public static TopicEntity from(User user, Carpool carpool) {
+    public static TopicEntity from(User user, Carpool carpool, ClockHolder clockHolder) {
         TopicEntity topicEntity = new TopicEntity();
         topicEntity.user = UserEntity.from(user);
         topicEntity.carpool = CarpoolEntity.from(carpool);
+        topicEntity.createdAt = clockHolder.now();
         return topicEntity;
     }
 
-    // TODO topic 도메인 생성 후 엔티티 생성 or user, carpool 도메인 으로 topic 엔티티 생성
-
 }
-
-

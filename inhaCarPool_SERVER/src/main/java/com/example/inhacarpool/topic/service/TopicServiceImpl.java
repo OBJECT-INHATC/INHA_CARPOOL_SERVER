@@ -1,6 +1,7 @@
 package com.example.inhacarpool.topic.service;
 
 import com.example.inhacarpool.carpool.domain.Carpool;
+import com.example.inhacarpool.common.port.ClockHolder;
 import com.example.inhacarpool.topic.controller.port.TopicService;
 import com.example.inhacarpool.topic.service.port.TopicRepository;
 import com.example.inhacarpool.user.domain.User;
@@ -14,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class TopicServiceImpl implements TopicService {
 
+    private final ClockHolder clockHolder;
+
     private final TopicRepository topicRepository;
 
     @Transactional(readOnly = true)
@@ -22,7 +25,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     public void create(User user, Carpool carpool) {
-        topicRepository.save(user, carpool);
+        topicRepository.save(user, carpool, clockHolder);
     }
 
 //    public void saveTopic(TopicSaveDto topicSaveDto) throws
