@@ -1,5 +1,6 @@
 package com.example.inhacarpool.carpool.infrastructure;
 
+import com.example.inhacarpool.carpool.domain.Carpool;
 import com.example.inhacarpool.carpool.domain.GenderType;
 import com.example.inhacarpool.user.infrastructure.UserEntity;
 import jakarta.persistence.Column;
@@ -57,4 +58,46 @@ public class CarpoolEntity {
     private boolean status;
 
     private Long endTime; // epoch time
+
+    public static CarpoolEntity from(Carpool carpool) {
+        CarpoolEntity carpoolEntity = new CarpoolEntity();
+        carpoolEntity.id = carpool.getId();
+        carpoolEntity.admin = UserEntity.from(carpool.getAdmin());
+        carpoolEntity.nowMember = carpool.getNowMember();
+        carpoolEntity.maxMember = carpool.getMaxMember();
+        carpoolEntity.gender = carpool.getGender();
+        carpoolEntity.startTime = carpool.getStartTime();
+        carpoolEntity.shortStartPoint = carpool.getShortStartPoint();
+        carpoolEntity.startPointCoordinate = carpool.getStartPointCoordinate();
+        carpoolEntity.detailStartPoint = carpool.getDetailStartPoint();
+        carpoolEntity.shortEndPoint = carpool.getShortEndPoint();
+        carpoolEntity.endPointCoordinate = carpool.getEndPointCoordinate();
+        carpoolEntity.detailEndPoint = carpool.getDetailEndPoint();
+        carpoolEntity.createdAt = carpool.getCreatedAt();
+        carpoolEntity.updatedAt = carpool.getUpdatedAt();
+        carpoolEntity.status = carpool.isStatus();
+        carpoolEntity.endTime = carpool.getEndTime();
+        return carpoolEntity;
+    }
+
+    public Carpool toModel() {
+        return Carpool.builder()
+                .id(id)
+                .admin(admin.toModel())
+                .nowMember(nowMember)
+                .maxMember(maxMember)
+                .gender(gender)
+                .startTime(startTime)
+                .shortStartPoint(shortStartPoint)
+                .startPointCoordinate(startPointCoordinate)
+                .detailStartPoint(detailStartPoint)
+                .shortEndPoint(shortEndPoint)
+                .endPointCoordinate(endPointCoordinate)
+                .detailEndPoint(detailEndPoint)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .status(status)
+                .endTime(endTime)
+                .build();
+    }
 }

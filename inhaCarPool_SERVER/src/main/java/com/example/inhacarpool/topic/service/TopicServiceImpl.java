@@ -1,5 +1,6 @@
 package com.example.inhacarpool.topic.service;
 
+import com.example.inhacarpool.carpool.domain.Carpool;
 import com.example.inhacarpool.topic.controller.port.TopicService;
 import com.example.inhacarpool.topic.service.port.TopicRepository;
 import com.example.inhacarpool.user.domain.User;
@@ -15,8 +16,13 @@ public class TopicServiceImpl implements TopicService {
 
     private final TopicRepository topicRepository;
 
+    @Transactional(readOnly = true)
     public Long findHistoryCount(User user) {
         return topicRepository.findHistoryCount(user);
+    }
+
+    public void create(User user, Carpool carpool) {
+        topicRepository.save(user, carpool);
     }
 
 //    public void saveTopic(TopicSaveDto topicSaveDto) throws

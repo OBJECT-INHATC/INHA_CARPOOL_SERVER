@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class CarpoolService {
+public class ScheduleService {
 
     private final FcmService fcmService;
 

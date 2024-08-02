@@ -7,7 +7,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -62,18 +61,6 @@ public class UserEntity {
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
                 .build();
-    }
-
-    @Builder
-    public UserEntity(String id, String nickname, String email) {
-        this.uid = id;
-        this.nickname = nickname;
-        this.email = email;
-    }
-    
-
-    public void resetYellowCard() {
-        this.yellowCard = 0;
     }
 }
 
