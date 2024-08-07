@@ -5,10 +5,10 @@ import com.example.inhacarpool.user.domain.User;
 import java.time.LocalDateTime;
 
 public class Report {
-    private String uid;
+    private Long id;
     private String content;
-    private String reportType;
-    private LocalDateTime reportDate;
+    private String reportTypes;
+    private LocalDateTime createdAt;
     private boolean status;
     private Carpool carpool;
     private User reported;

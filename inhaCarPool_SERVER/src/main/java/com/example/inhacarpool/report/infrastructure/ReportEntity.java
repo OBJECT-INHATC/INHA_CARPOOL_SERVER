@@ -28,9 +28,9 @@ public class ReportEntity {
 
     private String content;
 
-    private String reportType; // 신고 종류 [욕설, 폭언, 성희롱, 기타]
+    private String reportTypes; // 신고 종류 [욕설, 폭언, 성희롱, 기타]
 
-    private LocalDateTime reportDate;
+    private LocalDateTime createdAt;
 
     @Column(columnDefinition = "BOOLEAN DEFAULT false")
     private boolean status; // 신고 처리 상태, 기본값은 false
@@ -48,11 +48,11 @@ public class ReportEntity {
     private UserEntity reporter;
 
     @Builder
-    public ReportEntity(String content, String reportType, LocalDateTime reportDate, CarpoolEntity carpool,
+    public ReportEntity(String content, String reportTypes, LocalDateTime createdAt, CarpoolEntity carpool,
                         UserEntity reported, UserEntity reporter) {
         this.content = content;
-        this.reportType = reportType;
-        this.reportDate = reportDate;
+        this.reportTypes = reportTypes;
+        this.createdAt = createdAt;
         this.carpool = carpool;
         this.reported = reported;
         this.reporter = reporter;
