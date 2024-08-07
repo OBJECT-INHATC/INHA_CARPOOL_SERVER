@@ -34,4 +34,25 @@ public class UserTest {
         assertThat(user.getCreatedAt()).isEqualTo(fixedTime);
         assertThat(user.getUpdatedAt()).isEqualTo(fixedTime);
     }
+
+    @Test
+    @DisplayName("유저의 경고 횟수를 초기화할 수 있다.")
+    public void resetYellowTest() {
+        //given
+        User user = User.builder()
+                .uid("1234567890123456789012345678")
+                .nickname("yeong0jae")
+                .email("202045090@itc.ac.kr")
+                .yellowCard(1)
+                .redCard(false)
+                .createdAt(LocalDateTime.of(2000, 1, 1, 0, 0, 0))
+                .updatedAt(LocalDateTime.of(2000, 1, 1, 0, 0, 0))
+                .build();
+
+        //when
+        User resetUser = User.resetYellow(user);
+
+        //then
+        assertThat(resetUser.getYellowCard()).isEqualTo(0);
+    }
 }
