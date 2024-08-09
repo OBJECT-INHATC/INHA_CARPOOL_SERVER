@@ -13,8 +13,6 @@ public interface UserService {
 
     User findUser(String uid);
 
-    int countReported(String uid);
-
     User resetYellow(String uid);
 
     int countYellow(String uid);

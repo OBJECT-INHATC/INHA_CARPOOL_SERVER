@@ -1,7 +1,6 @@
 package com.example.inhacarpool.user.service;
 
 import com.example.inhacarpool.common.port.ClockHolder;
-import com.example.inhacarpool.report.controller.port.ReportService;
 import com.example.inhacarpool.topic.controller.port.TopicService;
 import com.example.inhacarpool.user.controller.port.UserService;
 import com.example.inhacarpool.user.controller.request.UserCreateRequest;
@@ -21,7 +20,6 @@ public class UserServiceImpl implements UserService {
     private final ClockHolder clockHolder;
 
     private final TopicService topicService;
-    private final ReportService reportService;
 
     private final UserRepository userRepository;
 
@@ -44,12 +42,6 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public User findUser(String uid) {
         return userRepository.findById(uid);
-    }
-
-    @Transactional(readOnly = true)
-    public int countReported(String uid) {
-        User user = userRepository.findById(uid);
-        return reportService.countReported(user);
     }
 
     public User resetYellow(String uid) {
