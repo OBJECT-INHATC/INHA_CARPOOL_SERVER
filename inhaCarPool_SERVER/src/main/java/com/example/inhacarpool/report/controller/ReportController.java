@@ -52,20 +52,14 @@ public class ReportController {
                 .body(new ApiResponse<>(reports.stream().map(ReportResponse::from).toList()));
     }
 
-//
-//    /**
-//     * 모든 신고 리스트 조회
-//     *
-//     * @return List<ReportResponseDTO> 신고 리스트
-//     */
-//    @GetMapping("/all")
-//    public ResponseEntity<List<ReportResponseDTO>> findAllReport() {
-//
-//        List<ReportResponseDTO> reports = reportService.getAllReport();
-//        log.info("모든 신고 리스트 조회가 완료되었습니다.===========> ");
-//
-//        return ResponseEntity.ok(reports);
-//    }
+    @Operation(summary = "내가 한 신고 리스트 조회")
+    @GetMapping("/my/{uid}")
+    public ResponseEntity<ApiResponse<List<ReportResponse>>> findMyReport(@PathVariable String uid) {
+        List<Report> reports = reportService.findMyReport(uid);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ApiResponse<>(reports.stream().map(ReportResponse::from).toList()));
+    }
 
     //    // 신고자 닉네임으로 신고 리스트 조회
     //    @GetMapping("/select/{nickname}")

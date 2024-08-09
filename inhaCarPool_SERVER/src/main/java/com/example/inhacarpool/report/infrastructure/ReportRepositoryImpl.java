@@ -27,4 +27,9 @@ public class ReportRepositoryImpl implements ReportRepository {
     public List<Report> findAll() {
         return reportJpaRepository.findAll().stream().map(ReportEntity::toModel).toList();
     }
+
+    @Override
+    public List<Report> findMyReport(User user) {
+        return reportJpaRepository.findByReporter(UserEntity.from(user)).stream().map(ReportEntity::toModel).toList();
+    }
 }

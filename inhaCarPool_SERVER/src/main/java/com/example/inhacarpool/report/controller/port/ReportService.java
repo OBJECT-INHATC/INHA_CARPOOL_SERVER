@@ -11,4 +11,6 @@ public interface ReportService {
     Report create(ReportCreate reportCreate);
 
     List<Report> findAll();
+
+    List<Report> findMyReport(String uid);
 }

@@ -10,4 +10,6 @@ public interface ReportRepository {
     Report save(Report report);
 
     List<Report> findAll();
+
+    List<Report> findMyReport(User user);
 }

@@ -49,6 +49,12 @@ public class ReportServiceImpl implements ReportService {
         return reportRepository.findAll();
     }
 
+    @Override
+    public List<Report> findMyReport(String uid) {
+        User user = userService.findUser(uid);
+        return reportRepository.findMyReport(user);
+    }
+
 //    // 신고자, 피신고자의 닉네임을 받아서 uid를 찾아서 저장
 //    @Transactional
 //    public void saveReport(ReportRequestDTO reportRequstDTO) throws InhaCarpoolException {
