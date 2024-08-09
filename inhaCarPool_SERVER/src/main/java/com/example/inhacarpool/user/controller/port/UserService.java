@@ -11,9 +11,15 @@ public interface UserService {
 
     List<UserWithHistoryCount> findAll();
 
-    User findUser(String uid);
+    User findOne(String uid);
 
     User resetYellow(String uid);
 
     int countYellow(String uid);
+
+    void addYellow(String uid);
+
+    void ban(String uid);
+
+    void cancelBan(String uid);
 }

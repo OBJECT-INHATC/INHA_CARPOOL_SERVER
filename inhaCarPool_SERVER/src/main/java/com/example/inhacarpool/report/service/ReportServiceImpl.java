@@ -12,10 +12,12 @@ import com.example.inhacarpool.user.domain.User;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ReportServiceImpl implements ReportService {
 
     private final ClockHolder clockHolder;
@@ -26,7 +28,7 @@ public class ReportServiceImpl implements ReportService {
     private final UserService userService;
 
     public int countReported(String uid) {
-        User user = userService.findUser(uid);
+        User user = userService.findOne(uid);
         return reportRepository.countReported(user);
     }
 
@@ -36,8 +38,8 @@ public class ReportServiceImpl implements ReportService {
         String reportedId = reportCreate.getReportedId();
         String reporterId = reportCreate.getReporterId();
         Carpool carpool = carpoolService.findCarpool(carpoolId);
-        User reported = userService.findUser(reportedId);
-        User reporter = userService.findUser(reporterId);
+        User reported = userService.findOne(reportedId);
+        User reporter = userService.findOne(reporterId);
 
         Report report = Report.from(reportCreate, carpool, reported, reporter, clockHolder);
 
@@ -47,6 +49,46 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public List<Report> findAll() {
         return reportRepository.findAll();
+    }
+
+    @Override
+    public List<Report> findMy(String uid) {
+        User user = userService.findOne(uid);
+        return reportRepository.findMy(user);
+    }
+
+    @Override
+    public List<Report> findPending() {
+        return reportRepository.findPending();
+    }
+
+    @Override
+    @Transactional
+    public void resolve(Long reportId) {
+        reportRepository.resolve(reportId);
+    }
+
+    @Override
+    public Report findOne(Long reportId) {
+        return reportRepository.findById(reportId);
+    }
+
+    @Override
+    @Transactional
+    public void addYellow(String uid) {
+        userService.addYellow(uid);
+    }
+
+    @Override
+    @Transactional
+    public void ban(String uid) {
+        userService.ban(uid);
+    }
+
+    @Override
+    @Transactional
+    public void cancelBan(String uid) {
+        userService.cancelBan(uid);
     }
 
 //    // 신고자, 피신고자의 닉네임을 받아서 uid를 찾아서 저장

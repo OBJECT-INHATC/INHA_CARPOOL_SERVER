@@ -10,4 +10,12 @@ public interface ReportRepository {
     Report save(Report report);
 
     List<Report> findAll();
+
+    List<Report> findMy(User user);
+
+    List<Report> findPending();
+
+    Report findById(Long reportId);
+
+    void resolve(Long reportId);
 }

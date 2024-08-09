@@ -26,4 +26,19 @@ public class UserRepositoryImpl implements UserRepository {
     public User findById(String uid) {
         return userJpaRepository.findById(uid).map(UserEntity::toModel).orElse(null);
     }
+
+    @Override
+    public void addYellow(String uid) {
+        userJpaRepository.addYellow(uid);
+    }
+
+    @Override
+    public void ban(String uid) {
+        userJpaRepository.ban(uid);
+    }
+
+    @Override
+    public void cancelBan(String uid) {
+        userJpaRepository.cancelBan(uid);
+    }
 }

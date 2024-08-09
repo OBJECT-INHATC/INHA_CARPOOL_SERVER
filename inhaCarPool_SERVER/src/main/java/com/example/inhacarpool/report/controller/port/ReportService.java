@@ -11,4 +11,18 @@ public interface ReportService {
     Report create(ReportCreate reportCreate);
 
     List<Report> findAll();
+
+    List<Report> findMy(String uid);
+
+    List<Report> findPending();
+
+    void resolve(Long reportId);
+
+    Report findOne(Long reportId);
+
+    void addYellow(String uid);
+
+    void ban(String uid);
+
+    void cancelBan(String uid);
 }
