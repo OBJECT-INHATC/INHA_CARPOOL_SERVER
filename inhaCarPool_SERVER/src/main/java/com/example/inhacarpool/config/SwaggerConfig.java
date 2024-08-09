@@ -1,39 +1,29 @@
 package com.example.inhacarpool.config;
 
-import org.springdoc.core.models.GroupedOpenApi;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-@EnableWebMvc
 @Configuration
 public class SwaggerConfig {
 
-	@Bean
-	public GroupedOpenApi api() {
-		return GroupedOpenApi.builder()
-			.group("Inha Carpool API")
-			.packagesToScan("com.example")
-			.build();
-	}
+    private static final String TITLE = "INHA Carpool API";
+    private static final String DESCRIPTION = "INHA Carpool API Docs";
+    private static final String VERSION = "1.0.0";
 
-	@Bean
-	public OpenAPI openAPI() {
-		return new OpenAPI()
-			.components(new Components())
-			.info(apiInfo());
-	}
+    @Bean
+    public OpenAPI openAPI() {
+        Info info = new Info()
+                .title(TITLE)
+                .description(DESCRIPTION)
+                .version(VERSION)
+                .license(new License().name("Apache 2.0").url("http://springdoc.org"));
 
-	private Info apiInfo() {
-		return new Info()
-			.title("INHA Carpool API 테스트")
-			.description("Springdoc을 사용한 Swagger UI 테스트")
-			.version("1.0.0")
-			.license(new License().name("Apache 2.0").url("http://springdoc.org"));
-	}
+        return new OpenAPI()
+                .components(new Components())
+                .info(info);
+    }
 }
