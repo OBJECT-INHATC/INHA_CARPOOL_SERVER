@@ -11,4 +11,9 @@ public interface UserJpaRepository extends JpaRepository<UserEntity, String> {
     @Transactional
     @Query("update UserEntity u set u.yellowCard = u.yellowCard + 1 where u.uid = :uid")
     void addYellow(String uid);
+
+    @Modifying
+    @Transactional
+    @Query("update UserEntity u set u.redCard = true where u.uid = :uid")
+    void ban(String uid);
 }

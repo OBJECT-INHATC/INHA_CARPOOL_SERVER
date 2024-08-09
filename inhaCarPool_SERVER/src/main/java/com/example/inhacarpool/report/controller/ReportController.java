@@ -90,28 +90,14 @@ public class ReportController {
                 .status(HttpStatus.OK)
                 .body(new ApiResponse<>("경고 처리가 완료되었습니다."));
     }
+
+    @Operation(summary = "유저 정지시키기")
+    @PutMapping("/redCard/{uid}")
+    public ResponseEntity<ApiResponse<String>> updateRedCard(@PathVariable String uid) {
+        reportService.ban(uid);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ApiResponse<>("정지 처리가 완료되었습니다."));
+    }
+
 }
-
-//	// 경고 처리
-//	@PutMapping("/yellowCard/{uid}")
-//	public BaseResponse<String> updateYellowCard(@PathVariable String uid) {
-//		try {
-//			reportService.updateYellowCard(uid);
-//			log.info("=======경고 처리가 완료되었습니다.===========> " + uid);
-//			return new BaseResponse<>("경고 처리가 완료되었습니다.");
-//		} catch (BaseException exception) {
-//			return new BaseResponse<>(exception.getBaseExceptionCode());
-//		}
-//	}
-
-//	// 정지 처리
-//	@PutMapping("/redCard/{uid}")
-//	public BaseResponse<String> updateRedCard(@PathVariable String uid) {
-//		try {
-//			reportService.updateRedCard(uid);
-//			log.info("=======정지 처리가 완료되었습니다.===========> " + uid);
-//			return new BaseResponse<>("정지 처리가 완료되었습니다.");
-//		} catch (BaseException exception) {
-//			return new BaseResponse<>(exception.getBaseExceptionCode());
-//		}
-//	}}

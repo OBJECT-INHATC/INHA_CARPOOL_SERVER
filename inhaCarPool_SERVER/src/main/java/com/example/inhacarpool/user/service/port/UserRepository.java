@@ -12,4 +12,6 @@ public interface UserRepository {
     User findById(String uid);
 
     void addYellow(String uid);
+
+    void ban(String uid);
 }

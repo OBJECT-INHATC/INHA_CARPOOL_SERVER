@@ -21,4 +21,6 @@ public interface ReportService {
     Report findOne(Long reportId);
 
     void addYellow(String uid);
+
+    void ban(String uid);
 }

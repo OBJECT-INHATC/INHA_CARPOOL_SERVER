@@ -31,4 +31,9 @@ public class UserRepositoryImpl implements UserRepository {
     public void addYellow(String uid) {
         userJpaRepository.addYellow(uid);
     }
+
+    @Override
+    public void ban(String uid) {
+        userJpaRepository.ban(uid);
+    }
 }

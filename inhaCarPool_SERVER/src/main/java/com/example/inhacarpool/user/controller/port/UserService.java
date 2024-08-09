@@ -18,4 +18,6 @@ public interface UserService {
     int countYellow(String uid);
 
     void addYellow(String uid);
+
+    void ban(String uid);
 }

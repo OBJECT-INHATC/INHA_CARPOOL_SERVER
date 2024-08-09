@@ -61,4 +61,9 @@ public class UserServiceImpl implements UserService {
     public void addYellow(String uid) {
         userRepository.addYellow(uid);
     }
+
+    @Override
+    public void ban(String uid) {
+        userRepository.ban(uid);
+    }
 }
