@@ -7,6 +7,7 @@ import com.example.inhacarpool.report.controller.response.ReportResponse;
 import com.example.inhacarpool.report.domain.Report;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,20 +43,15 @@ public class ReportController {
         return reportService.countReported(uid);
     }
 
-//    // 신고하기
-//    @ResponseBody
-//    @PostMapping("/save")
-//    public ApiResponse<String> saveReport(@RequestBody ReportRequestDTO reportRequstDTO) {
-//        log.info("신고자 : " + reportRequstDTO.getReporter());
-//        log.info("신고당한사람 : " + reportRequstDTO.getReportedUser());
-//        try {
-//            this.reportService.saveReport(reportRequstDTO);
-//            log.info("========신고가 완료되었습니다.===========> " + reportRequstDTO.getReporter());
-//            return new ApiResponse<>("해당 사용자를 신고 완료하였습니다.");
-//        } catch (InhaCarpoolException exception) {
-//            return new ApiResponse<>(exception.getCustomException());
-//        }
-//    }
+    @Operation(summary = "모든 신고 리스트 조회")
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<ReportResponse>>> findAll() {
+        List<Report> reports = reportService.findAll();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ApiResponse<>(reports.stream().map(ReportResponse::from).toList()));
+    }
+
 //
 //    /**
 //     * 모든 신고 리스트 조회

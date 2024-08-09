@@ -9,6 +9,7 @@ import com.example.inhacarpool.report.domain.ReportCreate;
 import com.example.inhacarpool.report.service.port.ReportRepository;
 import com.example.inhacarpool.user.controller.port.UserService;
 import com.example.inhacarpool.user.domain.User;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,11 @@ public class ReportServiceImpl implements ReportService {
         Report report = Report.from(reportCreate, carpool, reported, reporter, clockHolder);
 
         return reportRepository.save(report);
+    }
+
+    @Override
+    public List<Report> findAll() {
+        return reportRepository.findAll();
     }
 
 //    // 신고자, 피신고자의 닉네임을 받아서 uid를 찾아서 저장
