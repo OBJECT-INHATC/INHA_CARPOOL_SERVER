@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional(readOnly = true)
-    public User findUser(String uid) {
+    public User findOne(String uid) {
         return userRepository.findById(uid);
     }
 

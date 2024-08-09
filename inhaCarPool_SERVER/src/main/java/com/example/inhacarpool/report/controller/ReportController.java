@@ -55,23 +55,20 @@ public class ReportController {
     @Operation(summary = "내가 한 신고 리스트 조회")
     @GetMapping("/my/{uid}")
     public ResponseEntity<ApiResponse<List<ReportResponse>>> findMyReport(@PathVariable String uid) {
-        List<Report> reports = reportService.findMyReport(uid);
+        List<Report> reports = reportService.findMy(uid);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ApiResponse<>(reports.stream().map(ReportResponse::from).toList()));
     }
 
-    //    // 신고자 닉네임으로 신고 리스트 조회
-    //    @GetMapping("/select/{nickname}")
-    //    public BaseResponse<ReportResponseDTO.GetRepostList> findById(@PathVariable String nickname) {
-    //      try {
-    //          ReportResponseDTO.GetRepostList reports = reportService.findReportListByNickName(nickname);
-    //          log.info("========"+nickname+"=====신고 리스트 조회가 완료되었습니다.===========> ");
-    //          return new BaseResponse<>(reports);
-    //      } catch (BaseException exception){
-    //          return new BaseResponse<>((exception.getStatus()));
-    //      }
-    //    }
+    @Operation(summary = "처리 안된 신고 리스트 조회")
+    @GetMapping("/pending")
+    public ResponseEntity<ApiResponse<List<ReportResponse>>> findPendingReport() {
+        List<Report> reports = reportService.findPending();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ApiResponse<>(reports.stream().map(ReportResponse::from).toList()));
+    }
 
     /**
      * report Entity에서 신고자, 피신고자의 닉네임이 아닌 uid를 저장할 때 사용 가능 (user와 연관관계)

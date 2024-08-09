@@ -12,5 +12,7 @@ public interface ReportService {
 
     List<Report> findAll();
 
-    List<Report> findMyReport(String uid);
+    List<Report> findMy(String uid);
+
+    List<Report> findPending();
 }

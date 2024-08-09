@@ -26,7 +26,7 @@ public class ReportServiceImpl implements ReportService {
     private final UserService userService;
 
     public int countReported(String uid) {
-        User user = userService.findUser(uid);
+        User user = userService.findOne(uid);
         return reportRepository.countReported(user);
     }
 
@@ -36,8 +36,8 @@ public class ReportServiceImpl implements ReportService {
         String reportedId = reportCreate.getReportedId();
         String reporterId = reportCreate.getReporterId();
         Carpool carpool = carpoolService.findCarpool(carpoolId);
-        User reported = userService.findUser(reportedId);
-        User reporter = userService.findUser(reporterId);
+        User reported = userService.findOne(reportedId);
+        User reporter = userService.findOne(reporterId);
 
         Report report = Report.from(reportCreate, carpool, reported, reporter, clockHolder);
 
@@ -50,9 +50,14 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<Report> findMyReport(String uid) {
-        User user = userService.findUser(uid);
-        return reportRepository.findMyReport(user);
+    public List<Report> findMy(String uid) {
+        User user = userService.findOne(uid);
+        return reportRepository.findMy(user);
+    }
+
+    @Override
+    public List<Report> findPending() {
+        return reportRepository.findPending();
     }
 
 //    // 신고자, 피신고자의 닉네임을 받아서 uid를 찾아서 저장

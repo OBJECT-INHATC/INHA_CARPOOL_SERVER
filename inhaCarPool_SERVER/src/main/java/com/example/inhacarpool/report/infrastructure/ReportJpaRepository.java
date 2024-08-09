@@ -10,4 +10,6 @@ public interface ReportJpaRepository extends JpaRepository<ReportEntity, Long> {
     int countByReported(UserEntity userEntity);
 
     List<ReportEntity> findByReporter(UserEntity userEntity);
+
+    List<ReportEntity> findByStatusFalse();
 }

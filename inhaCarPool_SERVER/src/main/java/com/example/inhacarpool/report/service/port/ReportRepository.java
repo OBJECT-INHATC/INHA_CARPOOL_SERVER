@@ -11,5 +11,7 @@ public interface ReportRepository {
 
     List<Report> findAll();
 
-    List<Report> findMyReport(User user);
+    List<Report> findMy(User user);
+
+    List<Report> findPending();
 }

@@ -29,7 +29,12 @@ public class ReportRepositoryImpl implements ReportRepository {
     }
 
     @Override
-    public List<Report> findMyReport(User user) {
+    public List<Report> findMy(User user) {
         return reportJpaRepository.findByReporter(UserEntity.from(user)).stream().map(ReportEntity::toModel).toList();
+    }
+
+    @Override
+    public List<Report> findPending() {
+        return reportJpaRepository.findByStatusFalse().stream().map(ReportEntity::toModel).toList();
     }
 }

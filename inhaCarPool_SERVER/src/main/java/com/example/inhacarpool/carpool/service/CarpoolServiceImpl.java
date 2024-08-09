@@ -27,7 +27,7 @@ public class CarpoolServiceImpl implements CarpoolService {
     @Override
     public Carpool create(CarpoolCreate carpoolCreate) {
         String uid = carpoolCreate.getAdmin();
-        User user = userService.findUser(uid);
+        User user = userService.findOne(uid);
         Carpool carpool = Carpool.from(carpoolCreate, user, clockHolder);
         // TODO 중복 체크
         carpool = carpoolRepository.save(carpool);
