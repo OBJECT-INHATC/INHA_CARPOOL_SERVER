@@ -53,15 +53,6 @@ public class UserController {
                 .body(new ApiResponse<>(users));
     }
 
-    @Operation(summary = "유저의 신고 당한 횟수 조회")
-    @GetMapping("/count/reported/{uid}")
-    public ResponseEntity<ApiResponse<Integer>> countReported(@PathVariable String uid) {
-        int reportedCount = userService.countReported(uid);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(new ApiResponse<>(reportedCount));
-    }
-
     @Operation(summary = "유저의 경고 횟수를 0으로 초기화")
     @PutMapping("/reset/yellow/{uid}")
     public ResponseEntity<ApiResponse<UserResponse>> resetYellow(@PathVariable String uid) {

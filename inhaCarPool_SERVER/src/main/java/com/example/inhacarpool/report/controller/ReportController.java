@@ -1,21 +1,46 @@
 package com.example.inhacarpool.report.controller;
 
-import com.example.inhacarpool.report.service.ReportServiceImpl;
+import com.example.inhacarpool.common.response.ApiResponse;
+import com.example.inhacarpool.report.controller.port.ReportService;
+import com.example.inhacarpool.report.controller.request.ReportCreateRequest;
+import com.example.inhacarpool.report.controller.response.ReportResponse;
+import com.example.inhacarpool.report.domain.Report;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-@Tag(name = "report API", description = "INHA Carpool Swagger 테스트용")
-@Slf4j
+@Tag(name = "신고 API")
 @RequestMapping("/report")
 @RestController
 @RequiredArgsConstructor
 public class ReportController {
 
-    private final ReportServiceImpl reportServiceImpl;
+    private final ReportService reportService;
+
+    @Operation(summary = "신고하기")
+    @PostMapping("/create")
+    public ResponseEntity<ApiResponse<ReportResponse>> createReport(
+            @RequestBody ReportCreateRequest reportCreateRequest) {
+        Report report = reportService.create(reportCreateRequest.to());
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new ApiResponse<>(ReportResponse.from(report)));
+    }
+
+    @Operation(summary = "유저의 신고 당한 횟수 조회")
+    @GetMapping("/count/reported/{uid}")
+    public int countReported(@PathVariable String uid) {
+        return reportService.countReported(uid);
+    }
 
 //    // 신고하기
 //    @ResponseBody

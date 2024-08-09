@@ -37,4 +37,9 @@ public class CarpoolServiceImpl implements CarpoolService {
         return carpool;
     }
 
+    @Override
+    public Carpool findCarpool(String carpoolId) {
+        return carpoolRepository.findCarpool(carpoolId);
+    }
+
 }
