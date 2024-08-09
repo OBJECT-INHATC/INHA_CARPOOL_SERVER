@@ -15,4 +15,8 @@ public interface ReportService {
     List<Report> findMy(String uid);
 
     List<Report> findPending();
+
+    void resolve(Long reportId);
+
+    Report findOne(Long reportId);
 }

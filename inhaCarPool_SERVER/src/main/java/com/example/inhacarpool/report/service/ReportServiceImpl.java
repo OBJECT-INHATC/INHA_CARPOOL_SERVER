@@ -12,10 +12,12 @@ import com.example.inhacarpool.user.domain.User;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ReportServiceImpl implements ReportService {
 
     private final ClockHolder clockHolder;
@@ -58,6 +60,17 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public List<Report> findPending() {
         return reportRepository.findPending();
+    }
+
+    @Override
+    @Transactional
+    public void resolve(Long reportId) {
+        reportRepository.resolve(reportId);
+    }
+
+    @Override
+    public Report findOne(Long reportId) {
+        return reportRepository.findById(reportId);
     }
 
 //    // 신고자, 피신고자의 닉네임을 받아서 uid를 찾아서 저장

@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class ReportController {
+
+    private static final String RESOLVE_SUCCESS = "신고 처리가 완료되었습니다.";
 
     private final ReportService reportService;
 
@@ -70,20 +73,16 @@ public class ReportController {
                 .body(new ApiResponse<>(reports.stream().map(ReportResponse::from).toList()));
     }
 
-    /**
-     * report Entity에서 신고자, 피신고자의 닉네임이 아닌 uid를 저장할 때 사용 가능 (user와 연관관계)
-     */
-    //    // (처리 안된)신고 리스트 전체 조회
-    //    @GetMapping("/select")
-    //    public BaseResponse<ReportResponseDTO.GetRepostList> findAllReport() {
-    //        try {
-    //            ReportResponseDTO.GetRepostList reports = reportService.findAllReportList();
-    //            log.info("=============신고 리스트 조회가 완료되었습니다.===========> ");
-    //            return new BaseResponse<>(reports);
-    //        } catch (BaseException exception) {
-    //            return new BaseResponse<>(exception.getStatus());
-    //        }
-    //    }
+    @Operation(summary = "신고 처리하기")
+    @PutMapping("/{reportId}/resolve")
+    public ResponseEntity<ApiResponse<String>> resolveReport(@PathVariable Long reportId) {
+        reportService.resolve(reportId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ApiResponse<>(RESOLVE_SUCCESS));
+    }
+}
+
 //
 //    // 신고 처리
 //    @PutMapping("/status/{reportIdx}")
@@ -120,6 +119,4 @@ public class ReportController {
 //		} catch (BaseException exception) {
 //			return new BaseResponse<>(exception.getBaseExceptionCode());
 //		}
-//	}
-
-}
+//	}}

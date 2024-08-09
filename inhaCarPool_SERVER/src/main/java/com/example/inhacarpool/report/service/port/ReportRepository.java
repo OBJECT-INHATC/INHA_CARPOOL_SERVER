@@ -14,4 +14,8 @@ public interface ReportRepository {
     List<Report> findMy(User user);
 
     List<Report> findPending();
+
+    Report findById(Long reportId);
+
+    void resolve(Long reportId);
 }
