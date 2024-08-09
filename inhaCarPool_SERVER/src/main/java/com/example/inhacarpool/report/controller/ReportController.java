@@ -100,4 +100,13 @@ public class ReportController {
                 .body(new ApiResponse<>("정지 처리가 완료되었습니다."));
     }
 
+    @Operation(summary = "유저 정지 취소")
+    @PutMapping("/redCard/cancel/{uid}")
+    public ResponseEntity<ApiResponse<String>> cancelRedCard(@PathVariable String uid) {
+        reportService.cancelBan(uid);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ApiResponse<>("정지 취소가 완료되었습니다."));
+    }
+
 }

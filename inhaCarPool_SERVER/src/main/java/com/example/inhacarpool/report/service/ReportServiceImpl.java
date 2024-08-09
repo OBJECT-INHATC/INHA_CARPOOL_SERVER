@@ -85,6 +85,12 @@ public class ReportServiceImpl implements ReportService {
         userService.ban(uid);
     }
 
+    @Override
+    @Transactional
+    public void cancelBan(String uid) {
+        userService.cancelBan(uid);
+    }
+
 //    // 신고자, 피신고자의 닉네임을 받아서 uid를 찾아서 저장
 //    @Transactional
 //    public void saveReport(ReportRequestDTO reportRequstDTO) throws InhaCarpoolException {

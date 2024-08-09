@@ -66,4 +66,9 @@ public class UserServiceImpl implements UserService {
     public void ban(String uid) {
         userRepository.ban(uid);
     }
+
+    @Override
+    public void cancelBan(String uid) {
+        userRepository.cancelBan(uid);
+    }
 }

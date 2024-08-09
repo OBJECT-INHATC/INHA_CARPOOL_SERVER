@@ -20,4 +20,6 @@ public interface UserService {
     void addYellow(String uid);
 
     void ban(String uid);
+
+    void cancelBan(String uid);
 }

@@ -16,4 +16,9 @@ public interface UserJpaRepository extends JpaRepository<UserEntity, String> {
     @Transactional
     @Query("update UserEntity u set u.redCard = true where u.uid = :uid")
     void ban(String uid);
+
+    @Modifying
+    @Transactional
+    @Query("update UserEntity u set u.redCard = false where u.uid = :uid")
+    void cancelBan(String uid);
 }

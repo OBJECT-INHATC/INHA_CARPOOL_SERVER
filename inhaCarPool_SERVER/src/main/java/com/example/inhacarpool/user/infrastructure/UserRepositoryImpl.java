@@ -36,4 +36,9 @@ public class UserRepositoryImpl implements UserRepository {
     public void ban(String uid) {
         userJpaRepository.ban(uid);
     }
+
+    @Override
+    public void cancelBan(String uid) {
+        userJpaRepository.cancelBan(uid);
+    }
 }
