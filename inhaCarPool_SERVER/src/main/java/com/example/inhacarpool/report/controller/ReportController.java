@@ -81,21 +81,16 @@ public class ReportController {
                 .status(HttpStatus.OK)
                 .body(new ApiResponse<>(RESOLVE_SUCCESS));
     }
-}
 
-//
-//    // 신고 처리
-//    @PutMapping("/status/{reportIdx}")
-//    public ApiResponse<String> updateStatus(@PathVariable Long reportIdx) {
-//        try {
-//            reportService.updateStatus(reportIdx);
-//            log.info("=======신고 처리가 완료되었습니다.===========> " + reportIdx);
-//            return new ApiResponse<>("신고 처리가 완료되었습니다.");
-//        } catch (InhaCarpoolException exception) {
-//            log.info("=======신고 처리가 실패하였습니다.===========> " + reportIdx);
-//            return new ApiResponse<>(exception.getCustomException());
-//        }
-//    }
+    @Operation(summary = "유저에게 경고 주기")
+    @PutMapping("/yellow/{uid}")
+    public ResponseEntity<ApiResponse<String>> updateYellowCard(@PathVariable String uid) {
+        reportService.addYellow(uid);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ApiResponse<>("경고 처리가 완료되었습니다."));
+    }
+}
 
 //	// 경고 처리
 //	@PutMapping("/yellowCard/{uid}")

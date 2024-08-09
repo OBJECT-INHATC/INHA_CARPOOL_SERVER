@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
     private final ClockHolder clockHolder;
@@ -23,6 +23,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    @Transactional
     public User create(UserCreateRequest userCreateRequest) {
         /*TODO: DuplicateKeyException 처리*/
         User user = User.from(userCreateRequest.to(), clockHolder);
@@ -30,7 +31,6 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    @Transactional(readOnly = true)
     public List<UserWithHistoryCount> findAll() {
         List<User> users = userRepository.findAll();
         return users.stream().map(user -> {
@@ -44,15 +44,21 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(uid);
     }
 
+    @Transactional
     public User resetYellow(String uid) {
         User user = userRepository.findById(uid);
         user = User.resetYellow(user);
         return userRepository.save(user);
     }
 
-    @Transactional(readOnly = true)
     public int countYellow(String uid) {
         User user = userRepository.findById(uid);
         return user.getYellowCard();
+    }
+
+    @Override
+    @Transactional
+    public void addYellow(String uid) {
+        userRepository.addYellow(uid);
     }
 }

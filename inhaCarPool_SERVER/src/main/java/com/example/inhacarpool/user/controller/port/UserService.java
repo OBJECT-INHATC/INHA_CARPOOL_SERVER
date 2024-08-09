@@ -16,4 +16,6 @@ public interface UserService {
     User resetYellow(String uid);
 
     int countYellow(String uid);
+
+    void addYellow(String uid);
 }

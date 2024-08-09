@@ -19,4 +19,6 @@ public interface ReportService {
     void resolve(Long reportId);
 
     Report findOne(Long reportId);
+
+    void addYellow(String uid);
 }
