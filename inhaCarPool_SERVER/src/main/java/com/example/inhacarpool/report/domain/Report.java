@@ -1,6 +1,7 @@
 package com.example.inhacarpool.report.domain;
 
 import com.example.inhacarpool.carpool.domain.Carpool;
+import com.example.inhacarpool.common.port.ClockHolder;
 import com.example.inhacarpool.user.domain.User;
 import java.time.LocalDateTime;
 import lombok.Builder;
@@ -30,11 +31,12 @@ public class Report {
         this.reporter = reporter;
     }
 
-    public static Report from(ReportCreate reportCreate, Carpool carpool, User reported, User reporter) {
+    public static Report from(ReportCreate reportCreate, Carpool carpool, User reported, User reporter,
+                              ClockHolder clockHolder) {
         return Report.builder()
                 .content(reportCreate.getContent())
                 .reportTypes(reportCreate.getReportTypes())
-                .createdAt(LocalDateTime.now())
+                .createdAt(clockHolder.now())
                 .status(false)
                 .carpool(carpool)
                 .reported(reported)

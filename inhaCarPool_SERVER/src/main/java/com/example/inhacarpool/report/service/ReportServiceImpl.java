@@ -1,7 +1,13 @@
 package com.example.inhacarpool.report.service;
 
+import com.example.inhacarpool.carpool.controller.port.CarpoolService;
+import com.example.inhacarpool.carpool.domain.Carpool;
+import com.example.inhacarpool.common.port.ClockHolder;
 import com.example.inhacarpool.report.controller.port.ReportService;
+import com.example.inhacarpool.report.domain.Report;
+import com.example.inhacarpool.report.domain.ReportCreate;
 import com.example.inhacarpool.report.service.port.ReportRepository;
+import com.example.inhacarpool.user.controller.port.UserService;
 import com.example.inhacarpool.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,10 +17,30 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ReportServiceImpl implements ReportService {
 
+    private final ClockHolder clockHolder;
+
     private final ReportRepository reportRepository;
-    
-    public int countReported(User user) {
+
+    private final CarpoolService carpoolService;
+    private final UserService userService;
+
+    public int countReported(String uid) {
+        User user = userService.findUser(uid);
         return reportRepository.countReported(user);
+    }
+
+    @Override
+    public Report create(ReportCreate reportCreate) {
+        String carpoolId = reportCreate.getCarpoolId();
+        String reportedId = reportCreate.getReportedId();
+        String reporterId = reportCreate.getReporterId();
+        Carpool carpool = carpoolService.findCarpool(carpoolId);
+        User reported = userService.findUser(reportedId);
+        User reporter = userService.findUser(reporterId);
+
+        Report report = Report.from(reportCreate, carpool, reported, reporter, clockHolder);
+
+        return reportRepository.save(report);
     }
 
 //    // 신고자, 피신고자의 닉네임을 받아서 uid를 찾아서 저장

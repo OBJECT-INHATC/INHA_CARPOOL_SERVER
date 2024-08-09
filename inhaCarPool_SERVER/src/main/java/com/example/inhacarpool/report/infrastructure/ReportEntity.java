@@ -1,6 +1,7 @@
 package com.example.inhacarpool.report.infrastructure;
 
 import com.example.inhacarpool.carpool.infrastructure.CarpoolEntity;
+import com.example.inhacarpool.report.domain.Report;
 import com.example.inhacarpool.user.infrastructure.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +13,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -47,17 +47,30 @@ public class ReportEntity {
     @JoinColumn(name = "reporter")
     private UserEntity reporter;
 
-    @Builder
-    public ReportEntity(String content, String reportTypes, LocalDateTime createdAt, CarpoolEntity carpool,
-                        UserEntity reported, UserEntity reporter) {
-        this.content = content;
-        this.reportTypes = reportTypes;
-        this.createdAt = createdAt;
-        this.carpool = carpool;
-        this.reported = reported;
-        this.reporter = reporter;
+    public static ReportEntity from(Report report) {
+        ReportEntity reportEntity = new ReportEntity();
+        reportEntity.content = report.getContent();
+        reportEntity.reportTypes = report.getReportTypes();
+        reportEntity.createdAt = report.getCreatedAt();
+        reportEntity.status = report.isStatus();
+        reportEntity.carpool = CarpoolEntity.from(report.getCarpool());
+        reportEntity.reported = UserEntity.from(report.getReported());
+        reportEntity.reporter = UserEntity.from(report.getReporter());
+        return reportEntity;
     }
 
+    public Report toModel() {
+        return Report.builder()
+                .id(id)
+                .content(content)
+                .reportTypes(reportTypes)
+                .createdAt(createdAt)
+                .status(status)
+                .carpool(carpool.toModel())
+                .reported(reported.toModel())
+                .reporter(reporter.toModel())
+                .build();
+    }
 }
 
 
