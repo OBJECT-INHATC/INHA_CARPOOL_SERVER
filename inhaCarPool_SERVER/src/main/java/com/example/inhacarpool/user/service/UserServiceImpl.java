@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     public List<UserWithHistoryCount> findAll() {
         List<User> users = userRepository.findAll();
         return users.stream().map(user -> {
-            Long historyCount = topicService.findHistoryCount(user);
+            Long historyCount = topicService.countHistory(user);
             return UserWithHistoryCount.from(user, historyCount);
         }).toList();
     }

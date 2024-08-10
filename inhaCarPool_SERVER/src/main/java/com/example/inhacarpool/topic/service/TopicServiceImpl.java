@@ -20,8 +20,8 @@ public class TopicServiceImpl implements TopicService {
     private final TopicRepository topicRepository;
 
     @Transactional(readOnly = true)
-    public Long findHistoryCount(User user) {
-        return topicRepository.findHistoryCount(user);
+    public Long countHistory(User user) {
+        return topicRepository.countHistory(user);
     }
 
     public void create(User user, Carpool carpool) {
