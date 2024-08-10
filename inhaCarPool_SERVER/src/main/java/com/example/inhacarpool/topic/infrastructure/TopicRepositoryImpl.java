@@ -15,7 +15,7 @@ public class TopicRepositoryImpl implements TopicRepository {
     private final TopicJpaRepository topicJpaRepository;
 
     @Override
-    public Long findHistoryCount(User user) {
+    public Long countHistory(User user) {
         return topicJpaRepository.countByUser(UserEntity.from(user));
     }
 

@@ -6,7 +6,7 @@ import com.example.inhacarpool.user.domain.User;
 
 public interface TopicRepository {
 
-    Long findHistoryCount(User user);
+    Long countHistory(User user);
 
     void save(User user, Carpool carpool, ClockHolder clockHolder);
 }

@@ -5,7 +5,7 @@ import com.example.inhacarpool.user.domain.User;
 
 public interface TopicService {
 
-    Long findHistoryCount(User user);
+    Long countHistory(User user);
 
     void create(User user, Carpool carpool);
 }
