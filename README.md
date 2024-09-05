@@ -39,6 +39,12 @@
 
 <br>
 
+## CI / CD
+
+<img src="https://github.com/user-attachments/assets/ae8353c8-9973-41f5-9302-36e34100c46f">
+
+<br>
+
 ## 🛠 사용 기술 스택
 
 | 기술               | 설명                                                        |
