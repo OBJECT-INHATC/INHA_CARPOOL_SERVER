@@ -8,7 +8,7 @@
 # <img src="https://github.com/yeong0jae/Algorithm/assets/83624600/9c8db1b8-5ff5-478d-9d53-61a1f4848960" width="30"> 인하 카풀
 
 > 이 프로젝트는 우리 대학교 커뮤니티를 위한 카풀(택시 공유) 시스템 어플리케이션입니다. 사용자들은 카풀을 통해 편리하게 대학교 내에서 이동할 수 있습니다. 어플은 파이어베이스 파이어스토어를 통해 실시간 채팅 및 데이터 관리를 하며, 스프링 부트 서버를 통해 API 요청 및 응답을 처리합니다.
-### 상태관리 : Riverpod 
+
 
 <img src="https://github.com/yeong0jae/Algorithm/assets/83624600/c298b38c-0dad-47f5-ae47-874b5c4b79c5" width="210">
 
@@ -39,20 +39,9 @@
 
 <br>
 
-## CI / CD
+## ♾️ CI / CD
 
 <img src="https://github.com/user-attachments/assets/ae8353c8-9973-41f5-9302-36e34100c46f">
-
-<br>
-
-## 🛠 사용 기술 스택
-
-| 기술               | 설명                                                        |
-| ------------------ | ----------------------------------------------------------- |
-| Flutter            | 효율적이고 아름다운 모바일 앱 개발을 위한 프레임워크        |
-| Firebase Firestore | 클라우드 기반 NoSQL 데이터베이스, 실시간 데이터 동기화 지원 |
-| Spring Boot        | Java 기반의 웹 애플리케이션 개발을 위한 프레임워크          |
-| MySQL              | 데이터베이스 저장소로 사용                                  |
 
 <br>
 
@@ -60,30 +49,6 @@
 ![Firebase Firestore](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
-
-<br>
-
-## 향후 보안 예정
-
-1. 카풀 이용시 비용 절감 예상 금액 표시
-2. 매너온도 기능 추가
-3. 채팅 읽음 기능
-
-<br>
-
-## 프로젝트 사용 가이드
-
-[사용자 등록 및 로그인 가이드]<P>
-[카풀 등록 및 검색 가이드]<P>
-[채팅 기능 사용 가이드]<P>
-
-<br>
-
-## 참고 자료
-
-파이어베이스 공식 문서: https://firebase.flutter.dev/docs/overview<P>
-스프링 부트 공식 문서: https://spring.io/projects/spring-boot<P>
-다트 패키지 공식 문서: https://pub.dev/<P>
 
 <br>
 
@@ -100,11 +65,7 @@
 | 김영재 | [@yeong0jae](https://github.com/yeong0jae)       |
 
 
-스프링 부트 서버
-
 스웨거 
 http://localhost:8080/swagger-ui/index.html 
 
-# Todo List : 
-                1. yam 파일 관리
-                2. FCMSevice 파일 fcmKey 관리 이후 gitignore에서 빼기
+
